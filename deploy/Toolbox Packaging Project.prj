@@ -1,0 +1,197 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration build-checksum="1660161192" file="C:\Work\volume-labeling-widgets\deploy\Toolbox Packaging Project.prj" location="C:\Work\volume-labeling-widgets\deploy" name="Toolbox Packaging Project" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>Volume Labeling Widgets - MATLAB App Building Components</param.appname>
+    <param.authnamewatermark>Robyn Jackey</param.authnamewatermark>
+    <param.email>rjackey@mathworks.com</param.email>
+    <param.company>MathWorks</param.company>
+    <param.summary>Enable custom workflows for labeling volumes and isosurfaces in your MATLAB app.</param.summary>
+    <param.description>This toolbox provides components for labeling volume imagery and isosurfaces. These widgets may be placed into your MATLAB app simplify building a custom workflow. Sample MATLAB apps are included to demonstrate a custom workflow for isosurface labeling and volume labeling.
+
+Note: The built-in Volume Viewer app in MATLAB's Image Processing Toolbox covers the common worfklows. This added widget collection is intended for cases where nonstandard or custom workflows need to be implemented in your own custom MATLAB app.
+https://www.mathworks.com/help/releases/R2020b/images/ref/volumeviewer-app.html
+
+Widgets provided in this toolbox include:
+
+Image Stack / Volume Visualization and Annotation Labeling
+Isosurface Visualization and Annotation Labeling
+Slice Plane (X/Y/Z) visualization
+
+Additionally included are sample apps for:
+
+Interactively labeling points, lines, polygons, and masks on an image stack volume
+Interactively labeling points, lines, polygons, and planes on a 3D isosurface
+
+
+Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</param.description>
+    <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
+    <param.version>2.0.0</param.version>
+    <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
+    <param.products.name>
+      <item>MATLAB</item>
+      <item>Image Processing Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>1</item>
+      <item>17</item>
+    </param.products.id>
+    <param.products.version>
+      <item>9.9</item>
+      <item>11.2</item>
+    </param.products.version>
+    <param.platforms />
+    <param.guid>7beb8fae-7511-4c1a-a6fb-c1a109d46c80</param.guid>
+    <param.exclude.filters />
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
+    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;examples&gt;
+   &lt;exampleCategory name="examples"&gt;
+      &lt;example name="demoAnnotatedIsosurfaceViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoAnnotatedIsosurfaceViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoAnnotatedIsosurfaceViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoAnnotatedQuadViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoAnnotatedQuadViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoAnnotatedQuadViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoAnnotatedVolumeViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoAnnotatedVolumeViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoAnnotatedVolumeViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoIsosurfaceAnnotationApp" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoIsosurfaceAnnotationApp.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoIsosurfaceAnnotationApp.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoIsosurfaceViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoIsosurfaceViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoIsosurfaceViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoSlicePlaneViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoSlicePlaneViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoSlicePlaneViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoVolumeAnnotationApp" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoVolumeAnnotationApp.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoVolumeAnnotationApp.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoVolumeViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoVolumeViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoVolumeViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+&lt;/examples&gt;</param.examples>
+    <param.demosxml />
+    <param.apps />
+    <param.registered.apps />
+    <param.docs />
+    <param.getting.started.guide>C:\Work\volume-labeling-widgets\volume_widgets\doc\GettingStarted.mlx</param.getting.started.guide>
+    <param.matlabpath.excludes>
+      <item>/C__/Program Files/MATLAB/R2020b/toolbox/matlab/demos</item>
+    </param.matlabpath.excludes>
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>true</param.exported.on.package>
+    <param.required.addons>
+      <requiredaddons>
+        <requiredAddOn earliest="2.0.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - MATLAB App Building Components</requiredAddOn>
+        <requiredAddOn earliest="2.3.4" fromRepository="true" id="e5af5a78-4a80-11e4-9553-005056977bd0" include="false" latest="latest">GUI Layout Toolbox</requiredAddOn>
+        <requiredAddOn earliest="1.3.330" fromRepository="true" id="b0bebf59-856a-4068-9d9c-0ed8968ac9e6" include="false" latest="latest">Widgets Toolbox - Compatibility Support</requiredAddOn>
+      </requiredaddons>
+    </param.required.addons>
+    <param.matlab.project.id />
+    <param.matlab.project.name />
+    <param.release.start>R2020b</param.release.start>
+    <param.release.end>latest</param.release.end>
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <param.installation.map />
+    <param.additional.sw.names />
+    <param.additional.sw.licenses />
+    <param.additional.sw.win.url />
+    <param.additional.sw.mac.url />
+    <param.additional.sw.linux.url />
+    <unset>
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.output />
+      <param.platforms />
+      <param.exclude.filters />
+      <param.exclude.pcodedmfiles />
+      <param.demosxml />
+      <param.apps />
+      <param.registered.apps />
+      <param.docs />
+      <param.javaclasspath.excludes />
+      <param.matlab.project.id />
+      <param.matlab.project.name />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
+      <param.installation.map />
+      <param.additional.sw.names />
+      <param.additional.sw.licenses />
+      <param.additional.sw.win.url />
+      <param.additional.sw.mac.url />
+      <param.additional.sw.linux.url />
+    </unset>
+    <fileset.rootdir>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\+wt</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\Contents.m</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\demos.xml</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\doc</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\examples</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\icons</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\legacy</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included>
+      <file>${MATLAB_ROOT}\toolbox\matlab\demos\mri.mat</file>
+    </fileset.depfun.included>
+    <fileset.depfun.excluded />
+    <fileset.package />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}" name="Volume Labeling Widgets - MATLAB App Building Components.mltbx" optional="false">C:\Work\volume-labeling-widgets\deploy\Volume Labeling Widgets - MATLAB App Building Components.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2020b</root>
+      <toolboxes>
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
