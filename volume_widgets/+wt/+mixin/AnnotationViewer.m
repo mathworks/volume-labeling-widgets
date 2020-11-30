@@ -115,7 +115,11 @@ classdef (Abstract) AnnotationViewer < handle
             end
             
             % Change the selections on the models
-            isMatch = aObj == obj.AnnotationModel;
+            if isempty(aObj)
+                isMatch = false(size(obj.AnnotationModel));
+            else
+                isMatch = aObj == obj.AnnotationModel;
+            end
             set(obj.AnnotationModel(~isMatch),'IsSelected',false);
             set(obj.AnnotationModel( isMatch),'IsSelected',true);
             
@@ -273,7 +277,7 @@ classdef (Abstract) AnnotationViewer < handle
             end %arguments
             
             % Stop any editing of the annotations being removed
-            if any(aObj == obj.PendingAnnotationModel)
+            if any(ismember(aObj, obj.PendingAnnotationModel))
                 obj.Tool.stop();
             end
             

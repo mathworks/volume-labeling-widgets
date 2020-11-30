@@ -22,7 +22,25 @@ classdef SlicePlaneViewer < wt.BaseVolumeViewer
         
     end %properties
     
+    
+    
+    %% Constructor
+    methods 
+        function obj = SlicePlaneViewer(varargin)
+            
+            obj@wt.BaseVolumeViewer(varargin{:});
+            
+            % Specify axes interactions
+            enableDefaultInteractivity(obj.Axes)
+            obj.Axes.Interactions = rotateInteraction;
+            
+            % Disable toolbar
+            obj.Axes.Toolbar.Visible = 'off';
+            
+        end %function
+    end %methods
  
+    
     
     %% Setup
     methods (Access = protected)
@@ -30,15 +48,6 @@ classdef SlicePlaneViewer < wt.BaseVolumeViewer
             
             % Call superclass setup first
             obj.setup@wt.BaseVolumeViewer(); 
-            
-            % Specify axes interactions
-            enableDefaultInteractivity(obj.Axes)
-            obj.Axes.Interactions = rotateInteraction;
-            
-            % Create the custom axes toolbar
-            % This must be done after setup due to g2318236
-            %RAJ - just disabling toolbar for performance
-            %axtoolbar(obj.Axes,{'export','restoreview'});
             
             for idx=1:3
                 obj.Image(idx) = obj.createImagePlot();

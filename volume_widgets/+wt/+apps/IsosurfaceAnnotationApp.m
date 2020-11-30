@@ -11,20 +11,12 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
     %% Properties
     properties (Dependent)
         
-       % Isosurface  
-       IsosurfaceModel (:,1) wt.model.IsosurfaceModel % Data model for the isosurface's data
+       % Isosurface data model
+       IsosurfaceModel (:,1) wt.model.IsosurfaceModel 
        
        % Annotations 
        AnnotationModel
-    end
-    
-    
-    %% Internal Properties
-    properties (Access = private)
-        
-        % Listeners to mouse events
-        %MouseWheelListener event.listener
-        
+       
     end %properties
     
     
@@ -47,9 +39,12 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
             
             % Set default volume model
             app.IsosurfaceModel = wt.model.IsosurfaceModel;
+        
+            % Remove the Load Image button
+            app.Toolbar.FileSection.Component(1) = [];
             
-            % Configure toolbar appearance 
-            app.configureToolbar()
+            % Remove the Mask section for isosurface
+            app.Toolbar.Toolbar.Section(3) = [];
             
         end %function
         
@@ -60,62 +55,15 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
             app.update@wt.apps.BaseAnnotationApp();
             
         end %function
-    
         
-        function configureToolbar(app)
-            app.Toolbar.LoadButton.Enable = "off";
-            
-            % Remove the Mask section for isosurface
-            app.Toolbar.Toolbar.Section(4) = [];
-            
-        end %function
-        
-        
-        function onFileToolbarButton(app,e)
-            % Handle button presses
-            
-            % Which button?
-            switch e.Source
-                  
-                otherwise
-                    
-                    % Call superclass method
-                    app.onFileToolbarButton@wt.apps.BaseAnnotationApp(e);
-                    
-            end %switch e.Source
-            
-        end %function
-        
-        
-        function onMaskToolbarButton(app,e)
-            
-            % Which button?
-            switch e.Button
-                                    
-                otherwise
-                    
-                    % Call superclass method
-                    app.onMaskToolbarButton@wt.apps.BaseAnnotationApp(e);
-                    
-            end %switch e.Source
-            
-        end %function
-        
-        
-    end
-    
-    
-    %% Private Methods
-    methods (Access=private)
-        
-    end
+    end %methods
     
     
     %% Get/Set Methods
     methods
         
         function value = get.IsosurfaceModel(app)
-            value = app.AnnotationViewer.IsosufaceModel;
+            value = app.AnnotationViewer.IsosurfaceModel;
         end
         
         function set.IsosurfaceModel(app,value)
@@ -136,8 +84,7 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
             end
         end
         
-        
-    end
+    end %methods
     
 end %classdef
 

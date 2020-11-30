@@ -92,10 +92,11 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
             
             % Edit section
             obj.EditSection = wt.toolbar.HorizontalSection();
-            obj.EditSection.Title = "EDIT";
+            obj.EditSection.Title = "EDIT ANNOTATION";
             
-            obj.SelectButton = obj.EditSection.addStateButton('cursor_32.png','Select');
-            obj.EditButton = obj.EditSection.addButton('edit_24.png','Edit');
+            obj.SelectButton = obj.EditSection.addStateButton('cursor_32.png','Select Annotation');
+            obj.EditButton = obj.EditSection.addButton('edit_24.png','Edit Selection');
+            obj.EditSection.ComponentWidth(1:2) = [68 60];
             
             editVerticalSection = obj.EditSection.addVerticalSection();
             obj.DeleteButton = editVerticalSection.addButton('delete_24.png','Delete');
@@ -110,7 +111,6 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
             obj.ColorSelector.ShowEditField = false;
             editVerticalSection.Component(end+1) = cpGrid;
             
-            
             % Shapes section
             obj.ShapesSection = wt.toolbar.HorizontalSection();
             obj.ShapesSection.Title = "SHAPES";
@@ -118,7 +118,7 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
             obj.PointsButton = obj.ShapesSection.addStateButton('points_32.png','Points');
             obj.LineButton = obj.ShapesSection.addStateButton('line_32.png','Line');
             obj.PolygonButton = obj.ShapesSection.addStateButton('patch_32.png','Polygon');
-            obj.PlaneButton = obj.ShapesSection.addStateButton('','Plane');
+            obj.PlaneButton = obj.ShapesSection.addStateButton('plane_control_points_32.png','Plane');
             
             % Polygon button needs more width
             obj.ShapesSection.ComponentWidth(3) = 54;
@@ -148,14 +148,15 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
             obj.HelpSection = wt.toolbar.HorizontalSection();
             obj.HelpSection.Title = "HELP";
             
-            obj.HelpAddButton = obj.HelpSection.addStateButton('help_24.png','Help');
+            obj.HelpAddButton = obj.HelpSection.addButton('help_24.png','Mouse Controls');
+            obj.HelpSection.ComponentWidth(1) = 60;
             
             
             obj.Toolbar.Section = [
                 obj.FileSection
-                obj.EditSection
                 obj.ShapesSection
                 obj.MaskSection
+                obj.EditSection
                 obj.HelpSection
                 ];
             

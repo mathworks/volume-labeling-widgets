@@ -59,31 +59,26 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             app.MouseWheelListener = event.listener(app.Figure,...
                 'WindowScrollWheel',@(h,e)onMouseWheel_private(app,e));
             
+            % Disable Plane annotation
+            app.Toolbar.ShapesSection.Component(4) = [];
+            
         end %function
         
         
         
         function update(app)
-                
+            
             % Call superclass method
             app.update@wt.apps.BaseAnnotationApp();
             
         end %function
         
         
-        % function configureToolbar(app)
-        %
-        %     % Disable Plane annotation
-        %     app.Toolbar.PlaneButton.Enable = "off";
-        %
-        % end %function
-        
-        
         function onFileToolbarButton(app,e)
             % Handle button presses
             
             % Which button?
-            switch e.Source
+            switch e.Button
                 
                 case app.Toolbar.LoadButton
                     
@@ -158,9 +153,9 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             scrollAmount = -e.VerticalScrollCount;
             
             % Get axes positions
-            mainPos = getpixelposition(app.AnnotationViewer.Axes,true);
-            sidePos = getpixelposition(app.AnnotationViewer.SideView.Axes,true);
-            topPos = getpixelposition(app.AnnotationViewer.TopView.Axes,true);
+            mainPos = getpixelposition(app.AnnotationViewer.Axes.Parent, true);
+            sidePos = getpixelposition(app.AnnotationViewer.SideView.Axes.Parent, true);
+            topPos = getpixelposition(app.AnnotationViewer.TopView.Axes.Parent, true);
             
             % Change slice
             if inBox(mainPos)

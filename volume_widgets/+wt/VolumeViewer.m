@@ -299,6 +299,13 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
             
         end %function
         
+        
+        function disableAxesTools(obj)
+            
+            obj.Axes.Toolbar.Visible = 'off';
+            
+        end %function
+        
     end %methods
     
     

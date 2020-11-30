@@ -43,6 +43,8 @@ classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
             % Disable the view controls in top/side views
             obj.TopView.disableViewControl();
             obj.SideView.disableViewControl();
+            obj.TopView.disableAxesTools();
+            obj.SideView.disableAxesTools();
             
             % Call superclass setup
             obj.setup@wt.AnnotatedVolumeViewer();

@@ -78,7 +78,7 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         function setup(app)
             
             % Adjust defaults
-            standardBackground = [1 1 1] * 0.4;
+            standardBackground = [1 1 1] * 0.8;
             app.Figure.Color = standardBackground;
             app.Grid.BackgroundColor = standardBackground;
             app.Grid.ColumnWidth = {'1x',263};
@@ -89,8 +89,8 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             app.Toolbar = wt.apps.components.AnnotationToolbar(app.Grid);
             app.Toolbar.Layout.Column = [1 2];
             app.Toolbar.Layout.Row = 1;
-            app.Toolbar.FontColor = [1 1 1];
-            app.Toolbar.Toolbar.TitleColor = [1 1 1] * 0.8;
+            app.Toolbar.FontColor = [0 0 0];
+            app.Toolbar.Toolbar.TitleColor = [1 1 1] * 0.5;
             app.Toolbar.BackgroundColor = standardBackground;
             
             % Toolbar callbacks
@@ -100,16 +100,16 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             app.Toolbar.ShapesSection.ButtonPushedFcn = @(h,e)onShapesToolbarButton(app,e);
             app.Toolbar.MaskSection.ButtonPushedFcn = @(h,e)onMaskToolbarButton(app,e);
             app.Toolbar.MaskBrushSizeSlider.ValueChangedFcn = @(h,e)onBrushChanged(app,e);
-            app.Toolbar.HelpAddButton.ValueChangedFcn = @(h,e)onHelpButton(app);
+            app.Toolbar.HelpAddButton.ButtonPushedFcn = @(h,e)onHelpButton(app);
 
             % Annotation Table
             app.AnnotationTable = uitable(app.Grid);
             app.AnnotationTable.Layout.Column = 2;
             app.AnnotationTable.Layout.Row = 2;
-            app.AnnotationTable.ColumnName = ["","Name","Type"];
-            app.AnnotationTable.ColumnEditable = [true true false];
+            app.AnnotationTable.ColumnName = ["","Type","Name"];
+            app.AnnotationTable.ColumnEditable = [true false true];
             app.AnnotationTable.ColumnFormat = {'logical','char','char'};
-            app.AnnotationTable.ColumnWidth = {25,100,80};
+            app.AnnotationTable.ColumnWidth = {25,80,100};
             app.AnnotationTable.SelectionType = 'row';
             app.AnnotationTable.Multiselect = true;
             app.AnnotationTable.CellEditCallback = @(h,e)onTableChanged(app,e);
@@ -121,9 +121,6 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         
         function update(app)
             
-            % Update the toolbar
-            
-            
             % Update the annotation table
             aObj = app.AnnotationModel;
             if isempty(aObj)
@@ -131,8 +128,8 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             else
                 aDataCell = horzcat(...
                     {aObj.IsVisible}',...
-                    cellstr([aObj.Name]'),...
-                    regexprep({aObj.Type},'(.+\.)|Annotation','')' );
+                    regexprep({aObj.Type},'(.+\.)|Annotation','')',...
+                    cellstr([aObj.Name]') );
             end
             app.AnnotationTable.Data = aDataCell;
             
@@ -156,7 +153,6 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                     'row',idxSelRow);
             end
             app.AnnotationTable.Selection = idxSelRow;
-            
             
             
             % Get the selected tool
@@ -230,17 +226,17 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             v = app.AnnotationViewer;
             fcn = @(h,e)onAnnotationChanged(app,e);
             app.AnnotationChangedListener = [
-                event.listener(v,"AnnotationStarted",fcn)
-                event.listener(v,"AnnotationStopped",fcn)
                 event.listener(v,"AnnotationSelected",fcn)
                 event.listener(v,"AnnotationChanged",fcn)
                 event.listener(v,"AnnotationModelChanged",fcn)
                 ];
+            % event.listener(v,"AnnotationStarted",fcn)
+            % event.listener(v,"AnnotationStopped",fcn)
             
         end %function
         
         
-        function onAnnotationChanged(app,~)
+        function onAnnotationChanged(app,evt)
             
             if app.SetupComplete
                 app.update();
@@ -260,11 +256,9 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             switch cIdx
                 case 1
                     app.AnnotationModel(rIdx).IsVisible = newValue;
-                case 2
+                case 3
                     app.AnnotationModel(rIdx).Name = newValue;
             end %switch
-            
-            app.update();
             
         end %function
         
@@ -286,9 +280,6 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                     % Select it in the annotation viewer
                     app.AnnotationViewer.selectAnnotation(aObj);
                 end
-                
-                % Update the view
-                app.update();
                 
             end %% Ignore if no indices
             
@@ -377,39 +368,45 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                     
             end %switch e.Button
             
-            app.update();
-            
         end %function
         
         
         function onShapesToolbarButton(app,e)
             
+            % Make a new annotation name
+            existingNames = vertcat(app.AnnotationModel.Name);
+            newName = matlab.lang.makeUniqueStrings("New Annotation",existingNames);
+            
             % Which button?
             switch e.Button
                     
                 case app.Toolbar.PointsButton
-                    a = wt.model.PointsAnnotation('Color',app.AnnotationColor);
+                    a = wt.model.PointsAnnotation(...
+                        'Name',newName,...
+                        'Color',app.AnnotationColor);
                     app.AnnotationViewer.addInteractiveAnnotation(a);
                     
                 case app.Toolbar.LineButton
-                    a = wt.model.LineAnnotation('Color',app.AnnotationColor);
+                    a = wt.model.LineAnnotation(...
+                        'Name',newName,...
+                        'Color',app.AnnotationColor);
                     app.AnnotationViewer.addInteractiveAnnotation(a);
                     
                 case app.Toolbar.PolygonButton
                     a = wt.model.PolygonAnnotation(...
+                        'Name',newName,...
                         'Color',app.AnnotationColor,...
                         'Alpha',0.5);
                     app.AnnotationViewer.addInteractiveAnnotation(a);
                     
                 case app.Toolbar.PlaneButton
                     a = wt.model.PlaneAnnotation(...
+                        'Name',newName,...
                         'Color',app.AnnotationColor,...
                         'Alpha',0.5);
                     app.AnnotationViewer.addInteractiveAnnotation(a);
                     
             end %switch e.Button
-            
-            app.update();
             
         end %function
         
