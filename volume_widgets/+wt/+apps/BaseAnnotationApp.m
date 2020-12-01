@@ -60,14 +60,8 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         
         FileToolbar
         
-        
-%         AnnotationStartedListener event.listener % Listener to AnnotatedVolumeViewer changes
-%         AnnotationStoppedListener event.listener % Listener to AnnotatedVolumeViewer changes
-%         AnnotationSelectedListener event.listener % Listener to AnnotatedVolumeViewer changes
-%         AnnotationModelChangedListener event.listener % Listener to AnnotationModel changes
         AnnotationChangedListener event.listener % Listeners to Annotation changes
 
-        
     end %properties
     
     

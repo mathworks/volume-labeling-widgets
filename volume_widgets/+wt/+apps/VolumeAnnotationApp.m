@@ -29,6 +29,27 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
     end %properties
     
     
+    %% Constructor / destructor
+    methods (Access = public)
+        
+        function app = VolumeAnnotationApp(varargin)
+            % Constructor
+            
+            % Apply patch to R2020b to avoid rendering issues with imagery
+            % layers flickering or disappearing. Run before creating the
+            % figure. (g2358515)
+            if verLessThan('matlab','9.9')
+                patchRendering_R2020b();
+            end
+            
+            % Call superclass constructor
+            app = app@wt.apps.BaseAnnotationApp(varargin{:});
+            
+        end %function
+        
+    end %methods
+    
+    
     
     %% Protected Methods
     methods (Access = protected)
@@ -110,6 +131,10 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
         
         function onMaskToolbarButton(app,e)
             
+            % Make a new annotation name
+            existingNames = vertcat(app.AnnotationModel.Name);
+            newName = matlab.lang.makeUniqueStrings("New Annotation",existingNames);
+            
             % Which button?
             switch e.Button
                 
@@ -117,6 +142,7 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
                     
                     a = wt.model.MaskAnnotation.fromVolumeModel(...
                         app.VolumeModel,...
+                        'Name',newName,...
                         'Color',app.AnnotationColor,...
                         'Alpha',0.5);
                     app.AnnotationViewer.addInteractiveAnnotation(a);

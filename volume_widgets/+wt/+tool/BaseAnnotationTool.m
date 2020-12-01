@@ -156,9 +156,13 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                     % Clear mouse listeners and tracking items
                     thisObj.MouseListeners(:) = [];
                     thisObj.MouseLastDragPoint = nan(1,3);
-                    
+                        
                     % Toggle pickable parts of the annotation
-                    set([thisObj.AnnotationModel.Plot],'PickableParts','none');
+                    if ~isempty(thisObj.AnnotationModel)
+                        plotH = [thisObj.AnnotationModel.Plot];
+                        plotH(~isvalid(plotH)) = [];
+                        set(plotH,'PickableParts','none');
+                    end
                     
                     % Mark annotation editing stopped
                     set(thisObj.AnnotationModel,'IsBeingEdited',false);

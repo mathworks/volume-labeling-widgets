@@ -1,4 +1,6 @@
-classdef (Abstract) BaseAnnotationModel < wt.model.BaseModel & matlab.mixin.Heterogeneous
+classdef (Abstract) BaseAnnotationModel < wt.model.BaseModel ...
+        & matlab.mixin.Heterogeneous ...
+        & wt.mixin.DisplayNonScalarObjectAsTable
     % Base class for annotation models
     
     % Copyright 2018-2020 The MathWorks, Inc.
