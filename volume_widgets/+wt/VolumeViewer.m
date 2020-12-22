@@ -1,12 +1,12 @@
 classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
         wt.mixin.FieldColorable & wt.mixin.FontColorable
-    % Volume visualization widget with a single 2D view
+    % Volume visualization widget with a 2D view of an image stack
     
     % Copyright 2020 The MathWorks, Inc.
     
     
     %% Events
-    events
+    events (HasCallbackProperty)
         
         % View or slice changes
         ViewChanged
@@ -19,7 +19,8 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
     properties (AbortSet, SetObservable)
         
         % Current view plane
-        View (1,1) string {mustBeMember(View,["xy","xz","yz"])} = "xy"
+        %View (1,1) string {mustBeMember(View,["xy","xz","yz"])} = "xy"
+        View (1,1) wt.enum.ViewAxis = wt.enum.ViewAxis.xy
         
         % Current Slice to display
         Slice3D (1,3) double {mustBeInteger,mustBeFinite,mustBePositive} = [1 1 1]
@@ -101,8 +102,9 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.ViewIndicator = uidropdown(obj.Grid);
             obj.ViewIndicator.Layout.Column = 1;
             obj.ViewIndicator.Layout.Row = 1;
-            obj.ViewIndicator.Items = ["XY","XZ","YZ"];
-            obj.ViewIndicator.ItemsData = ["xy","xz","yz"];
+            viewChoices = enumeration('wt.enum.ViewAxis');
+            obj.ViewIndicator.Items = upper(string(viewChoices));
+            obj.ViewIndicator.ItemsData = string(viewChoices);
             obj.ViewIndicator.FontSize = 16;
             obj.ViewIndicator.FontWeight = 'bold';
             obj.ViewIndicator.ValueChangedFcn = @(h,e)onViewChanged(obj,e);
@@ -151,7 +153,7 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
             
             % Update view indicator
             if isa(obj.ViewIndicator,'matlab.ui.control.Label')
-                wt.utility.fastSet(obj.ViewIndicator,'Text',upper(obj.View));
+                wt.utility.fastSet(obj.ViewIndicator,'Text',upper(string(obj.View)));
             else
                 wt.utility.fastSet(obj.ViewIndicator,'Value',obj.View);
             end
