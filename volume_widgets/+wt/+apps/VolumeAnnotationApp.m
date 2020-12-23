@@ -14,8 +14,6 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
         % Volume
         VolumeModel (1,1) wt.model.VolumeModel 
         
-        % Annotations
-        AnnotationModel  
     end
     
     
@@ -38,7 +36,7 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             % Apply patch to R2020b to avoid rendering issues with imagery
             % layers flickering or disappearing. Run before creating the
             % figure. (g2358515)
-            if verLessThan('matlab','9.9')
+            if verLessThan('matlab','9.10')
                 patchRendering_R2020b();
             end
             
@@ -82,15 +80,6 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             
             % Disable Plane annotation
             app.Toolbar.ShapesSection.Component(4) = [];
-            
-        end %function
-        
-        
-        
-        function update(app)
-            
-            % Call superclass method
-            app.update@wt.apps.BaseAnnotationApp();
             
         end %function
         
@@ -220,15 +209,6 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             if app.SetupComplete
                 app.update();
             end
-        end
-        
-        function value = get.AnnotationModel(app)
-            value = app.AnnotationViewer.AnnotationModel;
-        end
-        
-        function set.AnnotationModel(app,value)
-            app.AnnotationModel = value;
-            app.update();
         end
         
     end %methods

@@ -14,9 +14,6 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
        % Isosurface data model
        IsosurfaceModel (:,1) wt.model.IsosurfaceModel 
        
-       % Annotations 
-       AnnotationModel
-       
     end %properties
     
     
@@ -68,17 +65,6 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
         
         function set.IsosurfaceModel(app,value)
             app.AnnotationViewer.IsosurfaceModel = value;
-            if app.SetupComplete
-                app.update();
-            end
-        end
-        
-        function value = get.AnnotationModel(app)
-            value = app.AnnotationViewer.AnnotationModel;
-        end
-        
-        function set.AnnotationModel(app,value)
-            app.AnnotationModel = value;
             if app.SetupComplete
                 app.update();
             end

@@ -9,7 +9,7 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
         
         Mode (1,1) string = ""
         
-        Color matlab.internal.datatype.matlab.graphics.datatype.RGBColor = [0 1 0]
+        Color (1,3) double = [0 1 0]
         
         BrushSize (1,1) double {mustBePositive} = 1
         
@@ -189,6 +189,8 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
     methods (Access = protected)
         function update(obj)
             
+            disp('AnnotationToolbar update');
+            
             % Update the current mode
             availableModes = string({obj.StateButtons.Text});
             isActive = availableModes == obj.Mode;
@@ -213,6 +215,12 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
             
             % Update color
             obj.ColorSelector.Value = obj.Color;
+            % if any(ismissing(obj.Color))
+            %     obj.ColorSelector.Enable = "off";
+            % else
+            %     obj.ColorSelector.Value = obj.Color;
+            %     obj.ColorSelector.Enable = "on";
+            % end
             
             % Update brush tools
             obj.MaskBrushSizeSlider.Value = obj.BrushSize;

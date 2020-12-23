@@ -5,11 +5,10 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
     
     
     %% Properties
-    properties (Abstract, AbortSet)
-        AnnotationModel (1,:) wt.model.BaseAnnotationModel %Annotations
-    end
-    
-    properties (Dependent)
+    properties (Dependent, AbortSet)
+        
+        % Annotations
+        AnnotationModel (1,:) wt.model.BaseAnnotationModel 
         
         % Color of new or selected annotation
         AnnotationColor
@@ -40,9 +39,9 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         
         Toolbar wt.apps.components.AnnotationToolbar
         
-        AnnotationViewer (1,:) = gobjects(1,0)
+        AnnotationViewer wt.mixin.AnnotationViewer = wt.AnnotatedVolumeViewer.empty(0)
         AnnotationTable = gobjects(1,0)
-        
+        AnnotationList wt.apps.components.AnnotationList
         SelectButton (1,:) = gobjects(1,0)
         EditButton (1,:) = gobjects(1,0)
         DeleteButton (1,:) = gobjects(1,0)
@@ -56,12 +55,19 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
     end %properties
     
     
-    properties (Transient, Hidden, SetAccess = protected)
+    properties (Transient, NonCopyable, Access = protected)
         
         FileToolbar
         
-        AnnotationChangedListener event.listener % Listeners to Annotation changes
+        % Listeners to Annotation changes
+        AnnotationChangedListener event.listener
 
+        % When the selected annotation changes
+        AnnotationSelectedListener event.listener
+        
+        % When the array of AnnotationModel has changed
+        AnnotationModelChangedListener event.listener
+        
     end %properties
     
     
@@ -96,85 +102,71 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             app.Toolbar.MaskBrushSizeSlider.ValueChangedFcn = @(h,e)onBrushChanged(app,e);
             app.Toolbar.HelpAddButton.ButtonPushedFcn = @(h,e)onHelpButton(app);
 
-            % Annotation Table
-            app.AnnotationTable = uitable(app.Grid);
-            app.AnnotationTable.Layout.Column = 2;
-            app.AnnotationTable.Layout.Row = 2;
-            app.AnnotationTable.ColumnName = ["","Type","Name"];
-            app.AnnotationTable.ColumnEditable = [true false true];
-            app.AnnotationTable.ColumnFormat = {'logical','char','char'};
-            app.AnnotationTable.ColumnWidth = {25,80,100};
-            app.AnnotationTable.SelectionType = 'row';
-            app.AnnotationTable.Multiselect = true;
-            app.AnnotationTable.CellEditCallback = @(h,e)onTableChanged(app,e);
-            app.AnnotationTable.CellSelectionCallback = @(h,e)onTableSelectionChanged(app,e);
-            
+            app.AnnotationList = wt.apps.components.AnnotationList(app.Grid);
+            app.AnnotationList.Layout.Column = 2;
+            app.AnnotationList.Layout.Row = 2;
+            app.AnnotationList.SelectionChangedFcn = @(h,e)onSelectionChanged(app,e);
         end %function
         
         
         
         function update(app)
             
+            %disp('BaseAnnotationApp update');
+            
             % Update the annotation table
-            aObj = app.AnnotationModel;
-            if isempty(aObj)
-                aDataCell = cell(0,3);
-            else
-                aDataCell = horzcat(...
-                    {aObj.IsVisible}',...
-                    regexprep({aObj.Type},'(.+\.)|Annotation','')',...
-                    cellstr([aObj.Name]') );
-            end
-            app.AnnotationTable.Data = aDataCell;
+            wt.utility.fastSet(app.AnnotationList, ...
+                "AnnotationModel", app.AnnotationModel);
             
-            % Color table rows based on annotation color
-            app.AnnotationTable.removeStyle();
-            for idx = 1:numel(aObj)
-                app.AnnotationTable.addStyle(...
-                    uistyle('BackgroundColor',aObj(idx).Color),...
-                    'row',idx)
-            end
-            
-            % Update table selection
-            if isempty(app.SelectedAnnotationModel)
-                idxSelRow = [];
-            else
-                idxSelRow = find(app.SelectedAnnotationModel == app.AnnotationModel);
-                
-                % Bold the selected annotation
-                app.AnnotationTable.addStyle(...
-                    uistyle('FontWeight','bold'),...
-                    'row',idxSelRow);
-            end
-            app.AnnotationTable.Selection = idxSelRow;
-            
-            
-            % Get the selected tool
+            % Toolbar mode?
             selTool = app.CurrentTool;
-            
-            % Update the toolbar mode
             if isempty(selTool)
-                app.Toolbar.Mode = "";
+                toolbarMode = "";
             elseif isa(selTool,'wt.tool.Select')
-                app.Toolbar.Mode = "Select";
+                toolbarMode = "Select";
             else
-                aObj = selTool.AnnotationModel;
-                currentMode = regexp(aObj.Type,'.(\w+)Annotation$','tokens','once');
-                app.Toolbar.Mode = string(currentMode);
-                if isprop(selTool,'Erase')
-                   app.Toolbar.MaskEraseOn = selTool.Erase;
-                end
-                if isprop(selTool,'BrushSize')
-                   app.Toolbar.BrushSize = selTool.BrushSize;
-                end
+                currentMode = regexp(selTool.AnnotationModel.Type,...
+                    '.(\w+)Annotation$','tokens','once');
+                toolbarMode = string(currentMode);
+%                 if isprop(selTool,'Erase')
+%                    app.Toolbar.MaskEraseOn = selTool.Erase;
+%                 end
+%                 if isprop(selTool,'BrushSize')
+%                     app.Toolbar.BrushSize = selTool.BrushSize;
+%                 end
             end
+            
+            % Anything selected?
+            annIsSelected = ~isempty(app.SelectedAnnotationModel);
+            
+            % Erase mode?
+            if isprop(selTool,"Erase")
+                maskEraseOn = selTool.Erase;
+            else
+                maskEraseOn = false;
+            end
+            
+            % Brush size?
+            if isprop(selTool,"BrushSize")
+                brushSize = selTool.BrushSize;
+            else
+                brushSize = 1;
+            end
+            
+            % Color?
+            if isscalar(app.SelectedAnnotationModel)
+                wt.utility.fastSet(app.Toolbar, ...
+                    "Color", app.SelectedAnnotationModel.Color);
+            end
+            
             
             % Update the toolbar states
-            app.Toolbar.AnnotationIsSelected = ~isempty(app.SelectedAnnotationModel);
-            app.Toolbar.AnnotationIsBeingEdited = app.IsAddingInteractiveAnnotation;
-            if isscalar(app.SelectedAnnotationModel)
-                app.Toolbar.Color = app.SelectedAnnotationModel.Color;
-            end
+            wt.utility.fastSet(app.Toolbar, ...
+                "Mode", toolbarMode,...
+                "MaskEraseOn", maskEraseOn,...
+                "BrushSize", brushSize,...
+                "AnnotationIsBeingEdited", app.IsAddingInteractiveAnnotation, ...
+                "AnnotationIsSelected", annIsSelected);
 
         end %function
         
@@ -217,68 +209,73 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         function attachAnnotationViewerListeners(app)
             % Attach listeners
             
-            v = app.AnnotationViewer;
-            fcn = @(h,e)onAnnotationChanged(app,e);
-            app.AnnotationChangedListener = [
-                event.listener(v,"AnnotationSelected",fcn)
-                event.listener(v,"AnnotationChanged",fcn)
-                event.listener(v,"AnnotationModelChanged",fcn)
-                ];
-            % event.listener(v,"AnnotationStarted",fcn)
-            % event.listener(v,"AnnotationStopped",fcn)
+            app.AnnotationSelectedListener = event.listener(...
+                app.AnnotationViewer, "AnnotationSelected", ...
+                @(h,e)onAnnotationSelected(app,e) );
+            
+            app.AnnotationModelChangedListener = event.listener(...
+                app.AnnotationViewer, "AnnotationModelChanged", ...
+                @(h,e)onAnnotationModelChanged(app,e) );
+            
+            app.AnnotationChangedListener = event.listener(...
+                app.AnnotationViewer, "AnnotationChanged", ...
+                @(h,e)onAnnotationChanged(app,e) );
+            
+            % app.AnnotationChangedListener = event.listener(...
+            %     app.AnnotationViewer, "AnnotationStarted", ...
+            %     @(h,e)onAnnotationModelStarted(app,e) );
+            
+            % app.AnnotationChangedListener = event.listener(...
+            %     app.AnnotationViewer, "AnnotationStopped", ...
+            %     @(h,e)onAnnotationStopped(app,e) );
+            
+        end %function
+        
+        
+        function onAnnotationSelected(app,~)
+            % When the selected annotation changes
+            
+            app.update();
+            
+        end %function
+        
+        
+        function onAnnotationModelChanged(app,~)
+            % When the array of AnnotationModel has changed
+            
+            app.update();
             
         end %function
         
         
         function onAnnotationChanged(app,evt)
+            % When an annotation model has an internal change
             
-            if app.SetupComplete
-                app.update();
-            end
-            
-        end %function
-        
-        
-        function onTableChanged(app,e)
-            
-            % What was changed?
-            newValue = e.NewData;
-            rIdx = e.Indices(1);
-            cIdx = e.Indices(2);
-            
-            % Update the model, depending on which column
-            switch cIdx
-                case 1
-                    app.AnnotationModel(rIdx).IsVisible = newValue;
-                case 3
-                    app.AnnotationModel(rIdx).Name = newValue;
+            switch evt.Property
+                
+                case {
+                        'IsSelected'
+                        'IsBeingEdited'
+                        'Color'
+                        }
+                    app.update();
+                    
+                otherwise
+                    %Skip update
+                    
             end %switch
             
         end %function
         
         
-        function onTableSelectionChanged(app,e)
+        function onSelectionChanged(app,evt)
             
-            % Ignore if no indices
-            if ~isempty(e.Indices)
-                
-                % Get the selection
-                selRow = e.Indices(1,1);
-                aObj = app.AnnotationModel(selRow);
-                
-                % Toggle selection
-                if all(aObj.IsSelected)
-                    % Deselect it
-                    app.AnnotationViewer.selectAnnotation(aObj([]));
-                else
-                    % Select it in the annotation viewer
-                    app.AnnotationViewer.selectAnnotation(aObj);
-                end
-                
-            end %% Ignore if no indices
+            % Trigger selection in the viewer
+            selIdx = evt.Value;
+            aObjSel = app.AnnotationModel(selIdx);
+            app.AnnotationViewer.selectAnnotation(aObjSel);
             
         end %function
-        
         
         
         function onFileToolbarButton(app,e)
@@ -505,6 +502,21 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         function set.AnnotationViewer(app,value)
             app.AnnotationViewer = value;
             app.attachAnnotationViewerListeners();
+        end
+        
+        function value = get.AnnotationModel(app)
+            if isempty(app.AnnotationViewer)
+                value = wt.model.BaseAnnotationModel.empty(0);
+            else
+                value = app.AnnotationViewer.AnnotationModel;
+            end
+        end
+        
+        function set.AnnotationModel(app,value)
+            app.AnnotationModel = value;
+            if app.SetupComplete
+                app.update();
+            end
         end
         
     end %methods
