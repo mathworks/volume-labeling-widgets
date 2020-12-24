@@ -128,12 +128,6 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                 currentMode = regexp(selTool.AnnotationModel.Type,...
                     '.(\w+)Annotation$','tokens','once');
                 toolbarMode = string(currentMode);
-%                 if isprop(selTool,'Erase')
-%                    app.Toolbar.MaskEraseOn = selTool.Erase;
-%                 end
-%                 if isprop(selTool,'BrushSize')
-%                     app.Toolbar.BrushSize = selTool.BrushSize;
-%                 end
             end
             
             % Anything selected?

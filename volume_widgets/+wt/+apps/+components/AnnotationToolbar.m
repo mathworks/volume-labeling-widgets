@@ -189,7 +189,7 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
     methods (Access = protected)
         function update(obj)
             
-            disp('AnnotationToolbar update');
+            %disp('AnnotationToolbar update');
             
             % Update the current mode
             availableModes = string({obj.StateButtons.Text});

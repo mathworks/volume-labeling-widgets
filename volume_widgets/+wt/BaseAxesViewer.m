@@ -8,10 +8,10 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
     properties (Dependent, UsedInUpdate = false)
         
         % Show or hide the axes, ticks, etc.
-        ShowAxes (1,1) logical
+        ShowAxes (1,1)  matlab.lang.OnOffSwitchState = 'off'
         
         % Show or hide the grid
-        ShowGrid (1,1) logical
+        ShowGrid (1,1)  matlab.lang.OnOffSwitchState = 'off'
         
     end %properties
     
@@ -89,31 +89,28 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
     %% Get/Set Methods
     methods
         
-        function value = get.ShowAxes(obj) %g219447
+        function value = get.ShowAxes(obj)
             value = obj.Axes.Visible;
         end %function
         
-        function set.ShowAxes(obj,value) %g219447
+        function set.ShowAxes(obj,value)
+            obj.Axes.Visible = value;
             if value
-                obj.Axes.Visible = 'on';
                 obj.Axes.OuterPosition = [0 0 1 1];
             else
-                obj.Axes.Visible = 'off';
                 obj.Axes.Position = [0 0 1 1];
             end
         end %function
         
         
-        function value = get.ShowGrid(obj) %g219447
+        function value = get.ShowGrid(obj)
             value = obj.Axes.XGrid;
         end %function
         
-        function set.ShowGrid(obj,value) %g219447
+        function set.ShowGrid(obj,value)
+            grid(obj.Axes,value);
             if value
-                grid(obj.Axes,'on');
                 obj.ShowAxes = true;
-            else
-                grid(obj.Axes,'off');
             end
         end %function
         

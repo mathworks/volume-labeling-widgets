@@ -1,5 +1,8 @@
 classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
     % Base class for Volume visualization showing one or more slice planes on axes
+    
+    % This class should be abstract, however:
+    % g2282435 UsedInUpdate fails for props in abstract classes
 
     % Copyright 2018-2020 The MathWorks, Inc.
     
@@ -8,7 +11,7 @@ classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
     properties (AbortSet)
         
         % Data model for the volume's data
-        VolumeModel (1,1) wt.model.VolumeModel
+        VolumeModel (1,1) wt.model.VolumeModel = wt.model.VolumeModel
         
     end %properties
     
@@ -20,11 +23,15 @@ classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
         VolumeModelChangedListener event.listener 
         
     end %properties
+    
  
     
     %% Setup
     methods (Access = protected)
         function setup(obj)
+            
+            % Load default volume model for demonstration
+            obj.loadDefaultVolumeModel();
             
             % Call superclass setup first
             obj.setup@wt.BaseAxesViewer();       
@@ -34,17 +41,6 @@ classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
             
             % Set initial listener
             obj.onModelSet();
-            
-        end %function
-    end %methods
-    
-    
-    
-    %% Update
-    methods (Access = protected)
-        function update(~)
-            
-            %RAJ - Avoid marking abstract due to g219447
             
         end %function
     end %methods
@@ -89,7 +85,34 @@ classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
             
         end %function
         
+        
+        function loadDefaultVolumeModel(obj)
+            % Populates the default volume model for demonstration
+            
+            % Load default volume data
+            persistent volumeData
+            if isempty(volumeData)
+                s = load("mristack.mat");
+                volumeData = flip(s.mristack, 3);
+                volumeData(:,:,16:end) = [];
+            end
+            
+            % Create a default volume model
+            volModel = wt.model.VolumeModel;
+            volModel.ImageData = volumeData;
+            volModel.WorldExtent = [
+                0 300 % Y dimension in mm
+                0 300 % X dimension in mm
+                0 150 % Z dimension in mm
+                ];
+            
+            % Store the result
+            obj.VolumeModel = volModel;
+            
+        end %function
+        
     end %methods
+        
     
     
     

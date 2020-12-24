@@ -19,7 +19,6 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
     properties (AbortSet, SetObservable)
         
         % Current view plane
-        %View (1,1) string {mustBeMember(View,["xy","xz","yz"])} = "xy"
         View (1,1) wt.enum.ViewAxis = wt.enum.ViewAxis.xy
         
         % Current Slice to display
@@ -86,6 +85,9 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
             
             % Call superclass setup first
             obj.setup@wt.BaseVolumeViewer();
+            
+            % Set default size
+            obj.Position = [10 10 400 400];
 
             % Configure Grid
             obj.Grid.ColumnWidth = {55,'1x'};
@@ -104,7 +106,7 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.ViewIndicator.Layout.Row = 1;
             viewChoices = enumeration('wt.enum.ViewAxis');
             obj.ViewIndicator.Items = upper(string(viewChoices));
-            obj.ViewIndicator.ItemsData = string(viewChoices);
+            obj.ViewIndicator.ItemsData = viewChoices;
             obj.ViewIndicator.FontSize = 16;
             obj.ViewIndicator.FontWeight = 'bold';
             obj.ViewIndicator.ValueChangedFcn = @(h,e)onViewChanged(obj,e);
@@ -275,21 +277,13 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
         function disableViewControl(obj)
             % Changes the view control dropdown to display only
             
-%             obj.ViewIndicator.Visible = false;
-%             obj.ShowAxes = true;
-
-            %obj.EnableableComponents = [obj.SliceSlider, obj.SliceSpinner];
-            %obj.ViewIndicator.Enable = false;
-            
             % Remove the dropdown
             delete(obj.ViewIndicator);
             
             % Add a label view indicator
-            %obj.ViewIndicator = uieditfield(obj.Grid,'text');
             obj.ViewIndicator = uilabel(obj.Grid);
             obj.ViewIndicator.Layout.Column = 1;
             obj.ViewIndicator.Layout.Row = 1;
-            %obj.ViewIndicator.Editable = false;
             obj.ViewIndicator.FontSize = 16;
             obj.ViewIndicator.FontWeight = 'bold';
             
@@ -303,6 +297,7 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
         
         
         function disableAxesTools(obj)
+            % Disable the axes toolbar
             
             obj.Axes.Toolbar.Visible = 'off';
             

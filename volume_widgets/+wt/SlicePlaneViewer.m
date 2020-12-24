@@ -28,6 +28,7 @@ classdef SlicePlaneViewer < wt.BaseVolumeViewer
     methods 
         function obj = SlicePlaneViewer(varargin)
             
+            % Call superclass constructor
             obj@wt.BaseVolumeViewer(varargin{:});
             
             % Specify axes interactions
