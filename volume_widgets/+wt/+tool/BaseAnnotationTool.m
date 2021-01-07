@@ -61,15 +61,6 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
         % Current figure
         CurrentFigure matlab.ui.Figure {mustBeScalarOrEmpty}
         
-        % The pointer to show when editing
-        Pointer (1,1) string = "custom"
-        
-        % The pointer's CData
-        PointerShapeCData (32,32) double = getEditingPointer()
-        
-        % The pointer's hotspot
-        PointerShapeHotSpot (1,2) double = getEditingPointerCenter()
-        
     end %properties
     
     
@@ -128,6 +119,14 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
             if nargin >= 3
                 obj.ClickableAxes = axes;
             end
+
+            % Find the figure
+            hFigure = ancestor(obj.ClickableAxes,'figure');
+            if isempty(hFigure) || ~isvalid(hFigure)
+                error('Tool requires axes plaxed in figure before start.');
+            else
+                obj.CurrentFigure = hFigure;
+            end
             
             % Select tool is special case
             isSelectTool = isa(obj,'wt.tool.Select');
@@ -144,18 +143,13 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                     end
                 end
             end
-            
+
             % Mark annotation editing started
             set(obj.AnnotationModel,'IsBeingEdited',~isSelectTool);
-            
-            % Find the figure
-            hFigure = ancestor(obj.ClickableAxes,'figure');
-            if isempty(hFigure) || ~isvalid(hFigure)
-                error('Tool requires axes plaxed in figure before start.');
-            else
-                obj.CurrentFigure = hFigure;
-            end
-            
+
+            % Start the tool
+            obj.onStart();
+
             % Start listeners to window mouse events
             obj.MouseListeners = [
                 event.listener(obj.CurrentFigure,'WindowMousePress',@(h,e)onMousePress_private(obj,e))
@@ -163,49 +157,64 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                 event.listener(obj.CurrentFigure,'WindowMouseMotion',@(h,e)onMouseMotion_private(obj,e))
                 ];
             %event.listener(obj.CurrentFigure,'WindowScrollWheel',@(h,e)onMouseScroll_private(obj,e))
-            
+
             % Notify listeners
             evt = wt.event.ToolInteractionData('AnnotationStarted',obj);
             obj.notify('AnnotationStarted',evt);
-            
+
         end %function
-        
-        
+
+
         function stop(obj)
             for thisObj = obj(:)'
                 if thisObj.IsStarted
-                    
+
+                    % Stop the tool
+                    thisObj.onStop();
+
                     % Restore the figure pointer
-                    wt.utility.fastSet(obj.CurrentFigure,"Pointer","arrow");
-                    
+                    wt.utility.fastSet(thisObj.CurrentFigure,"Pointer","arrow");
+
                     % Clear mouse listeners and tracking items
                     thisObj.MouseListeners(:) = [];
                     thisObj.MouseLastDragPoint = nan(1,3);
-                    
+
                     % Toggle pickable parts of the annotation
                     if ~isempty(thisObj.AnnotationModel)
                         plotH = [thisObj.AnnotationModel.Plot];
                         plotH(~isvalid(plotH)) = [];
                         set(plotH,'PickableParts','none');
                     end
-                    
+
                     % Mark annotation editing stopped
                     set(thisObj.AnnotationModel,'IsBeingEdited',false);
-                    
+
                     % Notify listeners
                     evt = wt.event.ToolInteractionData('AnnotationStopped',thisObj);
                     thisObj.notify('AnnotationStopped',evt);
-                    
+
                 end
             end
         end %function
-    
+
     end %methods
     
     
     
     %% Protected Methods
     methods (Access = protected)
+        
+        function onStart(~)
+            % Triggered on edit start
+            
+        end %function
+        
+        
+        function onStop(~)
+            % Triggered on edit stop
+            
+        end %function
+        
         
         function onMouseRelease(~,~)
             % Triggered on mouse button up
@@ -224,12 +233,12 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
             
         end %function
         
-    end %methods
-    
-    
-    
-    %% Private Methods
-    methods (Access=private)
+        
+        function updatePointer(~)
+            % Triggered on mouse moving in clickable axes
+            
+        end %function
+        
         
         function tf = isClickableAxes(obj,e)
             % Was the click within an object in the clickable axes?
@@ -259,6 +268,12 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
 
         end
         
+    end %methods
+    
+    
+    
+    %% Private Methods
+    methods (Access=private)        
         
         function onMousePress_private(obj,e)
             
@@ -307,14 +322,16 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                 isDragging = obj.IsDragging;
                 
                 % Change the figure pointer
-                if ~isDragging
-                    wt.utility.fastSet(obj.CurrentFigure,"Pointer",obj.Pointer)
-                    if obj.Pointer == "custom"
-                        wt.utility.fastSet(obj.CurrentFigure,...
-                            "PointerShapeCData",obj.PointerShapeCData,...
-                            "PointerShapeHotSpot",obj.PointerShapeHotSpot);
-                    end
-                end
+                obj.updatePointer();
+                
+    %                 if ~isDragging
+    %                     wt.utility.fastSet(obj.CurrentFigure,"Pointer",obj.Pointer)
+    %                     if obj.Pointer == "custom"
+    %                         wt.utility.fastSet(obj.CurrentFigure,...
+    %                             "PointerShapeCData",obj.PointerShapeCData,...
+    %                             "PointerShapeHotSpot",obj.PointerShapeHotSpot);
+    %                     end
+    %                 end
                 
                 % Callback for mouse moving
                 obj.onMouseMotion(e);
@@ -364,52 +381,3 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
     end
     
 end % classdef
-
-
-
-%% Helper Functions
-function ptrC = getEditingPointerCenter()
-
-    ptrC = [16 16];
-
-end %function
-
-
-function ptr = getEditingPointer()
-
-ptr = [
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    1	1	1	1	1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	1	1	1	1	NaN
-    2	2	2	2	2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	2	2	2	2	NaN
-    2	2	2	2	2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	2	2	2	2	NaN
-    2	2	2	2	2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	2	2	2	2	NaN
-    1	1	1	1	1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	1	1	1	1	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    ];
-
-end %function

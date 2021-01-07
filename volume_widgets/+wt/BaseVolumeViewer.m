@@ -37,7 +37,7 @@ classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
             obj.setup@wt.BaseAxesViewer();       
             
             % Turn off clipping to best use axes space in 2D view
-            obj.Axes.Clipping = 'off';
+            %obj.Axes.Clipping = 'off';
             
             % Set initial listener
             obj.onModelSet();

@@ -22,7 +22,7 @@ classdef Brush < wt.tool.BaseAnnotationTool
     
     
     %% Internal Properties
-    properties %(Access = protected)
+    properties (Access = protected)
         
         % The pixel mask for the brush (NxN matrix for N BrushSize)
         BrushMask (:,:) logical = true
@@ -36,17 +36,22 @@ classdef Brush < wt.tool.BaseAnnotationTool
     end %properties
     
     
+    properties (Constant, Access = private)
+        
+        % Custom pointer during edit
+        EditingPointer = getEditingPointer()
+        EditingPointerCenter = [16 16]
+        %EditingPointerCenter = [20 20]
+        
+    end %properties
+    
+    
     %% Constructor and Destructor
     methods
         
         % Constructor
         function obj = Brush()
             % Construct the tool
-            
-            % Choose pointer
-            obj.Pointer = "cross";
-            obj.Pointer = "custom";
-            obj.PointerShapeCData = getEditingPointer();
             
             % Create brush indicator
             theta = linspace(0, 2*pi)';
@@ -162,11 +167,26 @@ classdef Brush < wt.tool.BaseAnnotationTool
         end %function
         
         
+        function onStart(obj)
+            % Triggered on edit start
+
+            % Parent the brush indicator
+            obj.BrushTransform.Parent = obj.ClickableAxes;
+            
+        end %function
+        
+        
+        function onStop(obj)
+            % Triggered on edit stop
+            
+            % Unparent the brush indicator
+            obj.BrushTransform.Parent = [];
+            
+        end %function
+        
+        
         function onMouseMotion(obj,evt)
             % Triggered on mouse moving
-            
-            % Update patch
-            wt.utility.fastSet(obj.BrushTransform,"Parent",obj.ClickableAxes);
             
             % Get the current point
             pos = evt.IntersectionPoint;
@@ -177,12 +197,20 @@ classdef Brush < wt.tool.BaseAnnotationTool
         end %function
         
         
-    end %methods
-    
-    
-    
-    %% Protected Methods
-    methods (Access = protected)
+        function updatePointer(obj)
+            % Update the mouse pointer
+
+            if obj.CurrentFigure.Pointer ~= "custom"
+
+                set(obj.CurrentFigure,...
+                    "Pointer","custom",...
+                    "PointerShapeCData",obj.EditingPointer,...
+                    "PointerShapeHotSpot",obj.EditingPointerCenter);
+
+            end %if obj.IsDragging
+
+        end %function
+
         
         function applyPointerTrailToMask(obj,p1,p2,erase)
             % Interpolate pixel coordinates between two points
@@ -320,13 +348,6 @@ end % classdef
 
 
 %% Helper Functions
-function ptrC = getEditingPointerCenter()
-
-    ptrC = [16 16];
-
-end %function
-
-
 function ptr = getEditingPointer()
 
 ptr = [
