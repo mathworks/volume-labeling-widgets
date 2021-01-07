@@ -38,7 +38,7 @@ classdef (Abstract) BaseAnnotationModel < wt.model.BaseModel ...
         Color (1,3) double {mustBeNonnegative, mustBeLessThanOrEqual(Color,1)} = [0 .6 1]
         
         % Display alpha of the annotation
-        Alpha (1,1) double {mustBeFinite, mustBeNonnegative, mustBeLessThanOrEqual(Alpha,1)} = 1
+        Alpha (1,1) double {mustBeFinite, mustBeNonnegative, mustBeLessThanOrEqual(Alpha,1)} = 0.5
         
         % Should the annotation be shown?
         IsVisible (1,1) logical = true;
@@ -66,7 +66,7 @@ classdef (Abstract) BaseAnnotationModel < wt.model.BaseModel ...
     
     %% Internal properties used for plotting
     
-    properties (Transient, SetAccess = protected)
+    properties (Transient, Hidden, SetAccess = protected)
         
         % Storage of plotting graphics objects
         Plot (1,:) matlab.graphics.Graphics = gobjects(1,0);

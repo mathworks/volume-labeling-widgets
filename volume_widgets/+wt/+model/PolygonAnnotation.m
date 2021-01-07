@@ -9,13 +9,10 @@ classdef PolygonAnnotation < wt.model.LineAnnotation
         
         function createOne(obj,parent)
             
-            obj.createOne@wt.model.PointsAnnotation(parent);
-            set(obj.Plot,...
-                'FaceColor','interp',...
-                'FaceAlpha','interp',...
-                'LineStyle','-');
+            obj.createOne@wt.model.LineAnnotation(parent);
+            obj.Plot(2).FaceColor = 'interp';
             
-        end %function
+        end %function        
         
         
         function [data,color,alpha] = getPlotData(obj)

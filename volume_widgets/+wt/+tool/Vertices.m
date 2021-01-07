@@ -25,6 +25,23 @@ classdef Vertices < wt.tool.BaseAnnotationTool
     end %properties
     
     
+    
+    %% Constructor and Destructor
+    methods
+        
+        % Constructor
+        function obj = Vertices()
+            % Construct the tool
+            
+            % Choose pointer
+            %obj.Pointer = "crosshair";
+            obj.Pointer = "custom";
+            
+        end %function
+        
+    end %methods
+    
+    
     %% Protected Methods
     methods (Access = protected)
         
@@ -33,18 +50,17 @@ classdef Vertices < wt.tool.BaseAnnotationTool
             
             % Get the click location
             p1 = evt.CurrentPoint([2 1 3]);
-%             
-%             % For debug - what was hit?            
-%             if isempty(evt.HitObject)
-%                 disp('empty');
-%             elseif isempty(evt.HitObject.UserData)
-%                 disp(class(evt.HitObject));
-%             elseif isprop(evt.HitObject.UserData,'Name')
-%                 disp(evt.HitObject.UserData.Name);
-%             else
-%                 disp(class(evt.HitObject.UserData));
-%             end
-                
+            
+            % % For debug - what was hit?
+            % if isempty(evt.HitObject)
+            %     disp('empty');
+            % elseif isempty(evt.HitObject.UserData)
+            %     disp(class(evt.HitObject));
+            % elseif isprop(evt.HitObject.UserData,'Name')
+            %     disp(evt.HitObject.UserData.Name);
+            % else
+            %     disp(class(evt.HitObject.UserData));
+            % end
                 
             % What type of click?
             switch evt.SelectionType
@@ -66,21 +82,26 @@ classdef Vertices < wt.tool.BaseAnnotationTool
                     
                 case 'normal' % Left-click
                     
-                    % Add the clicked point
-                    obj.AnnotationModel.addPoint(p1);
-                    
-                case 'alt' % Right-click or Ctrl-Left-click
-                    
+                    % If over an existing point, drag it. Otherwise, add a
+                    % new point
+
                     % Was the click on the object?
                     if any(evt.HitObject == [obj.AnnotationModel.Plot])
-                        
+
                         % Select the closest vertex
                         [~,obj.SelectedVertex] = ...
                             obj.AnnotationModel.getNearestVertex(p1);
-                        
+
+                    else
+
+                        % Add the clicked point
+                        obj.AnnotationModel.addPoint(p1);
+
                     end
                     
-                case 'extend' % Shift-left-click
+                case 'alt' % Right-click or Ctrl-Left-click
+                    
+                    % If over an existing point, delete it
                     
                     % Was the click on the object?
                     if any(evt.HitObject == [obj.AnnotationModel.Plot])
@@ -92,7 +113,15 @@ classdef Vertices < wt.tool.BaseAnnotationTool
                         obj.AnnotationModel.Points(vIdx,:) = [];
                         
                     end
-                
+                    
+                case 'extend' % Shift-left-click
+                    
+                    % Always add the new point, even if it's over an
+                    % existing one
+
+                        % Add the clicked point
+                        obj.AnnotationModel.addPoint(p1);
+                    
             end %switch evt.SelectionType
             
         end %function
@@ -106,10 +135,32 @@ classdef Vertices < wt.tool.BaseAnnotationTool
         end %function
         
         
+        function onMouseMotion(obj,evt)
+            % Triggered on mouse moving
+            
+            % Is drag occurring?
+            if ~obj.IsDragging
+                % Is the mouse over an object?
+                if any(evt.HitObject == [obj.AnnotationModel.Plot])
+                    wt.utility.fastSet(obj.CurrentFigure,"Pointer","fleur")
+                else
+                    wt.utility.fastSet(obj.CurrentFigure,"Pointer",obj.Pointer)
+                    if obj.Pointer == "custom"
+                        wt.utility.fastSet(obj.CurrentFigure,...
+                            "PointerShapeCData",obj.PointerShapeCData,...
+                            "PointerShapeHotSpot",obj.PointerShapeHotSpot);
+                    end
+                end
+            end %if obj.IsDragging
+            
+        end %function
+        
+        
+        
         function onMouseDrag(obj,evt)
             % Triggered on mouse dragged
             
-            if ~isempty(obj.SelectedVertex) && strcmp(evt.SelectionType,'alt')
+            if ~isempty(obj.SelectedVertex)
                 
                 % Get the current location
                 p1 = evt.CurrentPoint([2 1 3]);
