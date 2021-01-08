@@ -44,6 +44,7 @@ classdef PointsAnnotation < wt.model.BaseAnnotationModel
         
         function [vertex, vIdx] = getNearestVertex(obj,pos,isSliceDim)
             % Return the nearest vertex to the specified position
+            % The input pos is expected in the format [y x z]
             
             % Get the points of this annotation
             points = obj.Points;

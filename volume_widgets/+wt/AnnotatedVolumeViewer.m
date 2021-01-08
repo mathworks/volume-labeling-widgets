@@ -47,43 +47,7 @@ classdef AnnotatedVolumeViewer < wt.VolumeViewer & wt.mixin.AnnotationViewer
     
     
     %% Public Methods
-    methods        
-        
-        function selectAnnotation(obj, aObjIn, clickPoint)
-            % Select annotation by index or object
-            
-            %RAJ - review & clean up
-            
-            % Call superclass method
-            obj.selectAnnotation@wt.mixin.AnnotationViewer(aObjIn);
-            
-            % The annotation selected
-            aObj = obj.SelectedAnnotationModel;
-                
-            % Jump to slice of the selection and nearest vertex in 2D slice
-            if nargin>=3 && ~isempty(aObj) && sum(obj.SliceDimension)==1 ...
-                    && isa(aObj,'wt.model.PointsAnnotation')
-                
-                % Select the closest vertex in 2D space
-                isSliceDim = obj.SliceDimension;
-                [vertex, ~] = getNearestVertex(aObj, ...
-                    clickPoint([2 1 3]), isSliceDim);
-                
-                % Store the selected vertex index
-                %obj.SelectedVertex = vIdx;
-                
-                % Jump to the nearest slice
-                sliceIndex = obj.VolumeModel.getSliceIndex(vertex);
-                obj.Slice = sliceIndex{isSliceDim};
-                
-            else
-                % No vertex was selected
-                %obj.SelectedVertex = [];
-                
-            end %if ~isempty(obj.SelectedAnnotationModel)
-            
-        end %function
-        
+    methods
         
         function addAnnotation(obj,aObj)
             
@@ -100,5 +64,37 @@ classdef AnnotatedVolumeViewer < wt.VolumeViewer & wt.mixin.AnnotationViewer
         end %function
         
     end %methods
-
+    
+    
+    %% Protected Methods
+    methods (Access = protected)
+        
+        function onAnnotationSelected(obj,evt)
+            
+            % Jump to the slice of the selected point
+            % The annotation selected
+            aObj = evt.Model;
+            
+            % Jump to slice of the selection and nearest vertex in 2D slice
+            if ~isempty(aObj) && sum(obj.SliceDimension)==1 ...
+                    && isa(aObj,'wt.model.PointsAnnotation')
+                
+                % Select the closest vertex in 2D space
+                isSliceDim = obj.SliceDimension;
+                [vertex, ~] = getNearestVertex(aObj, ...
+                    evt.CurrentPoint, isSliceDim);
+                
+                % Jump to the nearest slice
+                sliceIndex = obj.VolumeModel.getSliceIndex(vertex);
+                obj.Slice = sliceIndex{isSliceDim};
+                
+            end %if ~isempty(obj.SelectedAnnotationModel)
+            
+            % Call superclass method
+            obj.onAnnotationSelected@wt.mixin.AnnotationViewer(evt);
+            
+        end %function
+        
+    end %methods
+    
 end % classdef

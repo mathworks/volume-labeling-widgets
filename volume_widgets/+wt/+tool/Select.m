@@ -42,11 +42,6 @@ classdef Select < wt.tool.BaseAnnotationTool
                     if ~isempty(aObj)
                         set(aObj,'IsSelected',false);
                         
-                        % Notify listeners
-                        evt = wt.event.ToolInteractionData('AnnotationSelected',...
-                            obj, aObj([]), evt.CurrentPoint([2 1 3]) );
-                        obj.notify('AnnotationSelected',evt);
-                        
                     end %if ~isempty(aObj)
                     
                 else

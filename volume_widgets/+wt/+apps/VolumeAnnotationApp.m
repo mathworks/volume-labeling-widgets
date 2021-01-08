@@ -179,6 +179,8 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
                selViewer = app.AnnotationViewer.SideView;
             elseif inBox(topPos)
                selViewer = app.AnnotationViewer.TopView;
+            else
+                return
             end
             
             % Only proceed if zoom is not enabled

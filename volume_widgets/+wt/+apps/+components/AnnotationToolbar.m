@@ -193,7 +193,7 @@ classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
             
             % Update the current mode
             availableModes = string({obj.StateButtons.Text});
-            isActive = availableModes == obj.Mode;
+            isActive = contains(availableModes, obj.Mode) & strlength(obj.Mode);
             set(obj.StateButtons(~isActive),'Value',0)
             set(obj.StateButtons( isActive),'Value',1)
             

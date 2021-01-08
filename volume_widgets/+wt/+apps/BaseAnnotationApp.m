@@ -113,8 +113,6 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         
         function update(app)
             
-            %disp('BaseAnnotationApp update');
-            
             % Update the annotation table
             wt.utility.fastSet(app.AnnotationList, ...
                 "AnnotationModel", app.AnnotationModel);
@@ -331,6 +329,7 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                     else
                         app.AnnotationViewer.launchSelectTool();
                     end
+                    app.update();
                     
                 case app.Toolbar.EditButton
                     
