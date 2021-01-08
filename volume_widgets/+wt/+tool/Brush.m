@@ -41,7 +41,6 @@ classdef Brush < wt.tool.BaseAnnotationTool
         % Custom pointer during edit
         EditingPointer = getEditingPointer()
         EditingPointerCenter = [16 16]
-        %EditingPointerCenter = [20 20]
         
     end %properties
     
@@ -71,10 +70,8 @@ classdef Brush < wt.tool.BaseAnnotationTool
                 "LineWidth",2,...
                 "LineStyle","-",...
                 "FaceColor","none",...
-                "EdgeColor",[.5 1 .5],...
-                "EdgeAlpha",0.3);
-            %"FaceVertexCData",c,...
-            %"EdgeColor","flat",...
+                "EdgeColor",[1 0 0],...
+                "EdgeAlpha",0.6);
             
             % Adjust defaults
             obj.updateBrushMask();
@@ -188,27 +185,73 @@ classdef Brush < wt.tool.BaseAnnotationTool
         function onMouseMotion(obj,evt)
             % Triggered on mouse moving
             
-            % Get the current point
-            pos = evt.IntersectionPoint;
-            
             % Update the brush indicator position
-            obj.BrushTransform.Matrix(1:3,4) = pos;
+            obj.updateBrushIndicator(evt.IntersectionPoint)
             
         end %function
         
         
         function updatePointer(obj)
             % Update the mouse pointer
-
+            
             if obj.CurrentFigure.Pointer ~= "custom"
-
+            
                 set(obj.CurrentFigure,...
                     "Pointer","custom",...
                     "PointerShapeCData",obj.EditingPointer,...
                     "PointerShapeHotSpot",obj.EditingPointerCenter);
-
+            
             end %if obj.IsDragging
 
+        end %function
+        
+        
+        function updateBrushIndicator(obj,pos)
+            
+            % If position not provided, keep existing position
+            if nargin < 2
+                pos = obj.BrushTransform.Matrix(1:3,4);
+            end
+            
+            % Adjust position to bring to front of 2D slice view
+            if isempty(obj.AnnotationModel)
+                sliceDim = [false false true];
+                scale = obj.BrushSize;
+            else
+                sliceRange = obj.AnnotationModel.SliceRangeFilter([2 1 3],:);
+                minSlicePos = min(sliceRange, [], 2);
+                sliceDim = isfinite(minSlicePos);
+                pos(sliceDim) = minSlicePos(sliceDim);
+                scale = obj.BrushSize * obj.AnnotationModel.PixelExtent;
+                %scale = max(obj.BrushSize,3) * obj.AnnotationModel.PixelExtent;
+            end
+            
+            % Which 2D view are we looking at?
+            if sliceDim(2) %XZ
+                
+                tform = makehgtform(...
+                    'translate',pos,...
+                    'scale',scale,...
+                    'xrotate',pi/2);
+                
+            elseif sliceDim(1) %YZ
+                
+                tform = makehgtform(...
+                    'translate',pos,...
+                    'scale',scale,...
+                    'yrotate',pi/2);
+                
+            else %XY
+                
+                tform = makehgtform(...
+                    'translate',pos,...
+                    'scale',scale);
+                
+            end %if sliceDim(1)
+            
+            % Update the indicator
+            obj.BrushTransform.Matrix = tform;
+            
         end %function
 
         
@@ -322,10 +365,11 @@ classdef Brush < wt.tool.BaseAnnotationTool
                 midPt = ceil(obj.BrushSize/2) + 1;
                 brushMask(midPt,midPt) = true;
             end
-            obj.BrushMask = bwdist(brushMask) < obj.BrushSize/2;
+            dist = bwdist(brushMask);
+            obj.BrushMask = dist < obj.BrushSize/2;
             
             % Update the brush indicator's size
-            obj.BrushTransform.Matrix([1 6 11]) = obj.BrushSize + 2;
+            obj.updateBrushIndicator();
             
         end %function
         
@@ -366,7 +410,7 @@ ptr = [
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	NaN
     2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	NaN
-    2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	NaN
+    2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	NaN
     2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	NaN
     1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN

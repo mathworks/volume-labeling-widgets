@@ -47,7 +47,7 @@ classdef AnnotatedVolumeViewer < wt.VolumeViewer & wt.mixin.AnnotationViewer
     
     
     %% Public Methods
-    methods
+    methods        
         
         function selectAnnotation(obj, aObjIn, clickPoint)
             % Select annotation by index or object
@@ -66,7 +66,7 @@ classdef AnnotatedVolumeViewer < wt.VolumeViewer & wt.mixin.AnnotationViewer
                 
                 % Select the closest vertex in 2D space
                 isSliceDim = obj.SliceDimension;
-                [vertex, vIdx] = getNearestVertex(aObj, ...
+                [vertex, ~] = getNearestVertex(aObj, ...
                     clickPoint([2 1 3]), isSliceDim);
                 
                 % Store the selected vertex index

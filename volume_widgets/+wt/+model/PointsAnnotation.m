@@ -165,8 +165,8 @@ classdef PointsAnnotation < wt.model.BaseAnnotationModel
                 inSlice = all(data >= rfilt(1,:) & data <= rfilt(2,:),2);
                 
                 % Dim color/alpha of points outside the slice
-                color(~inSlice,:) = color(~inSlice,:) * 0.7;
-                alpha(~inSlice,:) = alpha(~inSlice,:) * 0.7;
+                color(~inSlice,:) = color(~inSlice,:) * 0.5;
+                alpha(~inSlice,:) = alpha(~inSlice,:) * 0.5;
                 
                 % Adjust the position of the annotations in the slice
                 % dimension to move to the plane of the imagery. Use the

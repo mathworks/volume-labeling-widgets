@@ -80,6 +80,7 @@ classdef (Abstract) BaseAnnotationModel < wt.model.BaseModel ...
         ShowObject (1,1) logical = true;
         
         % Current In-slice range, as indicated by the annotation viewer
+        % (unused for 3D views)
         SliceRangeFilter (3,2) double = inf(3,2) .* [-1 1]
         
     end %properties

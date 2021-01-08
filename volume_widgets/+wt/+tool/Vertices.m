@@ -25,26 +25,13 @@ classdef Vertices < wt.tool.BaseAnnotationTool
     end %properties
     
     
-    properties %(Constant, Access = private)
+    properties (Constant, Access = private)
         
         % Custom pointer during edit
         EditingPointer = getEditingPointer();
         EditingPointerCenter = [16 16]
-        %EditingPointerCenter = [20 20]
         
     end %properties
-    
-    
-    %% Constructor and Destructor
-    methods
-        
-        % Constructor
-        function obj = Vertices()
-            % Construct the tool
-            
-        end %function
-        
-    end %methods
     
     
     %% Protected Methods
@@ -55,31 +42,11 @@ classdef Vertices < wt.tool.BaseAnnotationTool
             
             % Get the click location
             p1 = evt.CurrentPoint([2 1 3]);
-            
-            % % For debug - what was hit?
-            % if isempty(evt.HitObject)
-            %     disp('empty');
-            % elseif isempty(evt.HitObject.UserData)
-            %     disp(class(evt.HitObject));
-            % elseif isprop(evt.HitObject.UserData,'Name')
-            %     disp(evt.HitObject.UserData.Name);
-            % else
-            %     disp(class(evt.HitObject.UserData));
-            % end
                 
             % What type of click?
             switch evt.SelectionType
                 
                 case 'open' % Double-click
-                    
-                    % % First, delete any extra vertex that was added during the
-                    % % first part of the double-click.
-                    %
-                    % % Locate the closest vertex
-                    % [~,vIdx] = obj.AnnotationModel.getNearestVertex(p1);
-                    %
-                    % % Delete it
-                    % obj.AnnotationModel.Points(vIdx,:) = [];
                     
                     % Stop the annotation
                     obj.stop()
@@ -101,7 +68,8 @@ classdef Vertices < wt.tool.BaseAnnotationTool
 
                         % Add the clicked point
                         obj.AnnotationModel.addPoint(p1);
-
+                        obj.SelectedVertex = size(obj.AnnotationModel.Points,1);
+                        
                     end
                     
                 case 'alt' % Right-click or Ctrl-Left-click
@@ -109,7 +77,7 @@ classdef Vertices < wt.tool.BaseAnnotationTool
                     % If over an existing point, delete it
                     
                     % Was the click on the object?
-                    if any(evt.HitObject == [obj.AnnotationModel.Plot])
+                    if evt.HitObject == obj.AnnotationModel.Plot(1)
                         
                         % Locate the closest vertex
                         [~,vIdx] = obj.AnnotationModel.getNearestVertex(p1);
@@ -132,18 +100,18 @@ classdef Vertices < wt.tool.BaseAnnotationTool
         end %function
         
         
-        function onMouseRelease(obj,~)
+        function onMouseRelease(obj,evt)
             % Triggered on mouse released
             
+            % If a point was being dragged, update it one last time
+            % This is necessary if the last action was mouse wheel to
+            % change slice, rather than further dragging
+            if ~isempty(obj.SelectedVertex)
+                pos = evt.CurrentPoint([2 1 3]);
+                obj.updateAnnotationPoint(pos);
+            end %if
+            
             obj.SelectedVertex = [];            
-            
-        end %function
-        
-        
-        function onMouseMotion(obj,evt)
-            % Triggered on mouse moving
-            
-           
             
         end %function
         
@@ -167,20 +135,28 @@ classdef Vertices < wt.tool.BaseAnnotationTool
         end %function
         
         
-        
         function onMouseDrag(obj,evt)
             % Triggered on mouse dragged
             
+            % If a point is being dragged, update it
             if ~isempty(obj.SelectedVertex)
-                
-                % Get the current location
-                p1 = evt.CurrentPoint([2 1 3]);
-                
-                % Update the vertex position
-                vIdx = obj.SelectedVertex;
-                obj.AnnotationModel.Points(vIdx,:) = p1;
-                
+                obj.updateAnnotationPoint( evt.CurrentPoint([2 1 3]) );
             end %if
+            
+        end %function
+        
+        
+        function updateAnnotationPoint(obj,pos)
+            % Updates the position of the annotation point being modified
+            
+            % For 2D views, adjust the click point to pixel centers
+            mPos = mean(obj.AnnotationModel.SliceRangeFilter, 2);
+            isSliceDim = ~isnan(mPos);
+            pos(isSliceDim) = mPos(isSliceDim);
+            
+            % Update the vertex position
+            vIdx = obj.SelectedVertex;
+            obj.AnnotationModel.Points(vIdx,:) = pos;
             
         end %function
         
@@ -209,7 +185,7 @@ ptr = [
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     1	1	1	1	1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	1	1	1	1	NaN
     2	2	2	2	2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	2	2	2	2	NaN
-    2	2	2	2	2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	2	2	2	2	NaN
+    2	2	2	2	2	2	2	2	2	2	2	2	NaN	NaN	NaN	2	NaN	NaN	NaN	2	2	2	2	2	2	2	2	2	2	2	2	NaN
     2	2	2	2	2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	2	2	2	2	NaN
     1	1	1	1	1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	1	1	1	1	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN

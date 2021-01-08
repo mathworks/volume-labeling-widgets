@@ -155,7 +155,7 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
     methods (Access=private)
         
         function onMouseWheel_private(app,e)
-            e.VerticalScrollCount
+            
             % Figure must be in pixels
             if ~strcmp(app.Figure.Units,'pixels')
                 app.Figure.Units = 'pixels';

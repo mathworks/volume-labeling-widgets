@@ -7,9 +7,11 @@ classdef PlaneAnnotation < wt.model.PointsAnnotation
     
     %% Public Properties
     properties (AbortSet, SetObservable)
+        
         % 3 or 4 Annotation points [y,x,z] to define a plane
         MaxPoint (1,1) double {mustBeMember(MaxPoint,[3 4])} = 3 
         
+        % Method of determining the plane from the points
         Method (1,1) string {mustBeMember(Method, ["deterministic" "svd"])} = "deterministic"   
         
     end %properties
@@ -192,9 +194,6 @@ classdef PlaneAnnotation < wt.model.PointsAnnotation
                 'FaceColor',obj.Color, ...
                 'FaceAlpha', obj.Alpha, ...
                 'Visible',obj.IsVisible)
-            
-            %Visibility on all plot objects
-            %set(obj.Plot, 'Visible', obj.IsVisible)
             
         end %function 
         

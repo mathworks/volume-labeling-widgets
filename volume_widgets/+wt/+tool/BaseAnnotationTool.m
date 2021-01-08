@@ -314,7 +314,7 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
             
             % Track the current object beneath the mouse
             obj.CurrentHitObject = e.HitObject;
-            %disp(e.HitObject);
+            
             % Proceed if the motion was within the monitored axes
             if isClickableAxes(obj,e)
                 
@@ -323,15 +323,6 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                 
                 % Change the figure pointer
                 obj.updatePointer();
-                
-    %                 if ~isDragging
-    %                     wt.utility.fastSet(obj.CurrentFigure,"Pointer",obj.Pointer)
-    %                     if obj.Pointer == "custom"
-    %                         wt.utility.fastSet(obj.CurrentFigure,...
-    %                             "PointerShapeCData",obj.PointerShapeCData,...
-    %                             "PointerShapeHotSpot",obj.PointerShapeHotSpot);
-    %                     end
-    %                 end
                 
                 % Callback for mouse moving
                 obj.onMouseMotion(e);

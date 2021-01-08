@@ -100,6 +100,7 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             app.Toolbar.ShapesSection.ButtonPushedFcn = @(h,e)onShapesToolbarButton(app,e);
             app.Toolbar.MaskSection.ButtonPushedFcn = @(h,e)onMaskToolbarButton(app,e);
             app.Toolbar.MaskBrushSizeSlider.ValueChangedFcn = @(h,e)onBrushChanged(app,e);
+            app.Toolbar.MaskBrushSizeSlider.ValueChangingFcn = @(h,e)onBrushChanged(app,e);
             app.Toolbar.HelpAddButton.ButtonPushedFcn = @(h,e)onHelpButton(app);
 
             app.AnnotationList = wt.apps.components.AnnotationList(app.Grid);
@@ -333,11 +334,10 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                     
                 case app.Toolbar.EditButton
                     
-                    if isempty(app.SelectedAnnotationModel)
-                        app.update();
-                    else
+                    if ~isempty(app.SelectedAnnotationModel)
                         app.AnnotationViewer.launchEditingTool(app.SelectedAnnotationModel,false);
                     end
+                    app.update();
                     
                 case app.Toolbar.DeleteButton
                     

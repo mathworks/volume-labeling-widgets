@@ -18,10 +18,19 @@ classdef PolygonAnnotation < wt.model.LineAnnotation
         function [data,color,alpha] = getPlotData(obj)
             % Calculate the data to update the plot
             
+            % Call the superclass method
+            [data,color,alpha] = obj.getPlotData@wt.model.LineAnnotation();
+            
+            % Remove the NaN vertex from the Points/Line annotation, since
+            % we will draw the filled shape
+            data(end,:) = [];
+            color(end,:) = [];
+            alpha(end,:) = [];
+            
             % Get the data
-            data = obj.Points;
-            color = repmat(obj.Color, size(data,1), 1);
-            alpha = repmat(obj.Alpha, size(data,1), 1);
+            % data = obj.Points;
+            % color = repmat(obj.Color, size(data,1), 1);
+            % alpha = repmat(obj.Alpha, size(data,1), 1);
             
         end %function
         
