@@ -4,16 +4,27 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
     % Copyright 2018-2020 The MathWorks, Inc.
     
     
-    %% Internal Properties
+    %% Public Properties
     properties (Dependent, UsedInUpdate = false)
         
         % Show or hide the axes, ticks, etc.
-        ShowAxes (1,1)  matlab.lang.OnOffSwitchState = 'off'
+        ShowAxes (1,1) matlab.lang.OnOffSwitchState = 'off'
         
         % Show or hide the grid
-        ShowGrid (1,1)  matlab.lang.OnOffSwitchState = 'off'
+        ShowGrid (1,1) matlab.lang.OnOffSwitchState = 'off'
         
     end %properties
+    
+    
+    
+    %% Read-Only Properties
+    properties (Dependent, SetAccess = protected)
+        
+        % Indicates if zoom is active
+        ZoomActive (1,1) matlab.lang.OnOffSwitchState
+    
+    end %properties
+    
     
     
     %% Internal Properties
@@ -27,6 +38,7 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
         
     end %properties
  
+    
     
     %% Setup
     methods (Access = protected)
@@ -111,6 +123,17 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
             grid(obj.Axes,value);
             if value
                 obj.ShowAxes = true;
+            end
+        end %function
+        
+        
+        function value = get.ZoomActive(obj)
+            if isempty(obj.Axes.Toolbar) || isempty(obj.Axes.Toolbar.Children)
+                value = false;
+            else
+                toolButtons = obj.Axes.Toolbar.Children;
+                isZoomButton = contains({toolButtons.Tag},'zoom');
+                value = any([toolButtons(isZoomButton).Value]);
             end
         end %function
         

@@ -172,17 +172,22 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             sidePos = getpixelposition(app.AnnotationViewer.SideView.Axes.Parent, true);
             topPos = getpixelposition(app.AnnotationViewer.TopView.Axes.Parent, true);
             
-            % Change slice
+            % Get the selected viewer that mouse is over
             if inBox(mainPos)
-               app.AnnotationViewer.Slice = ...
-                   max(1,app.AnnotationViewer.Slice + scrollAmount);
+               selViewer = app.AnnotationViewer;
             elseif inBox(sidePos)
-               app.AnnotationViewer.SideView.Slice = ...
-                   max(1,app.AnnotationViewer.SideView.Slice + scrollAmount);
+               selViewer = app.AnnotationViewer.SideView;
             elseif inBox(topPos)
-               app.AnnotationViewer.TopView.Slice = ...
-                   max(1,app.AnnotationViewer.TopView.Slice + scrollAmount);
+               selViewer = app.AnnotationViewer.TopView;
             end
+            
+            % Only proceed if zoom is not enabled
+            if ~selViewer.ZoomActive
+                
+                % Change slice
+                selViewer.Slice = max(1, selViewer.Slice + scrollAmount);
+                
+            end %if ~isZoomPan(selViewer.Axes)
 
             % Helper function - detect if in the axes bounds
             function tf = inBox(boxPos)
