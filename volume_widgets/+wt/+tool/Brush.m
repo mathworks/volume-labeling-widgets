@@ -195,12 +195,11 @@ classdef Brush < wt.tool.BaseAnnotationTool
             % Update the mouse pointer
             
             if obj.CurrentFigure.Pointer ~= "custom"
-            
-                set(obj.CurrentFigure,...
-                    "Pointer","custom",...
-                    "PointerShapeCData",obj.EditingPointer,...
-                    "PointerShapeHotSpot",obj.EditingPointerCenter);
-            
+                
+                obj.CurrentFigure.Pointer = "custom";
+                obj.CurrentFigure.PointerShapeCData = obj.EditingPointer;
+                obj.CurrentFigure.PointerShapeHotSpot = obj.EditingPointerCenter;
+                
             end %if obj.IsDragging
 
         end %function

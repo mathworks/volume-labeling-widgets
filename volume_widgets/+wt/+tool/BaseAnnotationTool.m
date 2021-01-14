@@ -243,15 +243,16 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
         function tf = isClickableAxes(obj,e)
             % Was the click within an object in the clickable axes?
             hitObject = e.HitObject;
-            tf = ~isempty(hitObject) && any( obj.ClickableAxes ==...
-                ancestor(hitObject,'matlab.graphics.axis.AbstractAxes') );
+            ax = obj.ClickableAxes;
+            hitAx = ancestor(hitObject,'matlab.graphics.axis.AbstractAxes');
+            tf = ~isempty(hitObject) && any(ax == hitAx );
             
             % Ignore sporadic blips outside the axes
             pos = e.IntersectionPoint;
-            xLim = obj.ClickableAxes.XLim;
-            yLim = obj.ClickableAxes.YLim;
-            zLim = obj.ClickableAxes.ZLim;
-            view = obj.ClickableAxes.View;
+            xLim = ax.XLim;
+            yLim = ax.YLim;
+            zLim = ax.ZLim;
+            view = ax.View;
             if all(view == [0 -90])
                 tf = tf && ...
                     (pos(1) >= xLim(1)) && (pos(1) <= xLim(2)) && ...
@@ -264,6 +265,15 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                 tf = tf && ...
                     (pos(2) >= yLim(1)) && (pos(2) <= yLim(2)) && ...
                     (pos(3) >= zLim(1)) && (pos(3) <= zLim(2));
+            end
+            
+            % Ignore if a zoom mode is on
+            axTbar = ax.Toolbar;
+            if tf && ~isempty(axTbar) && ~isempty(axTbar.Children)
+                toolButtons = axTbar.Children;
+                isModeButton = contains({toolButtons.Tag},["zoom","pan","rotate"]);
+                modeIsActive = [toolButtons(isModeButton).Value];
+                tf = tf && ~any(modeIsActive);
             end
 
         end
