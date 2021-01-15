@@ -63,7 +63,12 @@ classdef AnnotatedIsosurfaceViewer < wt.IsosurfaceViewer & wt.mixin.AnnotationVi
                 nameParts = extract(className,alphanumericsPattern);
                 hitName = nameParts{end};
             elseif isprop(hitObj.UserData,'Name')
-                hitName = hitObj.UserData.Name;
+                name = char(hitObj.UserData.Name);
+                if isempty(name)
+                    hitName = class(hitObj.UserData);
+                else
+                    hitName = name;
+                end
             else
                 hitName = class(hitObj.UserData);
             end
