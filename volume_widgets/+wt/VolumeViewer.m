@@ -220,7 +220,6 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
     %% Callbacks
     methods (Access = protected)
         
-        
         function onSliceSpinnerChanged(obj,evt)
             % Handle changes to the Slice spinner
             

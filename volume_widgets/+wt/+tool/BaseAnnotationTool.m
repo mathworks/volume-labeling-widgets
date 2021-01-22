@@ -328,9 +328,6 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
             % Proceed if the motion was within the monitored axes
             if isClickableAxes(obj,e)
                 
-                % Are we dragging?
-                isDragging = obj.IsDragging;
-                
                 % Change the figure pointer
                 obj.updatePointer();
                 
@@ -338,10 +335,15 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                 obj.onMouseMotion(e);
                 
                 % Is drag occurring?
-                if isDragging
+                if obj.IsDragging
+                    
+                    %RAJ - I tried moving this outside isClickableAxes, but
+                    %the IntersectionPoint is NaN! Axes CurrentPoint does
+                    %not work either.
                     
                     % Prepare eventdata
                     evt.CurrentPoint = e.IntersectionPoint;
+                    %disp(evt.CurrentPoint);
                     evt.StartPoint = obj.MouseLastDragPoint;
                     evt.SelectionType = e.Source.SelectionType;
                     
@@ -359,6 +361,8 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                 wt.utility.fastSet(obj.CurrentFigure,"Pointer","arrow")
                 
             end %if isClickableAxes(obj,e)
+                
+            
             
         end %function
         
