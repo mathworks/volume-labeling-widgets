@@ -26,9 +26,18 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
     <param.version>2.0.1</param.version>
     <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
-    <param.products.name />
-    <param.products.id />
-    <param.products.version />
+    <param.products.name>
+      <item>MATLAB</item>
+      <item>Image Processing Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>1</item>
+      <item>17</item>
+    </param.products.id>
+    <param.products.version>
+      <item>9.9</item>
+      <item>11.2</item>
+    </param.products.version>
     <param.platforms />
     <param.guid>7beb8fae-7511-4c1a-a6fb-c1a109d46c80</param.guid>
     <param.exclude.filters />
@@ -44,9 +53,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons>
       <requiredaddons>
-        <requiredAddOn earliest="2.0.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - MATLAB App Building Components</requiredAddOn>
-        <requiredAddOn earliest="2.3.4" fromRepository="true" id="e5af5a78-4a80-11e4-9553-005056977bd0" include="false" latest="latest">GUI Layout Toolbox</requiredAddOn>
-        <requiredAddOn earliest="1.3.330" fromRepository="true" id="b0bebf59-856a-4068-9d9c-0ed8968ac9e6" include="false" latest="latest">Widgets Toolbox - Compatibility Support</requiredAddOn>
+        <requiredAddOn earliest="2.0.2" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - MATLAB App Building Components</requiredAddOn>
       </requiredaddons>
     </param.required.addons>
     <param.matlab.project.id />
@@ -69,9 +76,6 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <param.email />
       <param.company />
       <param.output />
-      <param.products.name />
-      <param.products.id />
-      <param.products.version />
       <param.platforms />
       <param.exclude.filters />
       <param.exclude.pcodedmfiles />
@@ -101,42 +105,16 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     </fileset.rootdir>
     <fileset.rootfiles>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\+wt</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\Contents.m</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\demos.xml</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\doc</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\examples</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\icons</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\legacy</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\resources</file>
     </fileset.rootfiles>
-    <fileset.depfun.included>
+    <fileset.depfun.included />
+    <fileset.depfun.excluded>
       <file>${MATLAB_ROOT}\toolbox\matlab\demos\mri.mat</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+abstract\BaseWidget.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+apps\BaseApp.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+eventdata\ButtonPushedData.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+eventdata\PropertyChangedData.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+eventdata\ValueChangedData.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\DisplayNonScalarObjectAsTable.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\Enableable.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\ErrorHandling.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\FieldColorable.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\FontColorable.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\FontStyled.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\TitleColorable.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\Tooltipable.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+model\BaseModel.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+model\Preferences.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+test\BaseWidgetTest.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+toolbar\BaseSection.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+toolbar\HorizontalSection.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+toolbar\VerticalSection.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+utility\fastSet.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+validators\mustBeBetween.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\+validators\mustBeBetweenZeroAndOne.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\ColorSelector.m</file>
-      <file>C:\Work\widgets-toolbox\widgets\+wt\Toolbar.m</file>
-    </fileset.depfun.included>
-    <fileset.depfun.excluded />
+    </fileset.depfun.excluded>
     <fileset.package />
     <build-deliverables>
       <file location="${PROJECT_ROOT}" name="Volume Labeling Widgets - MATLAB App Building Components.mltbx" optional="false">C:\Work\volume-labeling-widgets\deploy\Volume Labeling Widgets - MATLAB App Building Components.mltbx</file>
