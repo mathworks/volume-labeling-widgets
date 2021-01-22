@@ -37,7 +37,7 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             % layers flickering or disappearing. Run before creating the
             % figure. (g2358515)
             if verLessThan('matlab','9.10')
-                patchRendering_R2020b();
+                wt.utility.patch.volumeLabeling_PatchRendering_R2020b();
             end
             
             % Call superclass constructor

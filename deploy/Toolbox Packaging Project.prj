@@ -24,77 +24,22 @@ Interactively labeling points, lines, polygons, and planes on a 3D isosurface
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</param.description>
     <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
-    <param.version>2.0.0</param.version>
+    <param.version>2.0.1</param.version>
     <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
-    <param.products.name>
-      <item>MATLAB</item>
-      <item>Image Processing Toolbox</item>
-    </param.products.name>
-    <param.products.id>
-      <item>1</item>
-      <item>17</item>
-    </param.products.id>
-    <param.products.version>
-      <item>9.9</item>
-      <item>11.2</item>
-    </param.products.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
     <param.platforms />
     <param.guid>7beb8fae-7511-4c1a-a6fb-c1a109d46c80</param.guid>
     <param.exclude.filters />
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
-    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;examples&gt;
-   &lt;exampleCategory name="examples"&gt;
-      &lt;example name="demoAnnotatedIsosurfaceViewer" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoAnnotatedIsosurfaceViewer.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoAnnotatedIsosurfaceViewer.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-      &lt;example name="demoAnnotatedQuadViewer" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoAnnotatedQuadViewer.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoAnnotatedQuadViewer.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-      &lt;example name="demoAnnotatedVolumeViewer" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoAnnotatedVolumeViewer.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoAnnotatedVolumeViewer.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-      &lt;example name="demoIsosurfaceAnnotationApp" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoIsosurfaceAnnotationApp.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoIsosurfaceAnnotationApp.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-      &lt;example name="demoIsosurfaceViewer" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoIsosurfaceViewer.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoIsosurfaceViewer.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-      &lt;example name="demoSlicePlaneViewer" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoSlicePlaneViewer.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoSlicePlaneViewer.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-      &lt;example name="demoVolumeAnnotationApp" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoVolumeAnnotationApp.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoVolumeAnnotationApp.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-      &lt;example name="demoVolumeViewer" type="html"&gt;
-         &lt;file type="source"&gt;/examples/html/demoVolumeViewer.html&lt;/file&gt;
-         &lt;file type="main"&gt;/examples/demoVolumeViewer.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-   &lt;/exampleCategory&gt;
-&lt;/examples&gt;</param.examples>
+    <param.examples />
     <param.demosxml />
     <param.apps />
     <param.registered.apps />
     <param.docs />
     <param.getting.started.guide>C:\Work\volume-labeling-widgets\volume_widgets\doc\GettingStarted.mlx</param.getting.started.guide>
-    <param.matlabpath.excludes>
-      <item>/C__/Program Files/MATLAB/R2020b/toolbox/matlab/demos</item>
-    </param.matlabpath.excludes>
+    <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
     <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons>
@@ -124,13 +69,18 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <param.email />
       <param.company />
       <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
       <param.platforms />
       <param.exclude.filters />
       <param.exclude.pcodedmfiles />
+      <param.examples />
       <param.demosxml />
       <param.apps />
       <param.registered.apps />
       <param.docs />
+      <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
       <param.matlab.project.id />
       <param.matlab.project.name />
@@ -157,9 +107,34 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <file>C:\Work\volume-labeling-widgets\volume_widgets\examples</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\icons</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\legacy</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\resources</file>
     </fileset.rootfiles>
     <fileset.depfun.included>
       <file>${MATLAB_ROOT}\toolbox\matlab\demos\mri.mat</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+abstract\BaseWidget.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+apps\BaseApp.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+eventdata\ButtonPushedData.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+eventdata\PropertyChangedData.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+eventdata\ValueChangedData.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\DisplayNonScalarObjectAsTable.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\Enableable.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\ErrorHandling.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\FieldColorable.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\FontColorable.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\FontStyled.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\TitleColorable.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+mixin\Tooltipable.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+model\BaseModel.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+model\Preferences.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+test\BaseWidgetTest.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+toolbar\BaseSection.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+toolbar\HorizontalSection.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+toolbar\VerticalSection.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+utility\fastSet.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+validators\mustBeBetween.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\+validators\mustBeBetweenZeroAndOne.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\ColorSelector.m</file>
+      <file>C:\Work\widgets-toolbox\widgets\+wt\Toolbar.m</file>
     </fileset.depfun.included>
     <fileset.depfun.excluded />
     <fileset.package />

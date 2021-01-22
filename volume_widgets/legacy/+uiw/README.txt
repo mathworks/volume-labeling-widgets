@@ -1,1 +1,0 @@
-This folder contains legacy versions of the content for backward compatibility. Do not use these components for new content. 
