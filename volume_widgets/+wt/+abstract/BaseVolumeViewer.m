@@ -1,4 +1,4 @@
-classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
+classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     % Base class for Volume visualization showing one or more slice planes on axes
     
     % This class should be abstract, however:
@@ -34,7 +34,7 @@ classdef (Hidden) BaseVolumeViewer < wt.BaseAxesViewer
             obj.loadDefaultVolumeModel();
             
             % Call superclass setup first
-            obj.setup@wt.BaseAxesViewer();       
+            obj.setup@wt.abstract.BaseAxesViewer();       
             
             % Turn off clipping to best use axes space in 2D view
             %obj.Axes.Clipping = 'off';

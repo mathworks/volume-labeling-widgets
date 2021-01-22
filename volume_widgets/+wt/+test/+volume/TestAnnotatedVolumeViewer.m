@@ -122,7 +122,7 @@ classdef TestAnnotatedVolumeViewer < wt.test.volume.BaseViewerTest & ...
             % Change View
             w.View = "yz";
             testCase.verifyWarningFree(@drawnow)
-            testCase.verifyEqual(w.View, "yz")
+            testCase.verifyEqual(w.View, wt.enum.ViewAxis.yz)
             
         end %function
         
@@ -171,7 +171,7 @@ classdef TestAnnotatedVolumeViewer < wt.test.volume.BaseViewerTest & ...
             % Change View
             w.View = "xz";
             testCase.verifyWarningFree(@drawnow)
-            testCase.verifyEqual(w.View, "xz")
+            testCase.verifyEqual(w.View, wt.enum.ViewAxis.xz)
             
         end %function
         
@@ -220,7 +220,7 @@ classdef TestAnnotatedVolumeViewer < wt.test.volume.BaseViewerTest & ...
             % Change View
             w.View = "yz";
             testCase.verifyWarningFree(@drawnow)
-            testCase.verifyEqual(w.View, "yz")
+            testCase.verifyEqual(w.View, wt.enum.ViewAxis.yz)
             
         end %function
         
@@ -245,7 +245,7 @@ classdef TestAnnotatedVolumeViewer < wt.test.volume.BaseViewerTest & ...
             % Change View
             w.View = "xz";
             testCase.verifyWarningFree(@drawnow)
-            testCase.verifyEqual(w.View, "xz")
+            testCase.verifyEqual(w.View, wt.enum.ViewAxis.xz)
             
         end %function
         
@@ -377,7 +377,7 @@ classdef TestAnnotatedVolumeViewer < wt.test.volume.BaseViewerTest & ...
             % Change View
             w.View = "xz";
             testCase.verifyWarningFree(@drawnow)
-            testCase.verifyEqual(w.View, "xz")
+            testCase.verifyEqual(w.View, wt.enum.ViewAxis.xz)
             
         end %function
         

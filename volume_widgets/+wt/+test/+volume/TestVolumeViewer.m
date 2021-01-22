@@ -48,7 +48,7 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
             expectedSliceDimension = logical([0 0 1]);
             testCase.assumeEqual(testCase.Viewer.SliceDimension, expectedSliceDimension);
             
-            expectedView = "xy";
+            expectedView = wt.enum.ViewAxis.xy;
             testCase.assumeEqual(testCase.Viewer.ViewIndicator.Value, expectedView);
             testCase.assumeEqual(testCase.Viewer.View, expectedView);
             
@@ -81,6 +81,10 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
         
         function verifyView(testCase, expectedValue)
             % Verify view controls in the viewer
+            
+            if isstring(expectedValue)
+                expectedValue = wt.enum.ViewAxis.(expectedValue);
+            end
             
             drawnow
             testCase.verifyEqual(testCase.Viewer.ViewIndicator.Value, expectedValue);
@@ -126,7 +130,7 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
             expectedSliceDimension = logical([0 0 1]);
             testCase.verifyEqual(testCase.Viewer.SliceDimension, expectedSliceDimension);
             
-            expectedView = "xy";
+            expectedView = wt.enum.ViewAxis.xy;
             testCase.verifyEqual(testCase.Viewer.ViewIndicator.Value, expectedView);
             testCase.verifyEqual(testCase.Viewer.View, expectedView);
             

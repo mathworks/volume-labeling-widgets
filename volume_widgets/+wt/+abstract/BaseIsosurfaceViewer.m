@@ -1,4 +1,4 @@
-classdef (Hidden) BaseIsosurfaceViewer < wt.BaseAxesViewer
+classdef (Hidden) BaseIsosurfaceViewer < wt.abstract.BaseAxesViewer
     % Base class for Isosurface visualization on axes
     
     % Copyright 2018-2020 The MathWorks, Inc.
@@ -35,7 +35,7 @@ classdef (Hidden) BaseIsosurfaceViewer < wt.BaseAxesViewer
         function setup(obj)
             
             % Call superclass setup first
-            obj.setup@wt.BaseAxesViewer();
+            obj.setup@wt.abstract.BaseAxesViewer();
             
             % Add lighting to upper front right
             lightColor = [.8 .7 .7];

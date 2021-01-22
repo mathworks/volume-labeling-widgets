@@ -1,4 +1,4 @@
-classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
+classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         wt.mixin.FieldColorable & wt.mixin.FontColorable
     % Volume visualization widget with a 2D view of an image stack
     
@@ -67,7 +67,7 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
     methods 
         function obj = VolumeViewer(varargin)
             
-            obj@wt.BaseVolumeViewer(varargin{:});
+            obj@wt.abstract.BaseVolumeViewer(varargin{:});
             
             % Create the custom axes toolbar
             % This must be done after setup due to g2318236
@@ -84,7 +84,7 @@ classdef VolumeViewer < wt.BaseVolumeViewer & wt.mixin.Enableable & ...
         function setup(obj)
             
             % Call superclass setup first
-            obj.setup@wt.BaseVolumeViewer();
+            obj.setup@wt.abstract.BaseVolumeViewer();
             
             % Set default size
             obj.Position = [10 10 400 400];

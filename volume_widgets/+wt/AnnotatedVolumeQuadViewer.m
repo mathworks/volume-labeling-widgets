@@ -114,7 +114,7 @@ classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
             obj.SideView.VolumeModel = obj.VolumeModel;
             
             % Call superclass method
-            obj.onModelSet@wt.BaseVolumeViewer();
+            obj.onModelSet@wt.abstract.BaseVolumeViewer();
             
         end %function
         
