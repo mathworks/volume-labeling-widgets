@@ -135,18 +135,45 @@ classdef MaskAnnotation < wt.model.BaseAnnotationModel ...
                 % There is a valid slice dimension
                 
                 % Get the position of the selected slice
-                slicePos = obj.SliceRangeFilter(:,1) + ...
-                    (obj.SliceRangeFilter(:,2) - obj.SliceRangeFilter(:,1))/2;
+                rfilt = obj.SliceRangeFilter;
+                slicePosCenter = mean(rfilt, 2);
+                slicePosFront = rfilt(sliceDim,1);
                 
                 % Get the slice indices
-                [maskIndicesCell,maskIndices] = obj.getSliceIndex(slicePos);
-                
-                % Get the mask for this slice
-                mask = squeeze( obj.Mask(maskIndicesCell{:}) );
+                [maskIndicesCell,maskIndices] = obj.getSliceIndex(slicePosCenter);
                 
                 % Get the position of the mask's slice
                 [x,y,z,isTranspose] = obj.getSliceXYZ(maskIndices);
                 
+                % Fix a bug in R2020b
+                if verLessThan('matlab','9.10')
+                    % Place each mask at a different depth between the center
+                    % and front edge of the view. Otherwise it won't render
+                    % multiple masks in the same plane
+                    siblings = obj.Plot.Parent.Children;
+                    childNum = find(siblings == obj.Plot(1));
+                    numSiblings = numel(siblings);
+                    adjustment = (childNum - 1) / numSiblings * ...
+                        (slicePosCenter(sliceDim) - slicePosFront);
+                    slicePosFront = slicePosFront + adjustment;
+                end
+                
+                % Adjust the position of the annotations in the slice
+                % dimension to move to the closer pixel edge. This way it
+                % is renders in front of the imagery.
+                if sliceDim(3)
+                    % XY View
+                        z(:) = slicePosFront;
+                elseif sliceDim(2)
+                    % YZ View
+                        x(:) = slicePosFront;
+                else
+                    % XZ View
+                        y(:) = slicePosFront;
+                end %if
+                
+                % Get the mask for this slice
+                mask = squeeze( obj.Mask(maskIndicesCell{:}) );
                 if isTranspose
                     mask = mask';
                 end
