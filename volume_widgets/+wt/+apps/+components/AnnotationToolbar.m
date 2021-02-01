@@ -1,7 +1,9 @@
 classdef AnnotationToolbar < wt.abstract.BaseWidget & wt.mixin.FontColorable
     % Common toolbar for annotation apps
+    % 
+    % This is intended as an example and may be reworked in the future
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2021 The MathWorks, Inc.
     
     
     %% Properties

@@ -4,8 +4,10 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
     % Syntax:
     %           app = wt.apps.VolumeAnnotationApp
     %           app = wt.apps.VolumeAnnotationApp('Property','Value',...)
+    % 
+    % This is intended as an example and may be reworked in the future
     
-    %   Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2021 The MathWorks, Inc.
     
     
     %% Properties
@@ -25,27 +27,6 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
         MouseWheelListener event.listener
         
     end %properties
-    
-    
-    %% Constructor / destructor
-    methods (Access = public)
-        
-        function app = VolumeAnnotationApp(varargin)
-            % Constructor
-            
-            % Apply patch to R2020b to avoid rendering issues with imagery
-            % layers flickering or disappearing. Run before creating the
-            % figure. (g2358515)
-            if verLessThan('matlab','9.10')
-                wt.utility.patch.volumeLabeling_PatchRendering_R2020b();
-            end
-            
-            % Call superclass constructor
-            app = app@wt.apps.BaseAnnotationApp(varargin{:});
-            
-        end %function
-        
-    end %methods
     
     
     

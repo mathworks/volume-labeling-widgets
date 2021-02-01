@@ -1,5 +1,9 @@
 classdef AnnotationList < wt.abstract.BaseWidget
     % Tabular list of annotations and current selection
+    % 
+    % This is intended as an example and may be reworked in the future
+    
+    % Copyright 2020-2021 The MathWorks, Inc.
     
     
     %% Events

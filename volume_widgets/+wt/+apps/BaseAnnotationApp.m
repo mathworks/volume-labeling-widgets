@@ -1,7 +1,9 @@
 classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
     % Base application class for annotating a volume or isosurface on axes
+    % 
+    % This is intended as an example and may be reworked in the future
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2021 The MathWorks, Inc.
     
     
     %% Properties

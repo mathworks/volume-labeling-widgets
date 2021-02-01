@@ -4,8 +4,10 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
     % Syntax:
     %           app = wt.app.IsosurfaceAnnotationApp
     %           app = wt.app.IsosurfaceAnnotationApp('Property','Value',...)
+    % 
+    % This is intended as an example and may be reworked in the future
     
-    %   Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2021 The MathWorks, Inc.
     
     
     %% Properties
