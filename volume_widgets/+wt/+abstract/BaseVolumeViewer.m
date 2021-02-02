@@ -1,17 +1,17 @@
-classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
+classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     % Base class for Volume visualization showing one or more slice planes on axes
     
-    % This class should be abstract, however:
+    % Issues:
     % g2282435 UsedInUpdate fails for props in abstract classes
 
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2021 The MathWorks, Inc.
     
     
     %% Properties
-    properties (AbortSet)
+    properties (Abstract, AbortSet)
         
         % Data model for the volume's data
-        VolumeModel (1,1) wt.model.VolumeModel = wt.model.VolumeModel
+        VolumeModel (1,1) wt.model.VolumeModel
         
     end %properties
     
@@ -55,6 +55,7 @@ classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
             % Subclass may override this and choose to redraw based on the
             % event, if necessary for more complex scenarios.
             obj.update();
+            %obj.markDirty();
             
         end %function
         
@@ -112,18 +113,6 @@ classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
         end %function
         
     end %methods
-        
     
-    
-    
-    %% Get/Set Methods
-    methods
-        
-        function set.VolumeModel(obj,value)
-            obj.VolumeModel = value;
-            obj.onModelSet();
-        end %function
-        
-    end %methods
     
 end % classdef

@@ -79,7 +79,7 @@ classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
     %% Update
     methods (Access = protected)
         function update(obj)
-            
+            disp("AnnotatedVolumeQuadViewer - update");
             % Call superclass update first
             obj.update@wt.AnnotatedVolumeViewer();
             

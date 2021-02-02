@@ -2,7 +2,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         wt.mixin.FieldColorable & wt.mixin.FontColorable
     % Volume visualization widget with a 2D view of an image stack
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2021 The MathWorks, Inc.
     
     
     %% Events
@@ -17,6 +17,9 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
     
     %% Properties
     properties (AbortSet, SetObservable)
+        
+        % Data model for the volume's data
+        VolumeModel
         
         % Current view plane
         View (1,1) wt.enum.ViewAxis = wt.enum.ViewAxis.xy
@@ -146,7 +149,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
     %% Update
     methods (Access = protected)
         function update(obj)
-            
+            disp("VolumeViewer - update");
             % Get the slice information
             sliceDim = obj.SliceDimension;
             currentSlice = obj.Slice3D(sliceDim);
@@ -308,6 +311,11 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
     
     %% Get/Set Methods
     methods
+        
+        function set.VolumeModel(obj,value)
+            obj.VolumeModel = value;
+            obj.onModelSet();
+        end
         
         function value = get.SliceDimension(obj)
             value = obj.View == ["xz" "yz" "xy"];
