@@ -1,10 +1,7 @@
 classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     % Base class for Volume visualization showing one or more slice planes on axes
     
-    % This class should be abstract, however:
-    % g2282435 UsedInUpdate fails for props in abstract classes
-
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2021 The MathWorks, Inc.
     
     
     %% Properties
@@ -34,10 +31,7 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
             obj.loadDefaultVolumeModel();
             
             % Call superclass setup first
-            obj.setup@wt.abstract.BaseAxesViewer();       
-            
-            % Turn off clipping to best use axes space in 2D view
-            %obj.Axes.Clipping = 'off';
+            obj.setup@wt.abstract.BaseAxesViewer();      
             
             % Set initial listener
             obj.onModelSet();
@@ -49,15 +43,6 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     
     %% Protected Methods
     methods (Access = protected)
-        
-        function onModelChanged(obj,~)
-            % Triggered on VolumeModel changes
-            
-            % Subclass may override this and choose to redraw based on the
-            % event, if necessary for more complex scenarios.
-            obj.update();
-            
-        end %function
         
         
         function onModelSet(obj)
@@ -130,10 +115,8 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
             obj.onModelSet();
             
             % Workaround for g228243 (fixed in R2021a)
-            if verLessThan('matlab','9.10') && ~isempty(obj.Axes)
-                try %#ok<TRYNC>
-                    obj.update();
-                end
+            if verLessThan('matlab','9.10')
+                obj.requestUpdate();
             end %if
             
         end %function

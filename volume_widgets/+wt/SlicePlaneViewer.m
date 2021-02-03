@@ -1,7 +1,7 @@
 classdef SlicePlaneViewer < wt.abstract.BaseVolumeViewer
     % Volume visualization widget showing three 2D slice planes
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2021 The MathWorks, Inc.
     
     
     %% Properties
@@ -31,13 +31,6 @@ classdef SlicePlaneViewer < wt.abstract.BaseVolumeViewer
             % Call superclass constructor
             obj@wt.abstract.BaseVolumeViewer(varargin{:});
             
-            % Specify axes interactions
-            enableDefaultInteractivity(obj.Axes)
-            obj.Axes.Interactions = rotateInteraction;
-            
-            % Disable toolbar
-            obj.Axes.Toolbar.Visible = 'off';
-            
         end %function
     end %methods
  
@@ -50,6 +43,14 @@ classdef SlicePlaneViewer < wt.abstract.BaseVolumeViewer
             % Call superclass setup first
             obj.setup@wt.abstract.BaseVolumeViewer(); 
             
+            % Specify axes interactions
+            enableDefaultInteractivity(obj.Axes)
+            obj.Axes.Interactions = rotateInteraction;
+            
+            % Disable toolbar
+            obj.Axes.Toolbar.Visible = 'off';
+            
+            % Add 3 images
             for idx=1:3
                 obj.Image(idx) = obj.createImagePlot();
             end

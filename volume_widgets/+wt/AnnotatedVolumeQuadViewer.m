@@ -1,7 +1,7 @@
 classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
     % Volume annotation widget with 2D views from 3 sides plus 3D slice planes
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2021 The MathWorks, Inc.
     
     
     %% Internal Properties
@@ -79,7 +79,7 @@ classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
     %% Update
     methods (Access = protected)
         function update(obj)
-            disp("AnnotatedVolumeQuadViewer - update");
+            
             % Call superclass update first
             obj.update@wt.AnnotatedVolumeViewer();
             

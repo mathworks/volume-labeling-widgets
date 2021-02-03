@@ -61,36 +61,6 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         
     end %properties
     
- 
-    
-%     %% Constructor
-%     methods 
-%         function obj = VolumeViewer(varargin)
-%             
-%             obj@wt.abstract.BaseVolumeViewer(varargin{:});
-%             
-% %             % Workaround for g228243 (fixed in R2021a)
-% %             if verLessThan('matlab','9.10')
-% %                 drawnow
-% %             end %if
-%             
-%             % Workaround for g2318236 (possibly fixed in R2021b)
-% %             if verLessThan('matlab','9.11')
-% %                 % Create the custom axes toolbar
-% %                 delete(obj.Axes.Toolbar);
-% %                 axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
-% %             end %if
-%             
-% %             drawnow
-% %             pause(0.2);
-% %             obj.Axes.Position = [0 0 1 .96];
-%             
-%             
-%             disp("VolumeViewer - constructor done");  
-%             
-%         end %function
-%     end %methods
-    
     
     
     %% Setup
@@ -107,10 +77,14 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.Grid.RowHeight = {25,25,'1x'};
             obj.Grid.ColumnWidth = {55,'1x'};
             obj.AxesContainer.Layout.Column = 2;
-            obj.AxesContainer.Layout.Row = [1 3];
+            obj.AxesContainer.Layout.Row = [1 3]; 
             
-            % Specify axes interactions
-            disableDefaultInteractivity(obj.Axes);
+            %RAJ - this was an attempt to better use space. However, the
+            %mouse interactions may fail. Needs more testing.
+            % Turn off clipping to best use axes space in 2D view
+            %obj.Axes.Clipping = 'off';
+            
+            % Customize axes toolbar
             axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
             
             %--- View controls ---%
@@ -151,8 +125,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             % Change defaults
             obj.FieldColor = obj.BackgroundColor;
             obj.FontColor = [1 1 1] * 0.6;
-            
-            disp("VolumeViewer - setup done");  
+             
         end %function
     end %methods
     
@@ -160,7 +133,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
     %% Update
     methods (Access = protected)
         function update(obj)
-            disp("VolumeViewer - update");  
+            
             % Get the slice information
             sliceDim = obj.SliceDimension;
             currentSlice = obj.Slice3D(sliceDim);
