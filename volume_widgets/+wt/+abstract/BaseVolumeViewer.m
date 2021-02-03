@@ -1,4 +1,4 @@
-classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
+classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     % Base class for Volume visualization showing one or more slice planes on axes
     
     % This class should be abstract, however:
@@ -31,7 +31,7 @@ classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
         function setup(obj)
             
             % Load default volume model for demonstration
-            %obj.loadDefaultVolumeModel();
+            obj.loadDefaultVolumeModel();
             
             % Call superclass setup first
             obj.setup@wt.abstract.BaseAxesViewer();       
@@ -132,7 +132,6 @@ classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
             % Workaround for g228243 (fixed in R2021a)
             if verLessThan('matlab','9.10') && ~isempty(obj.Axes)
                 try %#ok<TRYNC>
-                    disp('set.VolumeModel fix')
                     obj.update();
                 end
             end %if

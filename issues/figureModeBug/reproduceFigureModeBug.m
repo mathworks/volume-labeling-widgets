@@ -5,7 +5,6 @@ g = uigridlayout(f,[1 1]);
 % Create the widget
 obj = wt.VolumeViewer(g);
 
-%%
 % Import sample data
 s2 = load('mristack.mat');
 
@@ -33,20 +32,3 @@ axgrid = axpnl.Parent;
 %% Provide the volume data to the app
 disp('set vol model');
 obj.VolumeModel = volModel;
-
-
-%% Tiledlayout bug
-
-% f = uifigure;
-% g = uigridlayout(f,[1 2]);
-% g.ColumnWidth = {100 '1x'};
-% s = uislider(g,'Orientation','vertical');
-% s.Layout.Column = 1;
-% g2 = uigridlayout(g,[1 1]);
-% g2.Layout.Column = 2;
-% g2.Padding = [0 0 0 0];
-% t = tiledlayout(g2,1,1);
-% a = axes(t);
-
-
-%% Attempt 2

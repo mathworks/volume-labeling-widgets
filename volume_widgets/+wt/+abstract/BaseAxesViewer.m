@@ -32,11 +32,42 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
         
         % A container to manage placement for the axes
         AxesContainer
+        AxesLayout
         
         % The axes to display upon
         Axes matlab.graphics.axis.Axes
         
     end %properties
+    
+ 
+    
+%     %% Constructor
+%     methods 
+%         function obj = BaseAxesViewer(varargin)
+%             
+%             obj@wt.abstract.BaseWidget(varargin{:});
+%             
+%             % Workaround for g228243 (fixed in R2021a)
+%             if verLessThan('matlab','9.10')
+% %                 drawnow
+%             end %if
+%             
+%             % Workaround for g2318236 (possibly fixed in R2021b)
+% %             if verLessThan('matlab','9.11')
+% %                 % Create the custom axes toolbar
+% %                 delete(obj.Axes.Toolbar);
+% %                 axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
+% %             end %if
+% %             
+% %             drawnow
+% %             pause(0.2);
+% %             obj.Axes.Position = [0 0 1 .96];
+%             
+%             
+%             disp("VolumeViewer - constructor done");  
+%             
+%         end %function
+%     end %methods
  
     
     
@@ -45,16 +76,19 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
         function setup(obj)
             
             % Call superclass setup first to establish the grid
-            obj.setup@wt.abstract.BaseWidget();       
+            obj.setup@wt.abstract.BaseWidget();     
             
-            % Create a container for the axes
-            obj.AxesContainer = uipanel(obj.Grid);
-            obj.AxesContainer.BorderType = 'none';
+            % g2430389 Create intermediate layout for the tiledlayout 
+            obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
+            obj.AxesContainer.Padding = [0 0 0 0];
+            
+            % g2430275 g2318236 Create a tiledlayout to properly size the axes
+            obj.AxesLayout = tiledlayout(obj.AxesContainer,1,1);
+            obj.AxesLayout.Padding = 'none';
+            obj.AxesLayout.TileSpacing = 'none';
             
             % Create the axes
-            obj.Axes = axes(obj.AxesContainer);
-            obj.Axes.Units = 'normalized';
-            obj.Axes.Position = [0 0 1 1];
+            obj.Axes = axes(obj.AxesLayout);
             obj.Axes.XColor = [1 .4 .4];
             obj.Axes.YColor = [.4 .8 .4];
             obj.Axes.ZColor = [.5 .5 1];
@@ -71,20 +105,20 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
             obj.Axes.ClippingStyle = "rectangle";
             obj.Axes.View = [-37.5 30];
             axis(obj.Axes,'tight');
+            
             %obj.Axes.Toolbar = gobjects(0);
             
-            %RAJ - G2318236
-            obj.Axes.Position = [0 0 1 .96];
-            
-            %RAJ - I tried this for all, but it does not work well with
-            %3d planar annotations that go on forever
+            % RAJ - Clipping should stay on by default. Turning it off
+            % does not work well with 3d planar annotations that go on
+            % forever
             % obj.Axes.Clipping = 'off';
             
             % Use grey colormap
             colormap(obj.Axes,gray(256))
             
-            % Specify axes interactions
+            % No interactions by default - subclass to override
             disableDefaultInteractivity(obj.Axes);
+            delete(obj.Axes.Toolbar);
             %g2318236 - must do after setup completes:
             %axtoolbar(obj.Axes,{'export','rotate','zoomin','zoomout','pan','restoreview'});
             
@@ -108,11 +142,6 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
         
         function set.ShowAxes(obj,value)
             obj.Axes.Visible = value;
-            if value
-                obj.Axes.OuterPosition = [0 0 1 1];
-            else
-                obj.Axes.Position = [0 0 1 1];
-            end
         end %function
         
         
