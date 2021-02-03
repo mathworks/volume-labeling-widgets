@@ -79,7 +79,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.AxesContainer.Layout.Column = 2;
             obj.AxesContainer.Layout.Row = [1 3]; 
             
-            %RAJ - this was an attempt to better use space. However, the
+            %RAJ - below was an attempt to better use space. However, the
             %mouse interactions may fail. Needs more testing.
             % Turn off clipping to best use axes space in 2D view
             %obj.Axes.Clipping = 'off';
