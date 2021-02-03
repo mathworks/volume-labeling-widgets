@@ -2,7 +2,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         wt.mixin.FieldColorable & wt.mixin.FontColorable
     % Volume visualization widget with a 2D view of an image stack
     
-    % Copyright 2020-2021 The MathWorks, Inc.
+    % Copyright 2020 The MathWorks, Inc.
     
     
     %% Events
@@ -17,9 +17,6 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
     
     %% Properties
     properties (AbortSet, SetObservable)
-        
-        % Data model for the volume's data
-        VolumeModel
         
         % Current view plane
         View (1,1) wt.enum.ViewAxis = wt.enum.ViewAxis.xy
@@ -72,11 +69,19 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             
             obj@wt.abstract.BaseVolumeViewer(varargin{:});
             
-            % Create the custom axes toolbar
-            % This must be done after setup due to g2318236
-            %RAJ - zoom in just goes behind the image. Disabling toolbar for now
-            axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
+            % Workaround for g228243 (fixed in R2021a)
+            if verLessThan('matlab','9.10')
+                drawnow
+            end %if
             
+            % Workaround for g2318236 (possibly fixed in R2021b)
+            if verLessThan('matlab','9.11')
+                % Create the custom axes toolbar
+                delete(obj.Axes.Toolbar);
+                axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
+            end %if
+            
+            disp("VolumeViewer - constructor done");  
         end %function
     end %methods
     
@@ -101,7 +106,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             % Specify axes interactions
             disableDefaultInteractivity(obj.Axes);
             %g2318236 - must do after setup completes:
-            %axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
+            axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
             
             %--- View controls ---%
             obj.ViewIndicator = uidropdown(obj.Grid);
@@ -142,6 +147,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.FieldColor = obj.BackgroundColor;
             obj.FontColor = [1 1 1] * 0.6;
             
+            disp("VolumeViewer - setup done");  
         end %function
     end %methods
     
@@ -149,7 +155,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
     %% Update
     methods (Access = protected)
         function update(obj)
-            disp("VolumeViewer - update");
+            disp("VolumeViewer - update");  
             % Get the slice information
             sliceDim = obj.SliceDimension;
             currentSlice = obj.Slice3D(sliceDim);
@@ -311,11 +317,6 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
     
     %% Get/Set Methods
     methods
-        
-        function set.VolumeModel(obj,value)
-            obj.VolumeModel = value;
-            obj.onModelSet();
-        end
         
         function value = get.SliceDimension(obj)
             value = obj.View == ["xz" "yz" "xy"];

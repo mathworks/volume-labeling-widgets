@@ -1,17 +1,17 @@
-classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
+classdef (Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     % Base class for Volume visualization showing one or more slice planes on axes
     
-    % Issues:
+    % This class should be abstract, however:
     % g2282435 UsedInUpdate fails for props in abstract classes
 
-    % Copyright 2018-2021 The MathWorks, Inc.
+    % Copyright 2018-2020 The MathWorks, Inc.
     
     
     %% Properties
-    properties (Abstract, AbortSet)
+    properties (AbortSet)
         
         % Data model for the volume's data
-        VolumeModel (1,1) wt.model.VolumeModel
+        VolumeModel (1,1) wt.model.VolumeModel = wt.model.VolumeModel
         
     end %properties
     
@@ -31,7 +31,7 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
         function setup(obj)
             
             % Load default volume model for demonstration
-            obj.loadDefaultVolumeModel();
+            %obj.loadDefaultVolumeModel();
             
             % Call superclass setup first
             obj.setup@wt.abstract.BaseAxesViewer();       
@@ -51,16 +51,17 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     methods (Access = protected)
         
         function onModelChanged(obj,~)
+            % Triggered on VolumeModel changes
             
             % Subclass may override this and choose to redraw based on the
             % event, if necessary for more complex scenarios.
             obj.update();
-            %obj.markDirty();
             
         end %function
         
         
         function onModelSet(obj)
+            % Configure VolumeModel listener
             
             % Listen to changes in VolumeModel
             obj.VolumeModelChangedListener = event.listener(obj.VolumeModel,...
@@ -113,6 +114,31 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
         end %function
         
     end %methods
+        
     
+    
+    
+    %% Get/Set Methods
+    methods
+        
+        function set.VolumeModel(obj,value)
+            
+            % Update the value
+            obj.VolumeModel = value;
+            
+            % Update listener, etc.
+            obj.onModelSet();
+            
+            % Workaround for g228243 (fixed in R2021a)
+            if verLessThan('matlab','9.10') && ~isempty(obj.Axes)
+                try %#ok<TRYNC>
+                    disp('set.VolumeModel fix')
+                    obj.update();
+                end
+            end %if
+            
+        end %function
+        
+    end %methods
     
 end % classdef

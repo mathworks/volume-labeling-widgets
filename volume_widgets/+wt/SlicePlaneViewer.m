@@ -5,10 +5,7 @@ classdef SlicePlaneViewer < wt.abstract.BaseVolumeViewer
     
     
     %% Properties
-    properties (AbortSet, SetObservable)
-        
-        % Data model for the volume's data
-        VolumeModel
+    properties (AbortSet)
         
         % Current Slice to display in each dimension [x,y,z]
         Slice (1,3) double {mustBeInteger,mustBeFinite,mustBePositive} = [1 1 1]
@@ -99,11 +96,6 @@ classdef SlicePlaneViewer < wt.abstract.BaseVolumeViewer
     %% Get/Set Methods
     methods
         
-        function set.VolumeModel(obj,value)
-            obj.VolumeModel = value;
-            obj.onModelSet();
-        end
-        
         function value = get.Slice(obj)
             if isempty(obj.VolumeModel.DataSize)
                 value = obj.Slice;
@@ -111,7 +103,7 @@ classdef SlicePlaneViewer < wt.abstract.BaseVolumeViewer
                 value = min(obj.Slice, obj.VolumeModel.DataSize');
                 value(value<1) = 1;
             end
-        end
+        end %function
         
     end %methods
     

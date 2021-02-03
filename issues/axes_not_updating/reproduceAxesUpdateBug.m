@@ -20,9 +20,6 @@ volModel.WorldExtent = [
     0 150 % Z dimension in mm
     ];
 
-% Provide the volume data to the app
-obj.VolumeModel = volModel;
-
 % Find the axes handle
 ax = obj.Axes;
 
@@ -31,3 +28,7 @@ axpnl = ax.Parent;
 
 % Panel parent (grid layout)
 axgrid = axpnl.Parent;
+
+%% Provide the volume data to the app
+disp('set vol model');
+obj.VolumeModel = volModel;
