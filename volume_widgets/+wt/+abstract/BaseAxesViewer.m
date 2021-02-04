@@ -57,9 +57,6 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
             % g2430275 g2318236 Create a tiledlayout to properly size the axes
             obj.AxesLayout = tiledlayout(obj.AxesContainer,1,1);
             obj.AxesLayout.Padding = 'none';
-            obj.AxesLayout.TileSpacing = 'none';
-            obj.AxesLayout.Units = 'normalized';
-            obj.AxesLayout.Position = [0 0 1 1];
             
             % Create the axes
             obj.Axes = axes(obj.AxesLayout);
@@ -106,6 +103,11 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
         
         function set.ShowAxes(obj,value)
             obj.Axes.Visible = value;
+            if value
+                obj.AxesLayout.Padding = 'compact';
+            else
+                obj.AxesLayout.Padding = 'none';
+            end
         end %function
         
         
