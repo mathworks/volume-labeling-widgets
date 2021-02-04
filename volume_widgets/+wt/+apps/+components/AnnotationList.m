@@ -109,7 +109,7 @@ classdef AnnotationList < wt.abstract.BaseWidget
             switch evt.Property
                 
                 case {'Name','Color','IsVisible'}
-                    obj.update();
+                    obj.requestUpdate();
                     
                 case 'IsSelected'
                     obj.updateTableSelection();
