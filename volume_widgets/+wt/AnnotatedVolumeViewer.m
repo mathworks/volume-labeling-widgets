@@ -1,5 +1,5 @@
 classdef AnnotatedVolumeViewer < wt.VolumeViewer & wt.mixin.AnnotationViewer
-    %  Volume annotation widget with a single 2D view
+    %  Volume labeling/annotation widget with a single 2D view
     
     % Copyright 2018-2020 The MathWorks, Inc.
     
