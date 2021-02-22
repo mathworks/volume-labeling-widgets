@@ -42,7 +42,7 @@ classdef VolumeAnnotationApp < wt.apps.BaseAnnotationApp
             app.setup@wt.apps.BaseAnnotationApp();
             
             % Create the annotation viewer
-            app.AnnotationViewer = wt.AnnotatedVolumeQuadViewer(app.Grid);
+            app.AnnotationViewer = wt.VolumeQuadLabeler(app.Grid);
             app.AnnotationViewer.Layout.Column = 1;
             app.AnnotationViewer.Layout.Row = 2;
             app.AnnotationViewer.ShowAxes = true;

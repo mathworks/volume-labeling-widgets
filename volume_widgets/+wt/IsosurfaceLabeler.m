@@ -1,4 +1,4 @@
-classdef AnnotatedIsosurfaceViewer < wt.IsosurfaceViewer & wt.mixin.AnnotationViewer
+classdef IsosurfaceLabeler < wt.IsosurfaceViewer & wt.mixin.AnnotationViewer
     % Isosurface labeling/annotation widget with a single 3D view
     
     % Copyright 2018-2020 The MathWorks, Inc.

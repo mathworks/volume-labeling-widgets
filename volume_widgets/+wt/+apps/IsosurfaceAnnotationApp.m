@@ -31,7 +31,7 @@ classdef IsosurfaceAnnotationApp < wt.apps.BaseAnnotationApp
             app.setup@wt.apps.BaseAnnotationApp();
             
             % Create the annotation viewer
-            app.AnnotationViewer = wt.AnnotatedIsosurfaceViewer(app.Grid);
+            app.AnnotationViewer = wt.IsosurfaceLabeler(app.Grid);
             app.AnnotationViewer.Layout.Column = 1;
             app.AnnotationViewer.Layout.Row = 2;
             app.AnnotationViewer.ShowAxes = true;

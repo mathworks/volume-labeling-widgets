@@ -1,9 +1,21 @@
 % Author: Robyn Jackey (MathWorks Consulting)
 % Category: Volume Labeling Widgets
 
-%% Volume Viewer  - OK
+%% Volume Viewer
 appdesigner.customcomponent.configureMetadata(which("wt.VolumeViewer"))
 
 
-%% Annotated Volume Viewer  - NEVER COMPLETES
-appdesigner.customcomponent.configureMetadata(which("wt.AnnotatedVolumeViewer"))
+%% Volume Labeler
+appdesigner.customcomponent.configureMetadata(which("wt.VolumeLabeler"))
+
+
+%% Volume Quad Labeler
+appdesigner.customcomponent.configureMetadata(which("wt.VolumeQuadLabeler"))
+
+
+%% Isosurface Viewer
+appdesigner.customcomponent.configureMetadata(which("wt.IsosurfaceViewer"))
+
+
+%% Isosurface Labeler
+appdesigner.customcomponent.configureMetadata(which("wt.IsosurfaceLabeler"))

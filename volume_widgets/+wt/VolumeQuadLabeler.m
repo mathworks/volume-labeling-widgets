@@ -1,5 +1,5 @@
-classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
-    % Volume annotation widget with 2D views from 3 sides plus 3D slice planes
+classdef VolumeQuadLabeler < wt.VolumeLabeler
+    % Volume labeling/annotation widget with 2D views from 3 sides plus 3D slice planes
     
     % Copyright 2020-2021 The MathWorks, Inc.
     
@@ -47,7 +47,7 @@ classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
             obj.SideView.disableAxesTools();
             
             % Call superclass setup
-            obj.setup@wt.AnnotatedVolumeViewer();
+            obj.setup@wt.VolumeLabeler();
 
             % Configure Grid
             obj.Grid.ColumnWidth = {55,'3x','1x'};
@@ -81,7 +81,7 @@ classdef AnnotatedVolumeQuadViewer < wt.AnnotatedVolumeViewer
         function update(obj)
             
             % Call superclass update first
-            obj.update@wt.AnnotatedVolumeViewer();
+            obj.update@wt.VolumeLabeler();
             
             % What view and slice belongs in each volume viewer?
             idxView = find(obj.View == obj.VIEWORDER,1);

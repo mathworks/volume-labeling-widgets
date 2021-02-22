@@ -162,7 +162,7 @@ classdef (Abstract) AnnotationViewer < handle
             % Add this annotation to the list, so it can be displayed
             obj.addAnnotation(aObj);
             
-            % Select it in the AnnotatedVolumeViewer also
+            % Select it in the VolumeLabeler also
             obj.selectAnnotation(aObj);
             
             % Launch the tool

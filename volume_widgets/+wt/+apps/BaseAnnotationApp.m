@@ -41,7 +41,7 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         
         Toolbar wt.apps.components.AnnotationToolbar
         
-        AnnotationViewer wt.mixin.AnnotationViewer = wt.AnnotatedVolumeViewer.empty(0)
+        AnnotationViewer wt.mixin.AnnotationViewer = wt.VolumeLabeler.empty(0)
         AnnotationTable = gobjects(1,0)
         AnnotationList wt.apps.components.AnnotationList
         SelectButton (1,:) = gobjects(1,0)
