@@ -73,7 +73,7 @@ classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
             obj.Axes.Layer = 'top'; %put grid above data
             obj.Axes.PickableParts = 'all';
             obj.Axes.Visible = 'off';
-            obj.Axes.ClippingStyle = "rectangle";
+            %obj.Axes.ClippingStyle = "rectangle";
             obj.Axes.View = [-37.5 30];
             axis(obj.Axes,'tight');
             
