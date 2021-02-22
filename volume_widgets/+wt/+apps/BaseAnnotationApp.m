@@ -432,7 +432,8 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             title = "Annotation Tools";
             message = [
                 "Adding/Edit Point-based Annotations:"
-                "Left-click adds points or draws."
+                "Left-click adds points."
+                "Left-click and drag an existing point moves it."
                 "Right-click an existing point deletes it."
                 "Double-click finishes"
                 ""
