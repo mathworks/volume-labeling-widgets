@@ -105,7 +105,7 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             app.Toolbar.MaskBrushSizeSlider.ValueChangingFcn = @(h,e)onBrushChanged(app,e);
             app.Toolbar.HelpAddButton.ButtonPushedFcn = @(h,e)onHelpButton(app);
 
-            app.AnnotationList = wt.apps.components.AnnotationList(app.Grid);
+            app.AnnotationList = wt.apps.components.AnnotationLabelsList(app.Grid);
             app.AnnotationList.Layout.Column = 2;
             app.AnnotationList.Layout.Row = 2;
             app.AnnotationList.SelectionChangedFcn = @(h,e)onSelectionChanged(app,e);

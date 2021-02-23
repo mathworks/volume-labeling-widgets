@@ -101,6 +101,23 @@
         400,
         400
       ]
+    },
+    {
+      "className": "wt.AnnotationLabelsList",
+      "componentName": "Annotation Labels List",
+      "description": "Tabular list of annotation labels, showing name, color, type, and visibility.",
+      "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAB3RJTUUH5QIXEBgSUNdWtgAABJtJREFUSIl9lU1vHMcRhp/+2p3d5VDaoSiKywhUEAkLQVLCgwxbFwM6KacgySm/K9cgx9zzE3QRIAikfSBAYCEQsExDptfyDpYccmZnp7t8mNmRKMkuoNHz0f2+VfV2V6nDw0NZW1sjhABAWZZ0Oh0+ZyEEQgg45xCRz6752Ozm5iZJkuC9R0QoioK1tbUrACKCiOC9x3vPYDDAe38FaLXmE4IQAt77NoLlcsnz5895+PAhWmustTjncM4BkKYpr1+/ZjQaYYxpI4qiCKXUpwQfe7EC29/fp6oqzs7O2Nvb4/79+22EL1++ZGtri6IoMMZQVRXPnj1jfX29dfSzBCuSJEm4uLjAWsuNGzfalIkI/X6fu3fvkmUZN2/epNfrcX5+/pu6qLdv38pwOCSE0HoYRRGz2YxOp8P6+nq70XtPVVX0+/1WA6XU7wpuVydjRbCaNzY2WmFXFkKgExzdyiHySfCfJ1gul5Rl2QJUVUUIgeVyiYhc8VC88G//P07Mj+B1k4OPc9zMRkEQVJqmkuc5VVURxzHOOSaTCQ8ePMAYg1IKY0wTAjzO/8VB8RI2+ivRIAClgFNgG8a3Jdx02KqqGAwGTCYTsixjZ2eHk5MT5vM5IQTSNCVJEp4+fYpC0c0dHAr4svESSKsadNNB7uHrNcgVlA5treXVq1ccHx+zvb1NCIG9vT2MMSwWC5Ik4fz8vD5+Crj0MPegqcdS6iHAma9JC4FYgwYrIty+fZvxeIyIEEURu7u7Vy6S975Ok4dqS8PfYxBXEy6bFOlGD6PgsIA/diASbJ7nxHFMVVWUZdmeIqhv9couLi7Aw5+yhEs3qglWthJ6JfAIKIBLUKenpxLHMSKC1pqiKFBK0ev12m8rW4pQ/eOfRAfftJiqGaHB181zCTjAOudI05Qsy+j1eiRJwosXLxiPxyilGA6HeO9RShENBoQ05fvpKZsNcA4sgApYpy4N14AJcIdGA601x8fHjMfjNt9HR0d477HWkuc5lfd8+dVXdJ1lvwHSgAF+aciuN2R/A+Lmv7XWcnBwQBRF3Lp1C+89T5484c2bNywWC6bTKXEcs7Ozw/XhkDIE/vIB+BmQAJ3mfQ14A/wIbAFqNptJnucopXDOEccx3W63uUNClmUMBgO01nWev/wC82qf37MUGK40Ojo6kl6vRwgBrTXe+ysdrS0VIgTg2//+n+zkZxS/XeAMEJRGJGCLoqAoirYXAGRZRrfbxTnXNiMFaIT/3Pkr+72KaHAN+KCLhQpQKOMQ8VTznzCDpK6mo9GI2WxGmqbEccx8PidNU8qyZHd3lyRJkBBQSnCLDP3DMWINSmnwS0KR1Z4Phogv6Y7uo+dTrIA1xjCZTJhOpzx69IjFYsHp6Smz2Yx3796xsbFRl24ApQnFBeXP36EHMSgN4vGXc5TShOIctKGzda+5fFJ3tCiKePz4MUopvPdsb29z7949QghEUfS+DYaA6V8j/vMzrFQopQjLAoIHbeoUWUc5Pcb0r6GjuCaI45jLy0tEBGsto9HofQ9oWmVb9rVBOYvW9Ukz3QEoVZftegfRHx6AMiCBXwHAZYiXMafRowAAAABJRU5ErkJggg==",
+      "category": "Volume Labeling Widgets",
+      "authorName": "Robyn Jackey (MathWorks Consulting)",
+      "authorEmail": "",
+      "version": "2.0",
+      "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAAB3RJTUUH5QIXEBkKWqD/oQAAAOlJREFUeJzt0EENACEQwMDj/ItdCVigL0Iyo6DpmpmPM//tgJeYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVmBWYFZgVbCQbA5h4ZYqmAAAAAElFTkSuQmCC",
+      "defaultPosition": [
+        1,
+        1,
+        200,
+        300
+      ]
     }
   ],
   "schema": 1,

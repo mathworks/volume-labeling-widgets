@@ -19,3 +19,7 @@ appdesigner.customcomponent.configureMetadata(which("wt.IsosurfaceViewer"))
 
 %% Isosurface Labeler
 appdesigner.customcomponent.configureMetadata(which("wt.IsosurfaceLabeler"))
+
+
+%% Labels List
+appdesigner.customcomponent.configureMetadata(which("wt.AnnotationLabelsList"))
