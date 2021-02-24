@@ -56,8 +56,8 @@ classdef BaseLabelingApp < wt.apps.BaseApp
     end %properties
 
 
-    % Private properties
-    properties (Transient, NonCopyable, Access = private)
+    % Protected properties
+    properties (Transient, NonCopyable, Access = protected)
 
         % Most recent directory path for save/load
         LastPath (1,1) string {mustBeFolder} = userpath()
@@ -230,42 +230,36 @@ classdef BaseLabelingApp < wt.apps.BaseApp
 
 
     % Callbacks that handle component events
-    methods (Access = private)
+    methods (Access = protected)
 
-        % Button pushed function: LoadButton
-        function LoadButtonPushed(app, event)
+        % Code that executes after component creation
+        function setup(app)
 
-            % Prompt for a filename
-            pathName = uigetdir(app.LastPath, "Import DICOM Volume");
+            % Send app object to workspace (for debugging)
+            assignin("base","app",app);
 
-            % Return now if the user cancelled
-            if isequal(pathName,0)
-                return
-            end
+            % Create the components
+            app.createComponents();
 
-            % Trap errors
-            try
-                % Load the dicom file
-                volModel = wt.model.VolumeModel.fromDicomFile(pathName);
+            %--- Attach listeners ---%
 
-                % Keep track of the last directory used
-                app.LastPath = pathName;
+            % When the list of annotation models is changed
+            app.AnnotationModelChangedListener = event.listener(...
+                app.AnnotationViewer, "AnnotationModelChanged", ...
+                @(src,evt)app.update() );
 
-                % Store the new volume
-                app.VolumeModel = volModel;
+            % When an annotation is selected in the viewer
+            app.AnnotationSelectedListener = event.listener(...
+                app.AnnotationViewer, "AnnotationSelected", ...
+                @(src,evt)app.update() );
 
-            catch err
-
-                % Send error to a dialog
-                dlg = errordlg(['Not a valid dicom volume. ' err.message]);
-                uiwait(dlg);
-
-            end
-
-            % Update the display
-            app.update();
+            % When the data within an annotation model is changed
+            app.AnnotationChangedListener = event.listener(...
+                app.AnnotationViewer, "AnnotationChanged", ...
+                @(src,evt)app.onAnnotationModelChanged(evt) );
 
         end
+
 
         % Button pushed function: ExportButton
         function ExportButtonPushed(app, event)
@@ -647,24 +641,30 @@ classdef BaseLabelingApp < wt.apps.BaseApp
         end
     end
 
+
+    % Abstract Protected Methods
+    methods (Abstract, Access = protected)
+
+        LoadButtonPushed(app, event)
+
+    end %methods
+
+
     % Component initialization
-    methods (Access = protected)
+    methods (Access = private)
 
-        function setup(app)
-
-            % Customize the figure icon
-            app.Figure.Icon = 'toolbox_icon.png';
+        % Create UIFigure and components
+        function createComponents(app)
 
             % Create Grid
             app.Grid.ColumnWidth = {'1x', 100, 225};
             app.Grid.RowHeight = {160, '1x'};
-            app.Grid.Scrollable = 'on';
             app.Grid.BackgroundColor = [0.149 0.149 0.149];
 
             % Create ToolsGridLayout
             app.ToolsGridLayout = uigridlayout(app.Grid);
             app.ToolsGridLayout.ColumnWidth = {'1x'};
-            app.ToolsGridLayout.RowHeight = {'fit', 'fit', 'fit', 25};
+            app.ToolsGridLayout.RowHeight = {25, 'fit', 'fit', 'fit'};
             app.ToolsGridLayout.Padding = [0 0 0 0];
             app.ToolsGridLayout.Layout.Row = [1 2];
             app.ToolsGridLayout.Layout.Column = 2;
@@ -899,23 +899,6 @@ classdef BaseLabelingApp < wt.apps.BaseApp
             app.ImportButton.Layout.Row = 3;
             app.ImportButton.Layout.Column = 1;
             app.ImportButton.Text = 'Import Labels';
-
-            %--- Attach listeners ---%
-
-            % When the list of annotation models is changed
-            app.AnnotationModelChangedListener = event.listener(...
-                app.AnnotationViewer, "AnnotationModelChanged", ...
-                @(src,evt)app.update() );
-
-            % When an annotation is selected in the viewer
-            app.AnnotationSelectedListener = event.listener(...
-                app.AnnotationViewer, "AnnotationSelected", ...
-                @(src,evt)app.update() );
-
-            % When the data within an annotation model is changed
-            app.AnnotationChangedListener = event.listener(...
-                app.AnnotationViewer, "AnnotationChanged", ...
-                @(src,evt)app.onAnnotationModelChanged(evt) );
 
         end
     end

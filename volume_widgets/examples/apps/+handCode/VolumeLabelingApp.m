@@ -30,19 +30,17 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
 
         function setup(app)
 
-            % Send app object to workspace (for debugging)
-            assignin("base","app",app);
-
-            % Call superclass update
-            app.setup@handCode.BaseLabelingApp();
-
-            % Customize the app name
-            app.Name = 'Volume Labeling - Example MATLAB App';
+            % Customize the app name and icon
+            app.Name = 'Volume Labeling - Example Hand-Coded MATLAB App';
+            app.Figure.Icon = 'volume_labeling_toolbox_icon.png';
 
             % Create AnnotationViewer
             app.AnnotationViewer = wt.VolumeQuadLabeler(app.Grid);
             app.AnnotationViewer.Layout.Row = [1 2];
             app.AnnotationViewer.Layout.Column = 1;
+
+            % Call superclass method
+            app.setup@handCode.BaseLabelingApp();
 
             % Create MaskPanel
             app.MaskPanel = uipanel(app.ToolsGridLayout);
@@ -124,7 +122,7 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
 
         function update(app)
 
-            % Call superclass update
+            % Call superclass method
             app.update@handCode.BaseLabelingApp();
 
             % What tool is currently selected?
@@ -186,6 +184,59 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
             end
 
         end %function
+
+
+        % Button pushed function: LoadButton
+        function LoadButtonPushed(app, ~)
+
+            % Prompt for a filename
+            pathName = uigetdir(app.LastPath, "Import DICOM Volume");
+
+            % Return now if the user cancelled
+            if isequal(pathName,0)
+                return
+            end
+
+            % Trap errors
+            try
+                % Load the dicom file
+                volModel = wt.model.VolumeModel.fromDicomFile(pathName);
+
+                % Keep track of the last directory used
+                app.LastPath = pathName;
+
+                % Store the new volume
+                app.VolumeModel = volModel;
+
+            catch err
+
+                % Send error to a dialog
+                dlg = errordlg(['Not a valid dicom volume. ' err.message]);
+                uiwait(dlg);
+
+            end
+
+            % Update the display
+            app.update();
+
+        end %function
+
+    end %methods
+
+
+    % Get/Set methods
+    methods
+
+        function value = get.VolumeModel(app)
+            value = app.AnnotationViewer.VolumeModel;
+        end
+
+        function set.VolumeModel(app, value)
+            if ~isequal(app.AnnotationViewer.VolumeModel, value)
+                app.deleteAllAnnotations();
+                app.AnnotationViewer.VolumeModel = value;
+            end
+        end
 
     end %methods
 
