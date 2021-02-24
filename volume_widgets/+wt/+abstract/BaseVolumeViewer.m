@@ -28,9 +28,9 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
         function setup(obj)
             
             % Load default volume model for demonstration
-            obj.loadDefaultVolumeModel();
+            obj.loadDefaultModel();
             
-            % Call superclass setup first
+            % Call superclass setup
             obj.setup@wt.abstract.BaseAxesViewer();      
             
             % Set initial listener
@@ -44,36 +44,7 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     %% Protected Methods
     methods (Access = protected)
         
-        
-        function onModelSet(obj)
-            % Configure VolumeModel listener
-            
-            % Listen to changes in VolumeModel
-            obj.VolumeModelChangedListener = event.listener(obj.VolumeModel,...
-                'PropertyChanged',@(h,e)onModelChanged(obj,e) );
-            
-        end %function
-        
-        
-        function img = createImagePlot(obj)
-            % Creates a default surface plot for displaying imagery
-            
-            img = matlab.graphics.primitive.Surface(...
-                    'Parent',obj.Axes,...
-                    'XData',[],...
-                    'YData',[],...
-                    'ZData',[],...
-                    'CData',[],...
-                    'CDataMapping','scaled',...
-                    'FaceColor','texturemap',...
-                    'FaceAlpha',1,...
-                    'HitTest','off',...
-                    'EdgeColor','none');
-            
-        end %function
-        
-        
-        function loadDefaultVolumeModel(obj)
+        function loadDefaultModel(obj)
             % Populates the default volume model for demonstration
             
             % Load default volume data
@@ -96,6 +67,48 @@ classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
             % Store the result
             obj.VolumeModel = volModel;
             
+        end %function
+        
+        
+        function img = createImagePlot(obj)
+            % Creates a default surface plot for displaying imagery
+            
+            img = matlab.graphics.primitive.Surface(...
+                    'Parent',obj.Axes,...
+                    'XData',[],...
+                    'YData',[],...
+                    'ZData',[],...
+                    'CData',[],...
+                    'CDataMapping','scaled',...
+                    'FaceColor','texturemap',...
+                    'FaceAlpha',1,...
+                    'HitTest','off',...
+                    'EdgeColor','none');
+            
+        end %function
+        
+        
+        function onModelChanged(obj,~)
+            % Triggered on changes to the data in the model
+
+            % Subclass may override this and choose to redraw based on the
+            % event, if necessary for more complex scenarios.
+            obj.requestUpdate();
+
+        end %function
+
+    end %methods
+
+
+    %% Private Methods
+    methods (Access = private)
+
+        function onModelSet(obj)
+
+            % Listen to changes in VolumeModel
+            obj.VolumeModelChangedListener = event.listener(obj.VolumeModel,...
+                'PropertyChanged',@(h,e)onModelChanged(obj,e) );
+
         end %function
         
     end %methods

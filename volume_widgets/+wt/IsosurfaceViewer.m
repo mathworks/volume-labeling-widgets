@@ -21,6 +21,9 @@ classdef IsosurfaceViewer < wt.abstract.BaseIsosurfaceViewer
             % Call superclass setup first
             obj.setup@wt.abstract.BaseIsosurfaceViewer();
             
+            % Set default size
+            obj.Position = [10 10 400 400];
+            
             % Customize axes toolbar
             axtoolbar(obj.Axes,{'export','rotate','zoomin','zoomout','pan','restoreview'});
             

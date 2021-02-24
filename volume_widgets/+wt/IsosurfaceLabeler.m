@@ -80,6 +80,10 @@ classdef IsosurfaceLabeler < wt.IsosurfaceViewer & wt.mixin.AnnotationViewer
                 hitName = "";
             end %try
             
+            % Remove common package names
+            removeStrings = "wt.model.";
+            hitName = erase(hitName, removeStrings);
+            
             % Update the display
             obj.HoverLabel.Text = hitName;
             

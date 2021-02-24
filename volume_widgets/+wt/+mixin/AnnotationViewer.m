@@ -225,6 +225,7 @@ classdef (Abstract) AnnotationViewer < handle
                 prop = findprop(thisTool,'CurrentHitObject');
                 obj.MouseHoverListener = event.proplistener(obj.Tool,...
                     prop,'PostSet',@(h,e)onMouseHoverChanged(obj,e) );
+                
             end %if
             
             % Select the annotation
@@ -354,20 +355,9 @@ classdef (Abstract) AnnotationViewer < handle
         end %function
         
         
-        function onMouseHoverChanged(obj,~)
+        function onMouseHoverChanged(~,~)
             % Occurs when an active tool hovers over an object
-            
-%             % For debug - what was hit?     
-%             hitObj = obj.CurrentTool.CurrentHitObject;
-%             if isempty(hitObj)
-%                 disp('empty');
-%             elseif isempty(hitObj.UserData)
-%                 disp(class(hitObj));
-%             elseif isprop(hitObj.UserData,'Name')
-%                 disp(hitObj.UserData.Name);
-%             else
-%                 disp(class(hitObj.UserData));
-%             end
+            % Subclass may override this
             
         end %function
         
