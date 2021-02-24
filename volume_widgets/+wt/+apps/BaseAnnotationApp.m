@@ -120,13 +120,13 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                 "AnnotationModel", app.AnnotationModel);
             
             % Toolbar mode?
-            selTool = app.CurrentTool;
-            if isempty(selTool)
+            
+            if isempty(app.CurrentTool)
                 toolbarMode = "";
-            elseif isa(selTool,'wt.tool.Select')
+            elseif isa(app.CurrentTool,'wt.tool.Select')
                 toolbarMode = "Select";
             else
-                currentMode = regexp(selTool.AnnotationModel.Type,...
+                currentMode = regexp(app.CurrentTool.AnnotationModel.Type,...
                     '.(\w+)Annotation$','tokens','once');
                 toolbarMode = string(currentMode);
             end
@@ -135,15 +135,15 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
             annIsSelected = ~isempty(app.SelectedAnnotationModel);
             
             % Erase mode?
-            if isprop(selTool,"Erase")
-                maskEraseOn = selTool.Erase;
+            if isprop(app.CurrentTool,"Erase")
+                maskEraseOn = app.CurrentTool.Erase;
             else
                 maskEraseOn = false;
             end
             
             % Brush size?
-            if isprop(selTool,"BrushSize")
-                brushSize = selTool.BrushSize;
+            if isprop(app.CurrentTool,"BrushSize")
+                brushSize = app.CurrentTool.BrushSize;
             else
                 brushSize = 1;
             end
@@ -169,12 +169,12 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         function onColorChanged(app,e)
             
             % Get the new color
-            newColor = e.Value;
+            value = e.Value;
             
             % Update the selected annotation
             aObj = app.SelectedAnnotationModel;
             if ~isempty(aObj)
-                set(aObj,'Color',newColor);
+                set(aObj,'Color',value);
             end
             
             % Update the view
@@ -186,14 +186,14 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         function onBrushChanged(app,e)
             
             % Find the brush
-            selTool = app.CurrentTool;
-            if isscalar(selTool) && isa(selTool,'wt.tool.Brush')
-                newSize = max(ceil(e.Value),1);
+            value = e.Value;
+            if isscalar(app.CurrentTool) && isa(app.CurrentTool,'wt.tool.Brush')
+                value = max(ceil(value),1);
                 % Must be odd number
-                if newSize > 3 && ~mod(newSize,2)
-                    newSize = newSize + 1;
+                if value > 3 && ~mod(value,2)
+                    value = value + 1;
                 end
-                selTool.BrushSize = newSize;
+                app.CurrentTool.BrushSize = value;
             end
             
             app.update();
@@ -325,9 +325,9 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                 case app.Toolbar.SelectButton
                     
                     % Is select already on?
-                    selTool = app.CurrentTool;
-                    if isscalar(selTool) && isa(selTool,'wt.tool.Select') && selTool.IsStarted
-                        selTool.stop();
+                    
+                    if isscalar(app.CurrentTool) && isa(app.CurrentTool,'wt.tool.Select') && app.CurrentTool.IsStarted
+                        app.CurrentTool.stop();
                     else
                         app.AnnotationViewer.launchSelectTool();
                     end
@@ -400,23 +400,23 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
         function onMaskToolbarButton(app,e)
             
             % Get selected tool
-            selTool = app.CurrentTool;
+            
             
             % Which button?
             switch e.Button
                 
                 case app.Toolbar.MaskEraseButton
-                    if isscalar(selTool) && isa(selTool,'wt.tool.Brush')
-                        selTool.Erase = ~selTool.Erase;
+                    if isscalar(app.CurrentTool) && isa(app.CurrentTool,'wt.tool.Brush')
+                        app.CurrentTool.Erase = ~app.CurrentTool.Erase;
                     end
                     
                 case app.Toolbar.MaskInvertButton
-                    if isscalar(selTool) && isa(selTool,'wt.tool.Brush')
+                    if isscalar(app.CurrentTool) && isa(app.CurrentTool,'wt.tool.Brush')
                         % slice = repmat({':'},1,3);
                         % idxSliceDim = app.AnnotationViewer.h.MainView.SliceDimension;
                         % slice{idxSliceDim} = app.AnnotationViewer.h.MainView.Slice;
-                        % selTool.invert(slice);
-                        selTool.invert();
+                        % app.CurrentTool.invert(slice);
+                        app.CurrentTool.invert();
                     end
                     
             end %switch e.Button
@@ -443,7 +443,7 @@ classdef BaseAnnotationApp < wt.apps.BaseApp & wt.mixin.FontColorable
                 "Double-click finishes"
                 ];
             
-            % Create an error dialog
+            % Create a dialog
             uialert(app.Figure,message,title,'Icon','info');
             
         end %function

@@ -16,7 +16,7 @@ classdef AnnotationLabelsList < wt.abstract.BaseWidget
     
     
     %% Properties
-    properties (AbortSet)
+    properties (AbortSet, UsedInUpdate = false)
         
         % Annotations
         AnnotationModel (1,:) wt.model.BaseAnnotationModel
@@ -171,6 +171,7 @@ classdef AnnotationLabelsList < wt.abstract.BaseWidget
         function set.AnnotationModel(obj,value)
             obj.AnnotationModel = value;
             obj.attachAnnotationListeners();
+            obj.requestUpdate();
         end
         
     end %methods
