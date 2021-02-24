@@ -1,4 +1,4 @@
-classdef (Abstract, Hidden) BaseVolumeViewer < wt.abstract.BaseAxesViewer
+classdef (Abstract) BaseVolumeViewer < wt.abstract.BaseAxesViewer
     % Base class for Volume visualization showing one or more slice planes on axes
     
     % Copyright 2018-2021 The MathWorks, Inc.

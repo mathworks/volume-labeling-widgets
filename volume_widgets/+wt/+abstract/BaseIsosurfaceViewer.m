@@ -1,4 +1,4 @@
-classdef (Hidden) BaseIsosurfaceViewer < wt.abstract.BaseAxesViewer
+classdef (Abstract) BaseIsosurfaceViewer < wt.abstract.BaseAxesViewer
     % Base class for Isosurface visualization on axes
 
     % Copyright 2018-2020 The MathWorks, Inc.

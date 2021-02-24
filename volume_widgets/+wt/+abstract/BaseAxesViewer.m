@@ -1,4 +1,4 @@
-classdef (Abstract, Hidden) BaseAxesViewer < wt.abstract.BaseWidget
+classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
     % Base class for visualizations containing an axes
     
     % Copyright 2018-2020 The MathWorks, Inc.
