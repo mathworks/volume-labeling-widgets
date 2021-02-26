@@ -43,6 +43,9 @@ classdef SlicePlaneViewer < wt.abstract.BaseVolumeViewer
             % Call superclass setup first
             obj.setup@wt.abstract.BaseVolumeViewer(); 
             
+            % Set default size
+            obj.Position = [10 10 400 400];
+            
             % Specify axes interactions
             enableDefaultInteractivity(obj.Axes)
             obj.Axes.Interactions = rotateInteraction;

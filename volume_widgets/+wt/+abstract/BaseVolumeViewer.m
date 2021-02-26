@@ -52,10 +52,10 @@ classdef (Abstract) BaseVolumeViewer < wt.abstract.BaseAxesViewer
             if isempty(volumeData)
                 s = load("mristack.mat");
                 volumeData = flip(s.mristack, 3);
-                volumeData(:,:,16:end) = [];
+                volumeData(:,:,16:end) = []; % Reduce the size
             end
             
-            % Create a default volume model
+            % Create a new volume model with the cached image data
             volModel = wt.model.VolumeModel;
             volModel.ImageData = volumeData;
             volModel.WorldExtent = [

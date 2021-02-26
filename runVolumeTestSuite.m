@@ -5,8 +5,7 @@ function [testSuite, result] = runVolumeTestSuite()
 
 
 %% Create test suite
-testSuite = matlab.unittest.TestSuite.fromProject(currentProject);
-% testSuite = matlab.unittest.TestSuite.fromPackage('wt.test.volume');
+testSuite = matlab.unittest.TestSuite.fromPackage('wt.test.volume');
 
 
 %% Run tests
