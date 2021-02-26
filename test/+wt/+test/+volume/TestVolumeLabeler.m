@@ -1,4 +1,4 @@
-classdef TestAnnotatedVolumeViewer < wt.test.volume.BaseViewerTest & ...
+classdef TestVolumeLabeler < wt.test.volume.BaseViewerTest & ...
         wt.test.volume.BaseVolumeTest
     % Unit Test - Implements a unit test for a widget or component
     
@@ -6,7 +6,7 @@ classdef TestAnnotatedVolumeViewer < wt.test.volume.BaseViewerTest & ...
     
     
     %% Helper Methods
-    methods (Access = private)
+    methods (Access = protected)
         
         function w = createAnnotationViewer(testCase)
             

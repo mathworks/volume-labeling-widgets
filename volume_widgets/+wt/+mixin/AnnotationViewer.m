@@ -361,12 +361,6 @@ classdef (Abstract) AnnotationViewer < handle
             
         end %function
         
-    end %methods
-    
-    
-    
-    %% Private Methods
-    methods (Access=private)
         
         function onAnnotationModelSet(obj, oldValue)
             

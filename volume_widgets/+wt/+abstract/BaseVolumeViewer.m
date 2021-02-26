@@ -96,12 +96,7 @@ classdef (Abstract) BaseVolumeViewer < wt.abstract.BaseAxesViewer
             obj.requestUpdate();
 
         end %function
-
-    end %methods
-
-
-    %% Private Methods
-    methods (Access = private)
+        
 
         function onModelSet(obj)
 
