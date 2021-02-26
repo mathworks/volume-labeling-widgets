@@ -1,4 +1,4 @@
-classdef BaseLabelingApp < wt.apps.BaseApp
+classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
 
     % Properties that correspond to app components
     properties (Access = public)

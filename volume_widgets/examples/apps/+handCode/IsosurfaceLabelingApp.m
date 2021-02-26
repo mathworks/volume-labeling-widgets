@@ -54,6 +54,7 @@ classdef IsosurfaceLabelingApp < handCode.BaseLabelingApp
             % Trap errors
             try
                 % Keep track of the last directory used
+                pathName = fileparts(fileName);
                 app.LastPath = pathName;
 
                 % Load the file

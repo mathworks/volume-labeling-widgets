@@ -26,7 +26,7 @@ https://github.com/mathworks/volume-labeling-widgets/releases
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</param.description>
     <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
-    <param.version>2.0.2</param.version>
+    <param.version>2.1.0</param.version>
     <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -111,6 +111,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <file>C:\Work\volume-labeling-widgets\volume_widgets\doc</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\examples</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\icons</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\resources</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded>
