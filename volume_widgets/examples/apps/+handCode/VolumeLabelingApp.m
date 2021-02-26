@@ -5,6 +5,7 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
     % using object-oriented programming.
 
     % Copyright 2020-2021 The MathWorks, Inc.
+    %#ok<*INUSD>
 
 
     %% Public properties
@@ -21,6 +22,14 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
 
         % Listeners to mouse wheel to change slice
         MouseWheelListener event.listener
+        
+        MaskPanel                   matlab.ui.container.Panel
+        MaskGridLayout              matlab.ui.container.GridLayout
+        MaskBrushSizeLabel          matlab.ui.control.Label
+        MaskInvertButton            matlab.ui.control.Button
+        MaskBrushSizeSlider         matlab.ui.control.Slider
+        MaskEraseButton             matlab.ui.control.StateButton
+        MaskBrushButton             matlab.ui.control.StateButton
 
     end %properties
 
@@ -220,6 +229,110 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
             app.update();
 
         end %function
+
+        % Value changed function: MaskBrushButton
+        function MaskBrushButtonValueChanged(app, event)
+
+            % Get the new value
+            value = app.MaskBrushButton.Value;
+
+            % Was the button turned on or off?
+            if value
+
+                % Make a new annotation
+                % For a mask, we need to match the size of the
+                % corresponding volume model on creation
+                a = wt.model.MaskAnnotation.fromVolumeModel(...
+                    app.VolumeModel,...
+                    'Name',app.getNewAnnotationName(),...
+                    'Color',app.getNewAnnotationColor(),...
+                    'Alpha',0.5);
+
+                % Add the annotation to the viewer and launch the tool
+                app.AnnotationViewer.addInteractiveAnnotation(a);
+
+            else
+
+                % Turned off, so finish the annotation
+                app.AnnotationViewer.finishAnnotation();
+
+            end
+
+            % Update the display
+            app.update();
+
+        end
+
+        % Value changed function: MaskEraseButton
+        function MaskEraseButtonValueChanged(app, event)
+
+            % Get the new value
+            value = app.MaskEraseButton.Value;
+
+            % Tell the mask brush tool to switch to erase mode
+            app.AnnotationViewer.CurrentTool.Erase = value;
+
+            % Update the display
+            app.update();
+
+        end
+
+        % Button pushed function: MaskInvertButton
+        function MaskInvertButtonPushed(app, event)
+
+            % Tell the mask brush tool to invert the mask
+            app.AnnotationViewer.CurrentTool.invert();
+
+            % Update the display
+            app.update();
+
+        end
+
+        % Callback function: MaskBrushSizeSlider, MaskBrushSizeSlider
+        function MaskBrushSizeSliderValueChanged(app, event)
+
+            % Get the new value
+            value = event.Value;
+
+            % Must integer
+            value = max(ceil(value), 1);
+
+            % Should be an odd number if > 2
+            if value > 2 && ~mod(value,2)
+                value = value + 1;
+            end
+
+            % Tell the mask brush tool to update brush size
+            app.AnnotationViewer.CurrentTool.BrushSize = value;
+
+            % Update the display
+            app.update();
+
+        end
+        
+        % Button pushed function: ControlsButton
+        function ControlsButtonPushed(app, event)
+
+            % Pop up the help for mouse controls
+            title = "Annotation Tools";
+            message = [
+                "Adding/Edit Point-based Annotations:"
+                "Left-click adds points."
+                "Left-click and drag an existing point moves it."
+                "Right-click an existing point deletes it."
+                "Double-click finishes"
+                ""
+                "Adding/Edit Brush-based Annotations:"
+                "Left button draws."
+                "Right button erases."
+                "Double-click finishes"
+                ""
+                "Note: Editing will be temporarily disabled while in a zoom/pan/rotate mode."
+                ];
+
+            uialert(app.Figure, message, title, 'Icon', 'info');
+
+        end
 
     end %methods
 
