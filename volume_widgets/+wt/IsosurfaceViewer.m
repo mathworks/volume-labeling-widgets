@@ -1,7 +1,7 @@
 classdef IsosurfaceViewer < wt.abstract.BaseIsosurfaceViewer
     % Isosurface visualization widget with a single 3D view
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2021 The MathWorks, Inc.
     
     
     %% Internal Properties
@@ -13,6 +13,7 @@ classdef IsosurfaceViewer < wt.abstract.BaseIsosurfaceViewer
     end %properties
     
     
+    
     %% Setup
     methods (Access = protected)
         function setup(obj)
@@ -20,23 +21,15 @@ classdef IsosurfaceViewer < wt.abstract.BaseIsosurfaceViewer
             % Call superclass setup first
             obj.setup@wt.abstract.BaseIsosurfaceViewer();
             
-        end %function
-    end %methods
-    
- 
-    
-    %% Constructor
-    methods 
-        function obj = IsosurfaceViewer(varargin)
+            % Set default size
+            obj.Position = [10 10 400 400];
             
-            obj@wt.abstract.BaseIsosurfaceViewer(varargin{:});
-            
-            % Create the custom axes toolbar
-            % This must be done after setup due to g2318236
+            % Customize axes toolbar
             axtoolbar(obj.Axes,{'export','rotate','zoomin','zoomout','pan','restoreview'});
             
         end %function
     end %methods
+    
     
     
     %% Update

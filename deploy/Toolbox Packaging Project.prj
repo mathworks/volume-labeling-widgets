@@ -1,7 +1,7 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
   <configuration build-checksum="1660161192" file="C:\Work\volume-labeling-widgets\deploy\Toolbox Packaging Project.prj" location="C:\Work\volume-labeling-widgets\deploy" name="Toolbox Packaging Project" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>Volume Labeling Widgets - MATLAB App Building Components</param.appname>
-    <param.authnamewatermark>MathWorks Consulting</param.authnamewatermark>
+    <param.authnamewatermark>Robyn Jackey (MathWorks Consulting)</param.authnamewatermark>
     <param.email>consulting@mathworks.com</param.email>
     <param.company>MathWorks</param.company>
     <param.summary>Enable custom workflows for labeling volumes and isosurfaces in your MATLAB app.</param.summary>
@@ -26,7 +26,7 @@ https://github.com/mathworks/volume-labeling-widgets/releases
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</param.description>
     <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
-    <param.version>2.0.2</param.version>
+    <param.version>2.1.0</param.version>
     <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -47,7 +47,10 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.examples />
     <param.demosxml />
     <param.apps />
-    <param.registered.apps />
+    <param.registered.apps>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\examples\apps\IsosurfaceLabelingExample.mlapp</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\examples\apps\VolumeLabelingExample.mlapp</file>
+    </param.registered.apps>
     <param.docs />
     <param.getting.started.guide>C:\Work\volume-labeling-widgets\volume_widgets\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
@@ -55,7 +58,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons>
       <requiredaddons>
-        <requiredAddOn earliest="2.0.2" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - MATLAB App Building Components</requiredAddOn>
+        <requiredAddOn earliest="2.1.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - MATLAB App Building Components</requiredAddOn>
       </requiredaddons>
     </param.required.addons>
     <param.matlab.project.id />
@@ -74,7 +77,6 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
-      <param.authnamewatermark />
       <param.email />
       <param.company />
       <param.output />
@@ -84,7 +86,6 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <param.examples />
       <param.demosxml />
       <param.apps />
-      <param.registered.apps />
       <param.docs />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
@@ -108,9 +109,11 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <fileset.rootfiles>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\+wt</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\demos.xml</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\DesktopToolset.xml</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\doc</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\examples</file>
       <file>C:\Work\volume-labeling-widgets\volume_widgets\icons</file>
+      <file>C:\Work\volume-labeling-widgets\volume_widgets\resources</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded>

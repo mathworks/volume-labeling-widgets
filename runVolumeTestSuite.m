@@ -15,3 +15,11 @@ result = testSuite.run();
 %% Display Results
 ResultTable = result.table();
 disp(ResultTable);
+
+
+%% Did results all pass?
+if all([result.Passed])
+    disp("All Tests Passed");
+else
+    warning("volume:runTestSuite","Not all tests passed. Check results.");
+end

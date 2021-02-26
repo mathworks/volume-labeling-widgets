@@ -61,22 +61,6 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         
     end %properties
     
- 
-    
-    %% Constructor
-    methods 
-        function obj = VolumeViewer(varargin)
-            
-            obj@wt.abstract.BaseVolumeViewer(varargin{:});
-            
-            % Create the custom axes toolbar
-            % This must be done after setup due to g2318236
-            %RAJ - zoom in just goes behind the image. Disabling toolbar for now
-            axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
-            
-        end %function
-    end %methods
-    
     
     
     %% Setup
@@ -90,15 +74,13 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.Position = [10 10 400 400];
 
             % Configure Grid
-            obj.Grid.ColumnWidth = {55,'1x'};
             obj.Grid.RowHeight = {25,25,'1x'};
+            obj.Grid.ColumnWidth = {55,'1x'};
             obj.AxesContainer.Layout.Column = 2;
-            obj.AxesContainer.Layout.Row = [1 3];
+            obj.AxesContainer.Layout.Row = [1 3]; 
             
-            % Specify axes interactions
-            disableDefaultInteractivity(obj.Axes);
-            %g2318236 - must do after setup completes:
-            %axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
+            % Customize axes toolbar
+            axtoolbar(obj.Axes,{'export','zoomin','zoomout','pan','restoreview'});
             
             %--- View controls ---%
             obj.ViewIndicator = uidropdown(obj.Grid);
@@ -138,7 +120,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             % Change defaults
             obj.FieldColor = obj.BackgroundColor;
             obj.FontColor = [1 1 1] * 0.6;
-            
+             
         end %function
     end %methods
     

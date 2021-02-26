@@ -242,10 +242,19 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
         
         function tf = isClickableAxes(obj,e)
             % Was the click within an object in the clickable axes?
+            
+            % What object was clicked?
             hitObject = e.HitObject;
+            
+            % Was the click within the clickable axes?
             ax = obj.ClickableAxes;
             hitAx = ancestor(hitObject,'matlab.graphics.axis.AbstractAxes');
-            tf = ~isempty(hitObject) && any(ax == hitAx );
+            
+            % Was the click on an axes toolbar button?
+            hitToolbar = ancestor(hitObject,'matlab.ui.controls.AxesToolbar');
+            
+            % Was the click on an object within the axes?
+            tf = ~isempty(hitObject) && any(ax == hitAx) && isempty(hitToolbar);
             
             % Ignore sporadic blips outside the axes
             pos = e.IntersectionPoint;
