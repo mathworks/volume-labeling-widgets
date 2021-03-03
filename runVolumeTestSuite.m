@@ -8,6 +8,7 @@ function [testSuite, result] = runVolumeTestSuite()
 testSuite = matlab.unittest.TestSuite.fromPackage('wt.test.volume');
 
 
+
 %% Run tests
 result = testSuite.run();
 
