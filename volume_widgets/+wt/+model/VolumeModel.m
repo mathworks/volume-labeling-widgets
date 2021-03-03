@@ -88,7 +88,7 @@ classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
             numZ = size(imageData,3);
             zPosBySlice = pPos(:,3);
             zDiff = diff(zPosBySlice);
-            isUniformZ = all(zDiff(1) == zDiff);
+            isUniformZ = all( abs(zDiff - zDiff(1)) < max(abs(zDiff))/10 );
             
             % Find any discontinuity in Z
             if ~isUniformZ

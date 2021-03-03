@@ -37,15 +37,17 @@ classdef TestVolumeQuadLabeler < wt.test.volume.TestVolumeLabeler
         
         
         %% Test changing dataset
-        function testSlider(testCase)
+        function testChangingDataset(testCase)
             
             w = testCase.createAnnotationViewer();
 
             % Load a different dataset
             dicomFolder = fullfile(matlabroot,"toolbox","images","imdata","dog");
             fcn = @()wt.model.VolumeModel.fromDicomFile(dicomFolder);
-            dogModel = testCase.verifyWarning(fcn, 'VolumeModel:fromDicom:NonUniformZ', "Expected a warning");
-            
+            %dogModel = testCase.verifyWarning(fcn, 'VolumeModel:fromDicom:NonUniformZ', "Expected a warning");
+            %dogModel = wt.model.VolumeModel.fromDicomFile(dicomFolder);
+            dogModel = testCase.verifyWarningFree(fcn);
+
             % Assign the new dataset
             fcn = @()set(w,"VolumeModel",dogModel);
             testCase.verifyWarningFree(fcn);
