@@ -49,10 +49,24 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
             
             % Call superclass setup first to establish the grid
             obj.setup@wt.abstract.BaseWidget();     
-            
-            % g2430389 Create intermediate layout for the tiledlayout 
-            obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
-            obj.AxesContainer.Padding = [0 0 0 0];
+
+            % Compatibility
+            if verLessThan('matlab','9.11') % R2021a and older
+
+                % g2430389 Create intermediate layout for the tiledlayout
+                obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
+                obj.AxesContainer.Padding = [0 0 0 0];
+
+            else % R2021b and newer
+
+                % g2613184 Create intermediate layout for the tiledlayout
+                % RAJ - this sort-of works, but the axes toolbar may appear
+                % above the top in R2021b. Review in R2022a.
+                obj.AxesContainer = uipanel(obj.Grid);
+                obj.AxesContainer.Title = "";
+                obj.AxesContainer.BorderType = 'none';
+
+            end
             
             % g2430275 g2318236 Create a tiledlayout to properly size the axes
             obj.AxesLayout = tiledlayout(obj.AxesContainer,1,1);
