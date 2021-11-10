@@ -63,6 +63,7 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
                 % RAJ - this sort-of works, but the axes toolbar may appear
                 % above the top in R2021b. Review in R2022a.
                 obj.AxesContainer = uipanel(obj.Grid);
+                obj.AxesContainer.Units = 'pixels';
                 obj.AxesContainer.Title = "";
                 obj.AxesContainer.BorderType = 'none';
 
