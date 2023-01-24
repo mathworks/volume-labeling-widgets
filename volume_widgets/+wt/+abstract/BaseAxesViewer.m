@@ -51,8 +51,12 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
             obj.setup@wt.abstract.BaseWidget();     
             
             % g2430389 Create intermediate layout for the tiledlayout 
-            obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
-            obj.AxesContainer.Padding = [0 0 0 0];
+            % Replacing uigridlayout with panel g2613184
+            % obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
+            % obj.AxesContainer.Padding = [0 0 0 0];
+
+            % Replacing uigridlayout with panel g2613184
+            obj.AxesContainer = uipanel(obj.Grid);
             
             % g2430275 g2318236 Create a tiledlayout to properly size the axes
             obj.AxesLayout = tiledlayout(obj.AxesContainer,1,1);
