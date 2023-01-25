@@ -289,9 +289,9 @@ classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
         function ImportButtonPushed(app, event)
 
             % Prompt for a filename
-            message = 'Import Annotations';
+            dlgTitle = "Import Labels";
             pattern = {'*.mat','MATLAB MAT-file'};
-            [fileName,pathName] = uigetfile(pattern,message,app.LastPath);
+            [fileName,pathName] = uigetfile(pattern,dlgTitle,app.LastPath);
 
             % Return now if the user cancelled
             if isequal(fileName,0)
@@ -314,9 +314,9 @@ classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
 
             else
 
-                % Throw an error
-                dlg = errordlg('Not a valid annotation file.');
-                uiwait(dlg);
+                % Send error to a dialog
+                msg = "Not a valid annotation labels file.";
+                uialert(app.Figure, msg, dlgTitle);
 
             end
 

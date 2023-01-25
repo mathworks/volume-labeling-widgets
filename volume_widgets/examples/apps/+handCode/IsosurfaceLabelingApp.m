@@ -80,8 +80,9 @@ classdef IsosurfaceLabelingApp < handCode.BaseLabelingApp
             catch
 
                 % Send error to a dialog
-                dlg = errordlg("Not a valid isosurface file. " + prompt);
-                uiwait(dlg);
+                dlgTitle = "Import Isosurface File";
+                msg = "Not a valid isosurface file. " + prompt;
+                uialert(app.Figure, msg, dlgTitle);
 
             end
 

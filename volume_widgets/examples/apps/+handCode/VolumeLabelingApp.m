@@ -199,7 +199,8 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
         function LoadButtonPushed(app, ~)
 
             % Prompt for a filename
-            pathName = uigetdir(app.LastPath, "Import DICOM Volume");
+            dlgTitle = "Import DICOM Volume";
+            pathName = uigetdir(app.LastPath, dlgTitle);
 
             % Return now if the user cancelled
             if isequal(pathName,0)
@@ -220,8 +221,8 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
             catch err
 
                 % Send error to a dialog
-                dlg = errordlg(['Not a valid dicom volume. ' err.message]);
-                uiwait(dlg);
+                msg = "Not a valid DICOM file or folder." + newline + err.message;
+                uialert(app.Figure, msg, dlgTitle);
 
             end
 
