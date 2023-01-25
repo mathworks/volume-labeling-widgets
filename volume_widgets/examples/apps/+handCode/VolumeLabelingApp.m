@@ -320,6 +320,7 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
                 "Adding/Edit Point-based Annotations:"
                 "Left-click adds points."
                 "Left-click and drag an existing point moves it."
+                "Scrolling the mouse wheel while dragging moves the point to a different slice."
                 "Right-click an existing point deletes it."
                 "Double-click finishes"
                 ""
