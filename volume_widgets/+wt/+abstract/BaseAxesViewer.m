@@ -50,13 +50,23 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
             % Call superclass setup first to establish the grid
             obj.setup@wt.abstract.BaseWidget();     
             
-            % g2430389 Create intermediate layout for the tiledlayout 
-            % Replacing uigridlayout with panel g2613184
-            % obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
-            % obj.AxesContainer.Padding = [0 0 0 0];
+            
+            % Version dependency:
+            if verLessThan("matlab","9.12")
+                % Use a uigridlayout parent prior to R2022a
 
-            % Replacing uigridlayout with panel g2613184
-            obj.AxesContainer = uipanel(obj.Grid);
+                % g2430389 Create intermediate layout for the tiledlayout
+                obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
+                obj.AxesContainer.Padding = [0 0 0 0];
+
+            else
+                % Use a panel parent starting in R2022a
+
+                % g2613184 Can't parent a tiledlayout directly to a
+                % uigridlayout anymore
+                obj.AxesContainer = uipanel(obj.Grid);
+
+            end %if
             
             % g2430275 g2318236 Create a tiledlayout to properly size the axes
             obj.AxesLayout = tiledlayout(obj.AxesContainer,1,1);

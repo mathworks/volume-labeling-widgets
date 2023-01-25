@@ -58,7 +58,11 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
         function verifySlice(testCase, expectedValue)
             % Verify slice controls in the viewer
             
+            % Ensure any updates complete
             drawnow
+            pause(2)
+            drawnow
+
             testCase.verifyEqual(testCase.Viewer.SliceSpinner.Value, expectedValue,'RelTol',0.001,'AbsTol',0.001);
             testCase.verifyEqual(testCase.Viewer.SliceSlider.Value, expectedValue,'RelTol',0.001,'AbsTol',0.001);
             testCase.verifyEqual(testCase.Viewer.Slice, expectedValue,'RelTol',0.001,'AbsTol',0.001);
@@ -153,6 +157,7 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
             
             % Drag the slider to a fractional value
             testCase.drag(testCase.Viewer.SliceSlider,13,17.8)
+            drawnow
             testCase.verifySlice(18);
             
         end %function
