@@ -88,7 +88,7 @@ classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
             numZ = size(imageData,3);
             zPosBySlice = pPos(:,3);
             zDiff = diff(zPosBySlice);
-            isUniformZ = all( abs(zDiff - zDiff(1)) < max(abs(zDiff))/10 );
+            isUniformZ = all(zDiff(1) == zDiff);
             
             % Find any discontinuity in Z
             if ~isUniformZ
@@ -98,9 +98,9 @@ classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
                     'The Z dimension is not uniformly spaced. It will be adjusted, but may display incorrectly.')
 
                 % Option to crop or adjust
+                [~,idxMax] = max(abs(zDiff));
                 if options.Crop == true
                     
-                    [~,idxMax] = max(abs(zDiff));
                     zPosBySlice(1:idxMax) = [];
                     imageData(:,:,1:idxMax) = [];
                           
@@ -112,8 +112,11 @@ classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
                     zPosBySlice = zPosBySlice(1) + [0 mode(zDiff)*(numZ-1)];
                     
                 end
-               
+            else
+                idxMax = 0;
             end
+            metaData.idxMax = idxMax;
+            info.MetaData = metaData;
             
             % Get z position extents
             zPos = zPosBySlice([1 end]);
