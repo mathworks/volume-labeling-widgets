@@ -1,7 +1,7 @@
 classdef Vertices < wt.tool.BaseAnnotationTool
     % Annotation tool for placing vertices in a 2D or 3D view
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     
     
     %% Properties
@@ -84,6 +84,12 @@ classdef Vertices < wt.tool.BaseAnnotationTool
                         
                         % Delete it
                         obj.AnnotationModel.Points(vIdx,:) = [];
+						
+                        % Hide the associated label
+                        ax = obj.ClickableAxes;
+                        labelTag = 'Control Point Label';
+                        hLabel = findall(ax, 'Tag',labelTag);
+                        set(hLabel,'Visible','off');
                         
                     end
                     
@@ -115,20 +121,77 @@ classdef Vertices < wt.tool.BaseAnnotationTool
             
         end %function
         
+        function onMouseMotion(obj,evt)  %Yair
+            % Triggered on mouse movement
+            
+            % If we are hovering over a vertex
+            ax = obj.ClickableAxes;
+            labelTag = 'Control Point Label';
+            hLabel = findall(ax, 'Tag',labelTag);
+            if obj.CurrentHitObject == obj.AnnotationModel.Plot(1)
+                % Get the BaseModelPanel object used below
+                hPanel = getappdata(ax, 'modelPanel');
+                if isempty(hPanel), return, end
+
+                % Locate the closest vertex
+                %ax.CurrentPoint is inaccurate in 3D, so use evt.IntersectionPoint
+                p1 = evt.IntersectionPoint([2,1,3]);
+                [~,vIdx] = obj.AnnotationModel.getNearestVertex(p1);
+
+                % Display updated label with the vertex name
+                pos = evt.IntersectionPoint; % * 1.01;  %slight offset from vertex
+                if isempty(hLabel)
+                    hLabel = text(ax, pos(1),pos(2),pos(3),'', 'Tag',labelTag, ...
+                                  'HitTest','off', 'PickableParts','none', ...
+                                  'Color','y', 'BackgroundColor',[0,0,0,.2], ...
+                                  'Layer','Front', 'FontWeight','bold');
+                end
+                str = hPanel.ExplanatoryLabel.Text;
+                str = regexprep(str, ['.* ' num2str(vIdx) '\.([^\n]+).*'], '\\leftarrow$1');
+                hLabel.String = str;
+                hLabel.Position = pos;
+                hLabel.Visible = 'on';
+            else
+                % Hide the label
+                if ~isempty(hLabel)
+                    hLabel.Visible = 'off';
+                end
+            end
+            
+        end %function
         
         function updatePointer(obj)
             % Update the mouse pointer
-            
+            ax = obj.ClickableAxes;
             if obj.IsDragging || any(obj.CurrentHitObject == [obj.AnnotationModel.Plot])
 
                 wt.utility.fastSet(obj.CurrentFigure,"Pointer","fleur")
 
+                % Disable built-in interactivity
+                disableDefaultInteractivity(ax); 
+				
+                % these were taken from matlab.graphics.interaction.webmodes.toggleMode
+                ax.InteractionContainer.clearList
+                try 
+                    ax.InteractionContainer.CurrentMode = 'none'; 
+                catch
+                end
+                ax.InteractionContainer.updateInteractions();
+                oldPos = get(groot,'PointerLocation');
+                set(groot,'PointerLocation',[0,0]); pause(0.001)
+                set(groot,'PointerLocation',oldPos);
+				
             elseif obj.CurrentFigure.Pointer ~= "custom"
 
                 set(obj.CurrentFigure,...
                     "Pointer","custom",...
                     "PointerShapeCData",obj.EditingPointer,...
                     "PointerShapeHotSpot",obj.EditingPointerCenter);
+
+                % Re-enable built-in interactivity
+                enableDefaultInteractivity(ax); 
+                ax.InteractionContainer.updateInteractions();
+                drawnow
 
             end %if obj.IsDragging
             
