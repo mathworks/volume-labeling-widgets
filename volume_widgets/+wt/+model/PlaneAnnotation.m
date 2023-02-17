@@ -14,7 +14,7 @@ classdef PlaneAnnotation < wt.model.PointsAnnotation
         % Method of determining the plane from the points
         Method (1,1) string {mustBeMember(Method, ["deterministic" "svd"])} = "deterministic"   
         
-        % Maximum display distance boundaries of the plane 
+        % Maximum display distance boundaries of the plane (use smaller values for a finite representation) 
         Bounds (2,2) double = [-1e6 1e6; -1e6 1e6];
 
     end %properties
