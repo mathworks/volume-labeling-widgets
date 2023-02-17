@@ -2,7 +2,7 @@ classdef PlaneAnnotation < wt.model.PointsAnnotation
     %PLANEANNOTATION Annotation with Y,X,Z coordinate points to
     %define a plane
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2023 The MathWorks, Inc.
     
     
     %% Public Properties
@@ -14,15 +14,15 @@ classdef PlaneAnnotation < wt.model.PointsAnnotation
         % Method of determining the plane from the points
         Method (1,1) string {mustBeMember(Method, ["deterministic" "svd"])} = "deterministic"   
         
+        % Maximum display distance boundaries of the plane 
+        Bounds (2,2) double = [-1e6 1e6; -1e6 1e6];
+
     end %properties
     
 
     
     %% Internal Properties 
     properties (Hidden, SetAccess = protected)
-            
-        % Bounds 
-        Bounds (2,2) double = [-1e6 1e6; -1e6 1e6];
         
         % Equation of plane solved for z on bounds corner points 
         %n(1)*x + n(2)*y + n(3)*z + d == 0;
