@@ -560,7 +560,7 @@ classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
         function createComponents(app)
 
             % Create Grid
-            app.Grid.ColumnWidth = {'1x', 100, 225};
+            app.Grid.ColumnWidth = {'1x', 100, 300};
             app.Grid.RowHeight = {160, '1x'};
             app.Grid.BackgroundColor = [0.149 0.149 0.149];
 
