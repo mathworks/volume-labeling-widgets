@@ -1,7 +1,7 @@
 classdef Brush < wt.tool.BaseAnnotationTool
     % Brush tool for editing a mask annotation
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     
     
     %% Properties
@@ -195,9 +195,9 @@ classdef Brush < wt.tool.BaseAnnotationTool
             if obj.CurrentFigure.Pointer ~= "custom"
                 
                 obj.CurrentFigure.Pointer = "custom";
-                obj.CurrentFigure.PointerShapeCData = obj.EditingPointer;
+                obj.CurrentFigure.PointerShapeCData = getEditingPointer();
                 obj.CurrentFigure.PointerShapeHotSpot = obj.EditingPointerCenter;
-                
+                figure(obj.CurrentFigure);
             end %if obj.IsDragging
 
         end %function
@@ -219,8 +219,7 @@ classdef Brush < wt.tool.BaseAnnotationTool
                 minSlicePos = min(sliceRange, [], 2);
                 sliceDim = isfinite(minSlicePos);
                 pos(sliceDim) = minSlicePos(sliceDim);
-                scale = obj.BrushSize * obj.AnnotationModel.PixelExtent;
-                %scale = max(obj.BrushSize,3) * obj.AnnotationModel.PixelExtent;
+                scale = max(obj.BrushSize,3) * obj.AnnotationModel.PixelExtent;
             end
             
             % Which 2D view are we looking at?
@@ -271,7 +270,7 @@ classdef Brush < wt.tool.BaseAnnotationTool
             % Interpolate pixel coordinates between two points
             
             % Get the annotation
-            aObj = obj.AnnotationModel;
+            annObj = obj.AnnotationModel;
             
             % Get the pixel coordinates
             px1 = cell2mat(obj.AnnotationModel.getSliceIndex(p1));
@@ -322,7 +321,7 @@ classdef Brush < wt.tool.BaseAnnotationTool
             end %if
             
             % Preallocate an empty 2D mask for optimal performance
-            maskSize = aObj.DataSize;
+            maskSize = annObj.DataSize;
             maskSize(sliceDim) = [];
             drawnMask = false(maskSize(:)');
 
@@ -337,7 +336,11 @@ classdef Brush < wt.tool.BaseAnnotationTool
             % Calculate mask for this point or segment
             pxCoordsCell = num2cell(pxCoords);
             for idx = 1:size(pxCoordsCell,1)
+                try
                 drawnMask(pxCoordsCell{idx,:}) = true;
+                catch
+                    disp(['Ignoring invalid mask coordinates ', mat2str(pxCoords(idx,:))]);
+                end
             end
             
             % Apply brush size
@@ -346,22 +349,42 @@ classdef Brush < wt.tool.BaseAnnotationTool
             end
             
             % Get the old mask
-            maskSection = squeeze(obj.AnnotationModel.Mask(maskCoords{:}));
+            if isempty(annObj.Mask)
+                maskBefore = false;
+            else
+                maskBefore = squeeze(annObj.Mask(maskCoords{:}));
+            end
             
             % Are we erasing or brushing?
             if erase
                 % Erase brushed area
-                maskSection = maskSection & ~drawnMask;
+                maskAfter = maskBefore & ~drawnMask;
+                actionName = 'Erase';
             else
                 % Add brushed area
-                maskSection = maskSection | drawnMask;
+                maskAfter = maskBefore | drawnMask;
+                actionName = 'Mask';
             end
             
             % Update the mask
-            obj.AnnotationModel.Mask(maskCoords{:}) = maskSection;
+            annObj.Mask(maskCoords{:}) = maskAfter;
             
+            % Assign undo/redo actions
+            undoStruct.Name = [actionName ' action'];
+            undoStruct.Function = @obj.applyMask;
+            undoStruct.Varargin = {annObj, maskCoords, maskBefore}; %redo
+            undoStruct.InverseFunction = @obj.applyMask;
+            undoStruct.InverseVarargin = {annObj, maskCoords, maskAfter}; %undo
+            uiundo(obj.CurrentFigure,'function',undoStruct);
+
         end %function
         
+        function applyMask(obj, annObj, maskCoords, newMask) %#ok<INUSL>
+            % Update the mask
+            
+            annObj.Mask(maskCoords{:}) = newMask;
+
+        end %function
         
         function updateBrushMask(obj)
             % Calculate the brush mask
@@ -411,29 +434,29 @@ ptr = [
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN 2	NaN NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	NaN
-    2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	NaN
-    2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	 2 	NaN NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	NaN
-    2	2	2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	2	2	NaN
-    1	1	1	1	1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	1	1	1	1	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN NaN	NaN	NaN	1	1	1	1	NaN	
+    2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN 2	2	2	2	NaN	
+    2	2	2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2 	NaN NaN NaN NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	2	2	NaN 
+    2	2	2	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	2	2	2	NaN	
+    1	1	1	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	1	1	1	NaN	
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
-    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+    NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	2	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
     NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	1	2	2	2	1	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
