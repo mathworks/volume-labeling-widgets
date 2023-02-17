@@ -2,7 +2,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         wt.mixin.FieldColorable & wt.mixin.FontColorable
     % Volume visualization widget with a 2D view of an image stack
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     
     
     %% Events
@@ -294,7 +294,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.Slice3D(sDim) = value;
 
             % Notify event
-            evtOut = wt.eventdata.PropertyChangedData('Slice',evt);
+            evtOut = wt.eventdata.PropertyChangedData('Slice',value);
             obj.notify('ViewChanged',evtOut)
 
         end
