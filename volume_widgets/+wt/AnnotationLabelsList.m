@@ -50,7 +50,7 @@ classdef AnnotationLabelsList < wt.abstract.BaseWidget
             obj.Table.ColumnName = ["","Type","Name"];
             obj.Table.ColumnEditable = [true false true];
             obj.Table.ColumnFormat = {'logical','char','char'};
-            obj.Table.ColumnWidth = {25,80,100};
+            obj.Table.ColumnWidth = {25,80,'auto'};
             %obj.Table.SelectionType = 'row'; %errors during setup in R2020b
             obj.Table.Multiselect = true;
             obj.Table.RowStriping = 'off';
