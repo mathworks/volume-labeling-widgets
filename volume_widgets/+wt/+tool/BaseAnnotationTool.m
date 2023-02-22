@@ -253,7 +253,7 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
             % Ignore if a zoom mode is on
             persistent toolButtons toolAxes
             if isempty(toolButtons) || isempty(toolAxes) || ~isequal(toolAxes, ax)
-                toolAxes = ax
+                toolAxes = ax;
                 axTbar = ax.Toolbar;
                 toolButtons = axTbar.Children;
             end
