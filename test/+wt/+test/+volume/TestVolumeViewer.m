@@ -158,6 +158,7 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
             % Drag the slider to a fractional value
             testCase.drag(testCase.Viewer.SliceSlider,13,17.8)
             drawnow
+            pause(0.1)
             testCase.verifySlice(18);
             
         end %function

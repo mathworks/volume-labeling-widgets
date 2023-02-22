@@ -1,7 +1,7 @@
 classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
     % Base class for visualizations containing an axes
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2023 The MathWorks, Inc.
     
     
     %% Public Properties
@@ -65,6 +65,7 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
                 % g2613184 Can't parent a tiledlayout directly to a
                 % uigridlayout anymore
                 obj.AxesContainer = uipanel(obj.Grid);
+                obj.AxesContainer.BorderType = 'none';
 
             end %if
             
