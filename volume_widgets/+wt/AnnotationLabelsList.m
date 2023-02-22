@@ -3,7 +3,7 @@ classdef AnnotationLabelsList < wt.abstract.BaseWidget
     % 
     % This is intended as an example and may be reworked in the future
     
-    % Copyright 2020-2021 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     
     
     %% Events

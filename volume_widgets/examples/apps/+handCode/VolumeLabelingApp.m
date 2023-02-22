@@ -4,7 +4,7 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
     % This is intended as an example showing how to build a hand-coded app
     % using object-oriented programming.
 
-    % Copyright 2020-2021 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     %#ok<*INUSD>
 
 

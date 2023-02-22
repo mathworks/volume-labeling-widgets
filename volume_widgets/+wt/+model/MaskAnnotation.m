@@ -2,7 +2,7 @@ classdef MaskAnnotation < wt.model.BaseAnnotationModel ...
         & wt.model.Base3DImageryModel
     % Annotation with Y,X,Z coordinate points connected as a filled shape
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2023 The MathWorks, Inc.
     
     
     %% Public Properties

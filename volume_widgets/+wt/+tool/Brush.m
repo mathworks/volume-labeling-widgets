@@ -195,9 +195,10 @@ classdef Brush < wt.tool.BaseAnnotationTool
             if obj.CurrentFigure.Pointer ~= "custom"
                 
                 obj.CurrentFigure.Pointer = "custom";
-                obj.CurrentFigure.PointerShapeCData = getEditingPointer();
+                obj.CurrentFigure.PointerShapeCData = obj.EditingPointer;
                 obj.CurrentFigure.PointerShapeHotSpot = obj.EditingPointerCenter;
                 figure(obj.CurrentFigure);
+				
             end %if obj.IsDragging
 
         end %function
