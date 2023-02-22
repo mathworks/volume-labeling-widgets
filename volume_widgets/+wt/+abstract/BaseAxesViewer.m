@@ -1,7 +1,7 @@
 classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
     % Base class for visualizations containing an axes
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2021 The MathWorks, Inc.
     
     
     %% Public Properties
@@ -49,15 +49,21 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
             
             % Call superclass setup first to establish the grid
             obj.setup@wt.abstract.BaseWidget();     
-            
+
             % g2430389 Create intermediate layout for the tiledlayout 
             % Replacing uigridlayout with panel g2613184
             % obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
             % obj.AxesContainer.Padding = [0 0 0 0];
 
-            % Replacing uigridlayout with panel g2613184
+            % g2613184 Create intermediate layout for the tiledlayout.
+            % This replaces an older workaround for g2430389 that
+            % caused warnings starting in R2022a. This below change has
+            % been tested in 20b, 21b, and 22a.
             obj.AxesContainer = uipanel(obj.Grid);
-            
+            obj.AxesContainer.Units = 'pixels';
+            obj.AxesContainer.Title = "";
+            obj.AxesContainer.BorderType = 'none';
+
             % g2430275 g2318236 Create a tiledlayout to properly size the axes
             obj.AxesLayout = tiledlayout(obj.AxesContainer,1,1);
             obj.AxesLayout.Padding = 'none';
