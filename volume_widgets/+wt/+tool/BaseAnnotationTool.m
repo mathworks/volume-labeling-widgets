@@ -220,48 +220,60 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
         end %function
 
         function tf = isClickableAxes(obj,e)
-            % Was the click within an object in the clickable axes?
+            % Was a mouse event within the clickable axes?
 
             % What object was clicked?
             hitObject = e.HitObject;
 
             % Was the click within the clickable axes?
             ax = obj.ClickableAxes;
+            hitAx = ancestor(hitObject,'matlab.graphics.axis.AbstractAxes');
 
             % Was the click on an axes toolbar button?
             hitToolbar = ancestor(hitObject,'matlab.ui.controls.AxesToolbar');
 
+            % Get the mouse point
+            point = e.IntersectionPoint;
+
             % Was the click on an object within the axes?
-            tf = ~isempty(hitObject) && isempty(hitToolbar);
-            if ~tf
-                return
+            tf = ~isempty(hitObject) && any(ax == hitAx) && ...
+                isempty(hitToolbar) && ~any(isnan(point));
+
+            % Ignore sporadic blips outside the axes
+            xLim = ax.XLim;
+            yLim = ax.YLim;
+            zLim = ax.ZLim;
+            view = ax.View;
+            if all(view == [0 -90])
+                tf = tf && ...
+                    (point(1) >= xLim(1)) && (point(1) <= xLim(2)) && ...
+                    (point(2) >= yLim(1)) && (point(2) <= yLim(2));
+            elseif all(view == [0 0])
+                tf = tf && ...
+                    (point(1) >= xLim(1)) && (point(1) <= xLim(2)) && ...
+                    (point(3) >= zLim(1)) && (point(3) <= zLim(2));
+            elseif all(view == [-90 0])
+                tf = tf && ...
+                    (point(2) >= yLim(1)) && (point(2) <= yLim(2)) && ...
+                    (point(3) >= zLim(1)) && (point(3) <= zLim(2));
             end
 
-            % Ignore sporadic blips outside the axes (use axes container boundaries)
-            pos = e.IntersectionPoint;
-            if all(isnan(pos))  % outside central image area
-                % pointer is outside inner axes, possibly outside outer ones too
-                pos = e.Point;
-                axPos = round(getpixelposition(ax.Parent,true));
-                tf = pos(1) >= axPos(1) && pos(1) <= axPos(1)+axPos(3) && ...
-                    pos(2) >= axPos(2) && pos(2) <= axPos(2)+axPos(4);
-                if ~tf
-                    return
-                end
-            end
+            % --- Also ignore the mouse event if a zoom mode is on --- %
 
-            % Ignore if a zoom mode is on
+            % Track the axes and toolbar content
             persistent toolButtons toolAxes
             if isempty(toolButtons) || isempty(toolAxes) || ~isequal(toolAxes, ax)
                 toolAxes = ax;
                 axTbar = ax.Toolbar;
                 toolButtons = axTbar.Children;
             end
-
+            
+            % Filter any deleted buttons
             try %#ok<TRYNC>
                 toolButtons = toolButtons(isvalid(toolButtons));
             end
 
+            % Check for any active toolbar modes
             if ~isempty(toolButtons)
                 isModeButton = contains({toolButtons.Tag},["zoom","pan","rotate"]);
                 modeIsActive = [toolButtons(isModeButton).Value];
@@ -282,11 +294,15 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
             % Proceed if the click was within the monitored axes
             if isClickableAxes(obj,e)
 
-                % Track the last point for drag operation
+                % Get the point within the axes
                 point = e.IntersectionPoint;
-                if all(isnan(point))
+
+                % Handle points outside the axes limits
+                if all(isnan(e.IntersectionPoint))
                     point = obj.ClickableAxes.CurrentPoint(2,:);
                 end
+
+                % Track the last point for drag operation
                 obj.MouseLastDragPoint = point;
 
                 % Prepare eventdata
@@ -304,18 +320,22 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
 
         function onMouseRelease_private(obj,e)
 
-            % Track the last point for drag operation
-            obj.MouseLastDragPoint = nan(1,3);
+            % Get the point within the axes
+            point = e.IntersectionPoint;
+
+            % Handle points outside the axes limits
+            if all(isnan(point))
+                point = obj.MouseLastDragPoint;
+            end
 
             % Prepare eventdata
-            point = e.IntersectionPoint;
-            if all(isnan(point))
-                point = obj.ClickableAxes.CurrentPoint(2,:);
-            end
             evt.CurrentPoint = point;
 
             % Call method
             obj.onMouseRelease(evt);
+
+            % Track the last point for drag operation
+            obj.MouseLastDragPoint = nan(1,3);
 
         end %function
 
@@ -325,18 +345,19 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
             % Track the current object beneath the mouse
             obj.CurrentHitObject = e.HitObject;
 
+            % Get the point within the axes
+            point = e.IntersectionPoint;
+
+            % Handle points outside the axes limits
+            if all(isnan(e.IntersectionPoint))
+                point = obj.ClickableAxes.CurrentPoint(2,:);
+            end
+
             % Proceed if the motion was within the monitored axes
             if isClickableAxes(obj,e)
 
-                % Get actual axes point, even outside central image area
-                point = e.IntersectionPoint;
-                if all(isnan(point))
-                    point = obj.ClickableAxes.CurrentPoint(2,:);
-                end
-                evt = struct('Source',e.Source, 'IntersectionPoint',point);
-
                 % Callback for mouse moving
-                obj.onMouseMotion(evt);
+                obj.onMouseMotion(e);
 
                 % Change the figure pointer
                 obj.updatePointer();
@@ -345,17 +366,17 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                 if obj.IsDragging
 
                     % Prepare eventdata
-                    evt.CurrentPoint = evt.IntersectionPoint;
+                    evt.CurrentPoint = point;
                     evt.StartPoint = obj.MouseLastDragPoint;
-                    evt.SelectionType = evt.Source.SelectionType;
+                    evt.SelectionType = e.Source.SelectionType;
 
                     % Track the last point for drag operation
-                    obj.MouseLastDragPoint = evt.IntersectionPoint;
+                    obj.MouseLastDragPoint = point;
 
                     % Call method
                     obj.onMouseDrag(evt);
 
-                end %if ~any(ismissing(obj.MouseLastDragPoint))
+                end %if
 
             else
 
