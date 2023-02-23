@@ -9,6 +9,9 @@ classdef Brush < wt.tool.BaseAnnotationTool
         
         % The diameter of the brush in pixels, should be an odd number
         BrushSize (1,1) double {mustBeInteger, mustBePositive, mustBeFinite} = 5
+
+        % Toggle to enable undo structure for current figure
+        EnableUndo (1,1) logical = false
         
     end %properties
     
@@ -220,7 +223,7 @@ classdef Brush < wt.tool.BaseAnnotationTool
                 minSlicePos = min(sliceRange, [], 2);
                 sliceDim = isfinite(minSlicePos);
                 pos(sliceDim) = minSlicePos(sliceDim);
-                scale = max(obj.BrushSize,3) * obj.AnnotationModel.PixelExtent;
+                scale = max(obj.BrushSize,1.5) * obj.AnnotationModel.PixelExtent;
             end
             
             % Which 2D view are we looking at?
@@ -271,7 +274,7 @@ classdef Brush < wt.tool.BaseAnnotationTool
             % Interpolate pixel coordinates between two points
             
             % Get the annotation
-            annObj = obj.AnnotationModel;
+            aObj = obj.AnnotationModel;
             
             % Get the pixel coordinates
             px1 = cell2mat(obj.AnnotationModel.getSliceIndex(p1));
@@ -322,7 +325,7 @@ classdef Brush < wt.tool.BaseAnnotationTool
             end %if
             
             % Preallocate an empty 2D mask for optimal performance
-            maskSize = annObj.DataSize;
+            maskSize = aObj.DataSize;
             maskSize(sliceDim) = [];
             drawnMask = false(maskSize(:)');
 
@@ -350,10 +353,10 @@ classdef Brush < wt.tool.BaseAnnotationTool
             end
             
             % Get the old mask
-            if isempty(annObj.Mask)
+            if isempty(aObj.Mask)
                 maskBefore = false;
             else
-                maskBefore = squeeze(annObj.Mask(maskCoords{:}));
+                maskBefore = squeeze(aObj.Mask(maskCoords{:}));
             end
             
             % Are we erasing or brushing?
@@ -368,15 +371,17 @@ classdef Brush < wt.tool.BaseAnnotationTool
             end
             
             % Update the mask
-            annObj.Mask(maskCoords{:}) = maskAfter;
+            aObj.Mask(maskCoords{:}) = maskAfter;
             
             % Assign undo/redo actions
-            undoStruct.Name = [actionName ' action'];
-            undoStruct.Function = @obj.applyMask;
-            undoStruct.Varargin = {annObj, maskCoords, maskBefore}; %redo
-            undoStruct.InverseFunction = @obj.applyMask;
-            undoStruct.InverseVarargin = {annObj, maskCoords, maskAfter}; %undo
-            uiundo(obj.CurrentFigure,'function',undoStruct);
+            if obj.EnableUndo
+                undoStruct.Name = [actionName ' action'];
+                undoStruct.Function = @obj.applyMask;
+                undoStruct.Varargin = {aObj, maskCoords, maskBefore}; %redo
+                undoStruct.InverseFunction = @obj.applyMask;
+                undoStruct.InverseVarargin = {aObj, maskCoords, maskAfter}; %undo
+                uiundo(obj.CurrentFigure,'function',undoStruct);
+            end
 
         end %function
         
