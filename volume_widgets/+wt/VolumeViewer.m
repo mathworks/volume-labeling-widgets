@@ -2,7 +2,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         wt.mixin.FieldColorable & wt.mixin.FontColorable
     % Volume visualization widget with a 2D view of an image stack
     
-    % Copyright 2020 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     
     
     %% Events
@@ -208,10 +208,6 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             % Update the view
             obj.Slice = evt.Value;
             
-            % Notify event
-            evtOut = wt.eventdata.PropertyChangedData('Slice',evt);
-            obj.notify('ViewChanged',evtOut)
-            
         end %function
         
         
@@ -220,18 +216,9 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             
             % First, round the slider value to an integer
             newValue = round(evt.Value);
-            
-            % Is it different from the current value?
-            if newValue ~= obj.Slice
                 
                 % Update the view
                 obj.Slice = newValue;
-                
-                % Notify event
-                evtOut = wt.eventdata.PropertyChangedData('Slice',evt);
-                obj.notify('ViewChanged',evtOut)
-                
-            end %if newValue ~= obj.Slice
             
         end %function
         
@@ -301,8 +288,15 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
         end
         
         function set.Slice(obj,value)
+
+            % Set the Slice in the current SliceDimension
             sDim = obj.SliceDimension;
             obj.Slice3D(sDim) = value;
+
+            % Notify event
+            evtOut = wt.eventdata.PropertyChangedData('Slice',value);
+            obj.notify('ViewChanged',evtOut)
+
         end
         
         function value = get.Slice3D(obj)

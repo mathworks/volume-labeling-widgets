@@ -4,7 +4,7 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
     % This is intended as an example showing how to build a hand-coded app
     % using object-oriented programming.
 
-    % Copyright 2020-2021 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     %#ok<*INUSD>
 
 
@@ -199,7 +199,8 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
         function LoadButtonPushed(app, ~)
 
             % Prompt for a filename
-            pathName = uigetdir(app.LastPath, "Import DICOM Volume");
+            dlgTitle = "Import DICOM Volume";
+            pathName = uigetdir(app.LastPath, dlgTitle);
 
             % Return now if the user cancelled
             if isequal(pathName,0)
@@ -220,8 +221,8 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
             catch err
 
                 % Send error to a dialog
-                dlg = errordlg(['Not a valid dicom volume. ' err.message]);
-                uiwait(dlg);
+                msg = "Not a valid DICOM file or folder." + newline + err.message;
+                uialert(app.Figure, msg, dlgTitle);
 
             end
 
@@ -319,6 +320,7 @@ classdef VolumeLabelingApp < handCode.BaseLabelingApp
                 "Adding/Edit Point-based Annotations:"
                 "Left-click adds points."
                 "Left-click and drag an existing point moves it."
+                "Scrolling the mouse wheel while dragging moves the point to a different slice."
                 "Right-click an existing point deletes it."
                 "Double-click finishes"
                 ""

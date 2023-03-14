@@ -1,7 +1,7 @@
 classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
     % Data model for a volume of imagery data
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2023 The MathWorks, Inc.
     
     
     %% Properties
@@ -98,9 +98,9 @@ classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
                     'The Z dimension is not uniformly spaced. It will be adjusted, but may display incorrectly.')
 
                 % Option to crop or adjust
+                [~,idxMax] = max(abs(zDiff));
                 if options.Crop == true
                     
-                    [~,idxMax] = max(abs(zDiff));
                     zPosBySlice(1:idxMax) = [];
                     imageData(:,:,1:idxMax) = [];
                           
@@ -112,8 +112,11 @@ classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
                     zPosBySlice = zPosBySlice(1) + [0 mode(zDiff)*(numZ-1)];
                     
                 end
-               
+            else
+                idxMax = 0;
             end
+            metaData.idxMax = idxMax;
+            info.MetaData = metaData;
             
             % Get z position extents
             zPos = zPosBySlice([1 end]);

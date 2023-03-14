@@ -1,7 +1,7 @@
 classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
     % Base class for visualizations containing an axes
     
-    % Copyright 2018-2021 The MathWorks, Inc.
+    % Copyright 2018-2023 The MathWorks, Inc.
     
     
     %% Public Properties
@@ -49,21 +49,26 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
             
             % Call superclass setup first to establish the grid
             obj.setup@wt.abstract.BaseWidget();     
+            
+            
+            % Version dependency:
+            if verLessThan("matlab","9.12")
+                % Use a uigridlayout parent prior to R2022a
 
-            % g2430389 Create intermediate layout for the tiledlayout 
-            % Replacing uigridlayout with panel g2613184
-            % obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
-            % obj.AxesContainer.Padding = [0 0 0 0];
+                % g2430389 Create intermediate layout for the tiledlayout
+                obj.AxesContainer = uigridlayout(obj.Grid,[1 1]);
+                obj.AxesContainer.Padding = [0 0 0 0];
 
-            % g2613184 Create intermediate layout for the tiledlayout.
-            % This replaces an older workaround for g2430389 that
-            % caused warnings starting in R2022a. This below change has
-            % been tested in 20b, 21b, and 22a.
-            obj.AxesContainer = uipanel(obj.Grid);
-            obj.AxesContainer.Units = 'pixels';
-            obj.AxesContainer.Title = "";
-            obj.AxesContainer.BorderType = 'none';
+            else
+                % Use a panel parent starting in R2022a
 
+                % g2613184 Can't parent a tiledlayout directly to a
+                % uigridlayout anymore
+                obj.AxesContainer = uipanel(obj.Grid);
+                obj.AxesContainer.BorderType = 'none';
+
+            end %if
+            
             % g2430275 g2318236 Create a tiledlayout to properly size the axes
             obj.AxesLayout = tiledlayout(obj.AxesContainer,1,1);
             obj.AxesLayout.Padding = 'none';

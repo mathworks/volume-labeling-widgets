@@ -4,7 +4,7 @@ classdef IsosurfaceLabelingApp < handCode.BaseLabelingApp
     % This is intended as an example showing how to build a hand-coded app
     % using object-oriented programming.
 
-    % Copyright 2020-2021 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
 
 
     %% Public properties
@@ -80,8 +80,9 @@ classdef IsosurfaceLabelingApp < handCode.BaseLabelingApp
             catch
 
                 % Send error to a dialog
-                dlg = errordlg("Not a valid isosurface file. " + prompt);
-                uiwait(dlg);
+                dlgTitle = "Import Isosurface File";
+                msg = "Not a valid isosurface file. " + prompt;
+                uialert(app.Figure, msg, dlgTitle);
 
             end
 

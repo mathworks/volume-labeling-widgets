@@ -2,7 +2,7 @@ classdef MaskAnnotation < wt.model.BaseAnnotationModel ...
         & wt.model.Base3DImageryModel
     % Annotation with Y,X,Z coordinate points connected as a filled shape
     
-    % Copyright 2018-2020 The MathWorks, Inc.
+    % Copyright 2018-2023 The MathWorks, Inc.
     
     
     %% Public Properties
@@ -145,18 +145,16 @@ classdef MaskAnnotation < wt.model.BaseAnnotationModel ...
                 % Get the position of the mask's slice
                 [x,y,z,isTranspose] = obj.getSliceXYZ(maskIndices);
                 
-                % Fix a bug in R2020b
-                if verLessThan('matlab','9.10')
-                    % Place each mask at a different depth between the center
-                    % and front edge of the view. Otherwise it won't render
-                    % multiple masks in the same plane
-                    siblings = obj.Plot.Parent.Children;
-                    childNum = find(siblings == obj.Plot(1));
-                    numSiblings = numel(siblings);
-                    adjustment = (childNum - 1) / numSiblings * ...
-                        (slicePosCenter(sliceDim) - slicePosFront);
-                    slicePosFront = slicePosFront + adjustment;
-                end
+                % Place each mask at a different depth between the center
+                % and front edge of the view. Otherwise it won't render
+                % multiple masks in the same plane
+                % (Fixes a bug that exists at least to R2021a)
+                siblings = obj.Plot.Parent.Children;
+                childNum = find(siblings == obj.Plot(1));
+                numSiblings = numel(siblings);
+                adjustment = (childNum - 1) / numSiblings * ...
+                    (slicePosCenter(sliceDim) - slicePosFront);
+                slicePosFront = slicePosFront + adjustment;
                 
                 % Adjust the position of the annotations in the slice
                 % dimension to move to the closer pixel edge. This way it

@@ -30,7 +30,7 @@ classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
     end
 
 
-    % Copyright 2020-2021 The MathWorks, Inc.
+    % Copyright 2020-2023 The MathWorks, Inc.
     %#ok<*INUSD>
 
 
@@ -289,9 +289,9 @@ classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
         function ImportButtonPushed(app, event)
 
             % Prompt for a filename
-            message = 'Import Annotations';
+            dlgTitle = "Import Labels";
             pattern = {'*.mat','MATLAB MAT-file'};
-            [fileName,pathName] = uigetfile(pattern,message,app.LastPath);
+            [fileName,pathName] = uigetfile(pattern,dlgTitle,app.LastPath);
 
             % Return now if the user cancelled
             if isequal(fileName,0)
@@ -314,9 +314,9 @@ classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
 
             else
 
-                % Throw an error
-                dlg = errordlg('Not a valid annotation file.');
-                uiwait(dlg);
+                % Send error to a dialog
+                msg = "Not a valid annotation labels file.";
+                uialert(app.Figure, msg, dlgTitle);
 
             end
 
@@ -560,7 +560,7 @@ classdef (Abstract) BaseLabelingApp < wt.apps.BaseApp
         function createComponents(app)
 
             % Create Grid
-            app.Grid.ColumnWidth = {'1x', 100, 225};
+            app.Grid.ColumnWidth = {'1x', 100, 300};
             app.Grid.RowHeight = {160, '1x'};
             app.Grid.BackgroundColor = [0.149 0.149 0.149];
 

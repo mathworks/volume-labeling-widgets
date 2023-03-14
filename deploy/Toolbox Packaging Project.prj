@@ -2,8 +2,8 @@
   <configuration build-checksum="1660161192" file="C:\Work\volume-labeling-widgets\deploy\Toolbox Packaging Project.prj" location="C:\Work\volume-labeling-widgets\deploy" name="Toolbox Packaging Project" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>Volume Labeling Widgets - MATLAB App Building Components</param.appname>
     <param.authnamewatermark>Robyn Jackey (MathWorks Consulting)</param.authnamewatermark>
-    <param.email>consulting@mathworks.com</param.email>
-    <param.company>MathWorks</param.company>
+    <param.email />
+    <param.company />
     <param.summary>Enable custom workflows for labeling volumes and isosurfaces in your MATLAB app.</param.summary>
     <param.description>This toolbox provides components for labeling volume imagery and isosurfaces. These widgets may be placed into your MATLAB app simplify building a custom workflow. Sample MATLAB apps are included to demonstrate a custom workflow for isosurface labeling and volume labeling.
 
@@ -26,7 +26,7 @@ https://github.com/mathworks/volume-labeling-widgets/releases
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</param.description>
     <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
-    <param.version>2.1.0</param.version>
+    <param.version>2.2.0</param.version>
     <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -37,8 +37,8 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <item>17</item>
     </param.products.id>
     <param.products.version>
-      <item>9.9</item>
-      <item>11.2</item>
+      <item>9.13</item>
+      <item>11.6</item>
     </param.products.version>
     <param.platforms />
     <param.guid>7beb8fae-7511-4c1a-a6fb-c1a109d46c80</param.guid>
@@ -63,7 +63,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     </param.required.addons>
     <param.matlab.project.id />
     <param.matlab.project.name />
-    <param.release.start>R2020b</param.release.start>
+    <param.release.start>R2022a</param.release.start>
     <param.release.end>latest</param.release.end>
     <param.release.current.only>false</param.release.current.only>
     <param.compatiblity.windows>true</param.compatiblity.windows>
@@ -125,14 +125,20 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2020b</root>
+      <root>C:\Program Files\MATLAB\R2022b</root>
       <toolboxes>
-        <toolbox name="neuralnetwork" />
+        <toolbox name="matlabcoder" />
+        <toolbox name="embeddedcoder" />
       </toolboxes>
       <toolbox>
-        <neuralnetwork>
+        <matlabcoder>
           <enabled>true</enabled>
-        </neuralnetwork>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
       </toolbox>
     </matlab>
     <platform>
