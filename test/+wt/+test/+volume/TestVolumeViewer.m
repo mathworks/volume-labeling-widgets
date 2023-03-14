@@ -62,10 +62,12 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
             drawnow
 
             % Wait a bit to give the slider time to update
+            numIter = 0;
             while (testCase.Viewer.SliceSlider.Value ~= expectedValue) && ...
                     numIter < 10
                 pause(2)
                 drawnow
+                numIter = numIter + 1;
             end
 
             % Perform the verifications

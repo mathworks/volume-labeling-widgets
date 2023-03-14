@@ -37,8 +37,8 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <item>17</item>
     </param.products.id>
     <param.products.version>
-      <item>9.12</item>
-      <item>11.5</item>
+      <item>9.13</item>
+      <item>11.6</item>
     </param.products.version>
     <param.platforms />
     <param.guid>7beb8fae-7511-4c1a-a6fb-c1a109d46c80</param.guid>
@@ -125,7 +125,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2022a</root>
+      <root>C:\Program Files\MATLAB\R2022b</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
         <toolbox name="embeddedcoder" />
