@@ -45,10 +45,20 @@ classdef TestVolumeQuadLabeler < wt.test.volume.TestVolumeLabeler
             %dicomFolder = fullfile(matlabroot,"toolbox","images","imdata","dog");
 
             % Lung dataset
-            zipFile = matlab.internal.examples.downloadSupportFile('medical','MedicalVolumeDICOMData.zip');
-            parentFolder = fileparts(zipFile);
-            unzip(zipFile, parentFolder)
-            dicomFolder = fullfile(parentFolder,"MedicalVolumeDICOMData","LungCT01");
+            zipFile = which("LungCT01.zip");
+            if strlength(zipFile) > 0
+                % Use local
+                tempPath = tempname;
+                mkdir(tempPath);
+                unzip("LungCT01.zip",tempPath)
+                dicomFolder = fullfile(tempPath,"LungCT01");
+            else
+                % Download dataset
+                zipFile = matlab.internal.examples.downloadSupportFile('medical','MedicalVolumeDICOMData.zip');
+                parentFolder = fileparts(zipFile);
+                unzip(zipFile, parentFolder)
+                dicomFolder = fullfile(parentFolder,"MedicalVolumeDICOMData","LungCT01");
+            end
 
             % Load a different dataset
             fcn = @()wt.model.VolumeModel.fromDicomFile(dicomFolder);
