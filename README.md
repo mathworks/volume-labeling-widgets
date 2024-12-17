@@ -9,7 +9,7 @@ Enable custom workflows for labeling volumes and isosurfaces in your MATLAB app.
 This toolbox provides components for labeling volume imagery and isosurfaces. These widgets may be placed into your MATLAB app simplify building a custom workflow. Sample MATLAB apps are included to demonstrate a custom workflow for isosurface labeling and volume labeling.
 
 Note: The built-in Volume Viewer app in MATLAB's Image Processing Toolbox covers the common worfklows. This added widget collection is intended for cases where nonstandard or custom workflows need to be implemented in your own custom MATLAB app.
-https://www.mathworks.com/help/releases/R2020b/images/ref/volumeviewer-app.html
+https://www.mathworks.com/help/images/ref/volumeviewer-app.html
 
 Widgets provided in this toolbox include:
 
