@@ -31,9 +31,6 @@ classdef (Abstract) BaseAnnotationModel < wt.model.BaseModel ...
     %% Public Properties
     properties (AbortSet, SetObservable)
         
-        % Name of this annotation
-        Name (1,1) string
-        
         % Display color of the annotation
         Color (1,3) double {mustBeNonnegative, mustBeLessThanOrEqual(Color,1)} = [0 .6 1]
         
