@@ -6,9 +6,6 @@
    <website/>
    <description>This toolbox provides components for labeling volume imagery and isosurfaces. These widgets may be placed into your MATLAB app simplify building a custom workflow. Sample MATLAB apps are included to demonstrate a custom workflow for isosurface labeling and volume labeling.
 
-Note: The built-in Volume Viewer app in MATLAB's Image Processing Toolbox covers the common worfklows. This added widget collection is intended for cases where nonstandard or custom workflows need to be implemented in your own custom MATLAB app.
-https://www.mathworks.com/help/releases/R2020b/images/ref/volumeviewer-app.html
-
 Widgets provided in this toolbox include:
 
 Image Stack / Volume Visualization and Annotation Labeling
@@ -20,33 +17,26 @@ Additionally included are sample apps for:
 Interactively labeling points, lines, polygons, and masks on an image stack volume
 Interactively labeling points, lines, polygons, and planes on a 3D isosurface
 
+Note: The built-in Volume Viewer app in MATLAB's Image Processing Toolbox covers some common worfklows. This added widget collection is intended for cases where nonstandard or custom workflows need to be implemented in your own custom MATLAB app.
+https://www.mathworks.com/help/releases/R2020b/images/ref/volumeviewer-app.html
+
+Release Notes:
+https://github.com/mathworks/volume-labeling-widgets/releases
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</description>
    <demosection>
       <label>examples</label>
       <demoitem>
-         <label>demoAnnotatedIsosurfaceViewer</label>
+         <label>demoIsosurfaceLabeler</label>
          <type>other</type>
-         <source>demoAnnotatedIsosurfaceViewer</source>
-         <file>examples/html/demoAnnotatedIsosurfaceViewer.html</file>
+         <source>demoIsosurfaceLabeler</source>
+         <file>examples/html/demoIsosurfaceLabeler.html</file>
       </demoitem>
       <demoitem>
-         <label>demoAnnotatedQuadViewer</label>
+         <label>demoIsosurfaceLabelingApp</label>
          <type>other</type>
-         <source>demoAnnotatedQuadViewer</source>
-         <file>examples/html/demoAnnotatedQuadViewer.html</file>
-      </demoitem>
-      <demoitem>
-         <label>demoAnnotatedVolumeViewer</label>
-         <type>other</type>
-         <source>demoAnnotatedVolumeViewer</source>
-         <file>examples/html/demoAnnotatedVolumeViewer.html</file>
-      </demoitem>
-      <demoitem>
-         <label>demoIsosurfaceAnnotationApp</label>
-         <type>other</type>
-         <source>demoIsosurfaceAnnotationApp</source>
-         <file>examples/html/demoIsosurfaceAnnotationApp.html</file>
+         <source>demoIsosurfaceLabelingApp</source>
+         <file>examples/html/demoIsosurfaceLabelingApp.html</file>
       </demoitem>
       <demoitem>
          <label>demoIsosurfaceViewer</label>
@@ -61,10 +51,22 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
          <file>examples/html/demoSlicePlaneViewer.html</file>
       </demoitem>
       <demoitem>
-         <label>demoVolumeAnnotationApp</label>
+         <label>demoVolumeLabeler</label>
          <type>other</type>
-         <source>demoVolumeAnnotationApp</source>
-         <file>examples/html/demoVolumeAnnotationApp.html</file>
+         <source>demoVolumeLabeler</source>
+         <file>examples/html/demoVolumeLabeler.html</file>
+      </demoitem>
+      <demoitem>
+         <label>demoVolumeLabelerQuadView</label>
+         <type>other</type>
+         <source>demoVolumeLabelerQuadView</source>
+         <file>examples/html/demoVolumeLabelerQuadView.html</file>
+      </demoitem>
+      <demoitem>
+         <label>demoVolumeLabelingApp</label>
+         <type>other</type>
+         <source>demoVolumeLabelingApp</source>
+         <file>examples/html/demoVolumeLabelingApp.html</file>
       </demoitem>
       <demoitem>
          <label>demoVolumeViewer</label>

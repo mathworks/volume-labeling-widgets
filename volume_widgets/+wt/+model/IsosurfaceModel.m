@@ -7,9 +7,6 @@ classdef IsosurfaceModel < wt.model.BaseModel
     %% Properties
     properties (AbortSet, SetObservable)
         
-        % Name of this isosurface
-        Name (1,:) string 
-        
         % Isosurface vertices
         Vertices (:,3) {mustBeNumeric} = zeros(0,3) 
         

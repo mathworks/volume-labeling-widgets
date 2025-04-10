@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2024b"><title>Volume Viewer Widget</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 25px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block }
+.S3 { border-left: 0.666667px solid rgb(217, 217, 217); border-right: 0.666667px solid rgb(217, 217, 217); border-top: 0.666667px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 0.666667px solid rgb(217, 217, 217); border-right: 0.666667px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { border-left: 0.666667px solid rgb(217, 217, 217); border-right: 0.666667px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0.666667px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { margin: 15px 10px 5px 4px; padding: 0px; line-height: 18px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 17px; font-weight: 700; text-align: left;  }
+.S7 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 25px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S8 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S9 { border-left: 0.666667px solid rgb(217, 217, 217); border-right: 0.666667px solid rgb(217, 217, 217); border-top: 0.666667px solid rgb(217, 217, 217); border-bottom: 0.666667px solid rgb(217, 217, 217); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S11 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: pre-wrap;  }
+.S12 { border-left: 0px none rgb(33, 33, 33); border-right: 0px none rgb(33, 33, 33); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px; line-height: 15.6px; min-height: 16px; white-space: pre; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 12px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Volume Viewer Widget</span></h1><div  class = 'S1'><span style=' font-weight: bold; font-family: monospace;'>VolumeViewer</span><span> is intended for displaying a 3D image volume. You can choose the view dimension and the slice to navigate the data.</span></div><h2  class = 'S2'><span>Create the widget with the default dataset</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >f = uifigure;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >g = uigridlayout(f,[1 1]);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >w = wt.VolumeViewer(g);</span></span></div></div></div><h3  class = 'S6'><span>Set the view</span></h3><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >w.View = </span><span style="color: #a709f5;">'xy'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >w.Slice = 3;</span></span></div></div></div><h3  class = 'S6'><span>Turn on optional axes and grid</span></h3><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >w.ShowAxes = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >w.ShowGrid = true;</span></span></div></div></div><h2  class = 'S7'><span>Load in a DICOM image stack</span></h2><div  class = 'S1'><span>Download a lung dataset:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >zipFile = matlab.internal.examples.downloadSupportFile(</span><span style="color: #a709f5;">"medical"</span><span >,</span><span style="color: #a709f5;">"MedicalVolumeDICOMData.zip"</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >parentFolder = fileparts(zipFile);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >unzip(zipFile, parentFolder)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dicomFolder = fullfile(parentFolder,</span><span style="color: #a709f5;">"MedicalVolumeDICOMData"</span><span >,</span><span style="color: #a709f5;">"LungCT01"</span><span >); </span></span></div></div></div><div  class = 'S8'><span>Load the DICOM files into a </span><span style=' font-family: monospace;'>VolumeModel</span><span> object. The </span><span style=' font-family: monospace;'>VolumeModel</span><span> contains the image data and related metadata needed for visualization.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >volModel = wt.model.VolumeModel.fromDicomFile(dicomFolder);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >volModel.Name = </span><span style="color: #a709f5;">'lung'</span></span></div></div></div><div  class = 'S8'><span>Finally, we can provide the </span><span style=' font-family: monospace;'>VolumeModel</span><span> to the VolumeViewer widget for it to be displayed.  </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >w.VolumeModel = volModel;</span></span></div></div></div><div  class = 'S8'><span>The DICOM file contains information about the world coordinates. To adjust those, you can edit these properties:</span></div><ul  class = 'S10'><li  class = 'S11'><span style=' font-weight: bold; font-family: monospace;'>WorldExtent</span><span>: The coordinate extents of the entire volume from the outermost edges of the first and last pixels in each dimension.</span></li><li  class = 'S11'><span style=' font-weight: bold; font-family: monospace;'>WorldExtentPixelCenters</span><span>: The coordinate extents of the entire volume from the centers of the first and last pixels in each dimension. (The end pixels partially extend outside the specified range.)</span></li></ul><div  class = 'S1'><span>If you set one of these properties, the other will automatically update. It is assumed the pixels are uniformly spaced (</span><span style=' font-family: monospace;'>PixelExtent</span><span> property) in each individual dimension. This example shows how you might set the </span><span style=' font-family: monospace;'>WorldExtent</span><span> property:</span></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S12'><span style="white-space: pre"><span style="color: #008013;">% Provide the world coordinates from outer pixel edge to outer pixel edge</span></span></div><div  class = 'S12'><span style="white-space: pre"><span >volModel.WorldExtent = [</span></span></div><div  class = 'S12'><span style="white-space: pre"><span >    0 300 </span><span style="color: #008013;">% Y dimension in mm</span></span></div><div  class = 'S12'><span style="white-space: pre"><span >    0 300 </span><span style="color: #008013;">% X dimension in mm</span></span></div><div  class = 'S12'><span style="white-space: pre"><span >    0 150 </span><span style="color: #008013;">% Z dimension in mm</span></span></div><div  class = 'S12'><span style="white-space: pre"><span >    ];</span></span></div></div><div  class = 'S1'><span style=' font-style: italic;'>Copyright 2018-2023 The MathWorks, Inc.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Volume Viewer Widget
+% |*VolumeViewer*| is intended for displaying a 3D image volume. You can choose 
+% the view dimension and the slice to navigate the data.
+%% Create the widget with the default dataset
+
+f = uifigure;
+g = uigridlayout(f,[1 1]);
+w = wt.VolumeViewer(g);
+% Set the view
+
+w.View = 'xy';
+w.Slice = 3;
+% Turn on optional axes and grid
+
+w.ShowAxes = true;
+w.ShowGrid = true;
+%% Load in a DICOM image stack
+% Download a lung dataset:
+
+zipFile = matlab.internal.examples.downloadSupportFile("medical","MedicalVolumeDICOMData.zip");
+parentFolder = fileparts(zipFile);
+unzip(zipFile, parentFolder)
+dicomFolder = fullfile(parentFolder,"MedicalVolumeDICOMData","LungCT01"); 
+%% 
+% Load the DICOM files into a |VolumeModel| object. The |VolumeModel| contains 
+% the image data and related metadata needed for visualization.
+
+volModel = wt.model.VolumeModel.fromDicomFile(dicomFolder);
+volModel.Name = 'lung'
+%% 
+% Finally, we can provide the |VolumeModel| to the VolumeViewer widget for it 
+% to be displayed.  
+
+w.VolumeModel = volModel;
+%% 
+% The DICOM file contains information about the world coordinates. To adjust 
+% those, you can edit these properties:
+%% 
+% * |*WorldExtent*|: The coordinate extents of the entire volume from the outermost 
+% edges of the first and last pixels in each dimension.
+% * |*WorldExtentPixelCenters*|: The coordinate extents of the entire volume 
+% from the centers of the first and last pixels in each dimension. (The end pixels 
+% partially extend outside the specified range.)
+%% 
+% If you set one of these properties, the other will automatically update. It 
+% is assumed the pixels are uniformly spaced (|PixelExtent| property) in each 
+% individual dimension. This example shows how you might set the |WorldExtent| 
+% property:
+%%
+% 
+%   % Provide the world coordinates from outer pixel edge to outer pixel edge
+%   volModel.WorldExtent = [
+%       0 300 % Y dimension in mm
+%       0 300 % X dimension in mm
+%       0 150 % Z dimension in mm
+%       ];
+%
+%% 
+% _Copyright 2018-2023 The MathWorks, Inc._
+##### SOURCE END #####
+-->
+</div></body></html>

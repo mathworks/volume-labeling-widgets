@@ -1,3 +1,4 @@
 [submodule "dependencies/widgets-toolbox"]
 	path = dependencies/widgets-toolbox
 	url = https://github.com/mathworks/widgets-toolbox.git
+	branch = master

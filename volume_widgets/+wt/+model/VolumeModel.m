@@ -7,9 +7,6 @@ classdef VolumeModel <  wt.model.BaseModel & wt.model.Base3DImageryModel
     %% Properties
     properties (AbortSet, SetObservable)
         
-        % Name of this volume
-        Name (1,:) char 
-        
         % Alpha setting
         Alpha (1,1) double {mustBeFinite, mustBeNonnegative, mustBeLessThanOrEqual(Alpha,1)} = 1
         
