@@ -3,7 +3,7 @@
     <param.appname>Volume Labeling Widgets - MATLAB App Building Components</param.appname>
     <param.authnamewatermark>Robyn Jackey (MathWorks Consulting)</param.authnamewatermark>
     <param.email />
-    <param.company />
+    <param.company>MathWorks</param.company>
     <param.summary>Enable custom workflows for labeling volumes and isosurfaces in your MATLAB app.</param.summary>
     <param.description>This toolbox provides components for labeling volume imagery and isosurfaces. These widgets may be placed into your MATLAB app simplify building a custom workflow. Sample MATLAB apps are included to demonstrate a custom workflow for isosurface labeling and volume labeling.
 
@@ -102,7 +102,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons>
       <requiredaddons>
-        <requiredAddOn earliest="2.1.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - App Designer and Advanced App Components</requiredAddOn>
+        <requiredAddOn earliest="2.4.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - App Designer and Advanced App Components</requiredAddOn>
       </requiredaddons>
     </param.required.addons>
     <param.matlab.project.id />
@@ -122,7 +122,6 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.additional.sw.linux.url />
     <unset>
       <param.email />
-      <param.company />
       <param.output />
       <param.platforms />
       <param.exclude.filters />
