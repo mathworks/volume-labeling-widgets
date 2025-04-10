@@ -26,7 +26,7 @@ https://github.com/mathworks/volume-labeling-widgets/releases
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</param.description>
     <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
-    <param.version>2.2.1</param.version>
+    <param.version>2.2.2</param.version>
     <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -99,7 +99,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
     <param.getting.started.guide>C:\Work_Internal\volume-labeling-widgets\volume_widgets\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
-    <param.exported.on.package>true</param.exported.on.package>
+    <param.exported.on.package>false</param.exported.on.package>
     <param.required.addons>
       <requiredaddons>
         <requiredAddOn earliest="2.4.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - App Designer and Advanced App Components</requiredAddOn>
@@ -131,6 +131,7 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <param.docs />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
+      <param.exported.on.package />
       <param.matlab.project.id />
       <param.matlab.project.name />
       <param.release.current.only />

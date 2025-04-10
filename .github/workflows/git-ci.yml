@@ -58,7 +58,9 @@ jobs:
         uses: matlab-actions/setup-matlab@v2
         with:
           # The tests require only base MATLAB.
-          products: MATLAB
+          products: >
+            MATLAB
+            Image_Processing_Toolbox
           release: ${{ matrix.matlab-version }}
 
       # Run the Toolbox tests.
