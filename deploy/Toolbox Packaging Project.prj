@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="1660161192" file="C:\Work\volume-labeling-widgets\deploy\Toolbox Packaging Project.prj" location="C:\Work\volume-labeling-widgets\deploy" name="Toolbox Packaging Project" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="1660161192" file="C:\Work_Internal\volume-labeling-widgets\deploy\Toolbox Packaging Project.prj" location="C:\Work_Internal\volume-labeling-widgets\deploy" name="Toolbox Packaging Project" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>Volume Labeling Widgets - MATLAB App Building Components</param.appname>
     <param.authnamewatermark>Robyn Jackey (MathWorks Consulting)</param.authnamewatermark>
     <param.email />
@@ -26,7 +26,7 @@ https://github.com/mathworks/volume-labeling-widgets/releases
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html</param.description>
     <param.screenshot>${PROJECT_ROOT}\toolboxImage.png</param.screenshot>
-    <param.version>2.2.0</param.version>
+    <param.version>2.2.1</param.version>
     <param.output>${PROJECT_ROOT}\Volume Labeling Widgets - MATLAB App Building Components.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -37,28 +37,72 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <item>17</item>
     </param.products.id>
     <param.products.version>
-      <item>9.13</item>
-      <item>11.6</item>
+      <item>24.2</item>
+      <item>24.2</item>
     </param.products.version>
     <param.platforms />
     <param.guid>7beb8fae-7511-4c1a-a6fb-c1a109d46c80</param.guid>
     <param.exclude.filters />
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
-    <param.examples />
+    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;examples&gt;
+   &lt;exampleCategory name="examples"&gt;
+      &lt;example name="demoIsosurfaceLabeler" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoIsosurfaceLabeler.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoIsosurfaceLabeler.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoIsosurfaceLabelingApp" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoIsosurfaceLabelingApp.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoIsosurfaceLabelingApp.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoIsosurfaceViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoIsosurfaceViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoIsosurfaceViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoSlicePlaneViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoSlicePlaneViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoSlicePlaneViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoVolumeLabeler" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoVolumeLabeler.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoVolumeLabeler.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoVolumeLabelerQuadView" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoVolumeLabelerQuadView.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoVolumeLabelerQuadView.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoVolumeLabelingApp" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoVolumeLabelingApp.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoVolumeLabelingApp.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="demoVolumeViewer" type="html"&gt;
+         &lt;file type="source"&gt;/examples/html/demoVolumeViewer.html&lt;/file&gt;
+         &lt;file type="main"&gt;/examples/demoVolumeViewer.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+&lt;/examples&gt;</param.examples>
     <param.demosxml />
     <param.apps />
     <param.registered.apps>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\examples\apps\IsosurfaceLabelingExample.mlapp</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\examples\apps\VolumeLabelingExample.mlapp</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\examples\apps\VolumeLabelingExample.mlapp</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\examples\apps\IsosurfaceLabelingExample.mlapp</file>
     </param.registered.apps>
     <param.docs />
-    <param.getting.started.guide>C:\Work\volume-labeling-widgets\volume_widgets\doc\GettingStarted.mlx</param.getting.started.guide>
+    <param.getting.started.guide>C:\Work_Internal\volume-labeling-widgets\volume_widgets\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
     <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons>
       <requiredaddons>
-        <requiredAddOn earliest="2.1.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - MATLAB App Building Components</requiredAddOn>
+        <requiredAddOn earliest="2.1.0" fromRepository="true" id="78895307-cc36-4970-8b66-0697da8f9352" include="true" latest="latest">Widgets Toolbox - App Designer and Advanced App Components</requiredAddOn>
       </requiredaddons>
     </param.required.addons>
     <param.matlab.project.id />
@@ -83,7 +127,6 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <param.platforms />
       <param.exclude.filters />
       <param.exclude.pcodedmfiles />
-      <param.examples />
       <param.demosxml />
       <param.apps />
       <param.docs />
@@ -104,31 +147,34 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
       <param.additional.sw.linux.url />
     </unset>
     <fileset.rootdir>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\+wt</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\demos.xml</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\DesktopToolset.xml</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\doc</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\examples</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\icons</file>
-      <file>C:\Work\volume-labeling-widgets\volume_widgets\resources</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\+wt</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\demos.xml</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\DesktopToolset.xml</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\doc</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\examples</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\icons</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\volume_widgets\resources</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded>
-      <file>${MATLAB_ROOT}\toolbox\matlab\demos\mri.mat</file>
+      <file>${MATLAB_ROOT}\toolbox\local\userpath.m</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\test\data\mri.mat</file>
+      <file>C:\Work_Internal\volume-labeling-widgets\test\data\mristack.mat</file>
     </fileset.depfun.excluded>
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}" name="Volume Labeling Widgets - MATLAB App Building Components.mltbx" optional="false">C:\Work\volume-labeling-widgets\deploy\Volume Labeling Widgets - MATLAB App Building Components.mltbx</file>
+      <file location="${PROJECT_ROOT}" name="Volume Labeling Widgets - MATLAB App Building Components.mltbx" optional="false">C:\Work_Internal\volume-labeling-widgets\deploy\Volume Labeling Widgets - MATLAB App Building Components.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2022b</root>
+      <root>C:\Program Files\MATLAB\R2024b</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
         <toolbox name="embeddedcoder" />
+        <toolbox name="neuralnetwork" />
       </toolboxes>
       <toolbox>
         <matlabcoder>
@@ -139,6 +185,11 @@ Planning a complex or business-critical app? MathWorks Consulting can advise you
         <embeddedcoder>
           <enabled>true</enabled>
         </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
       </toolbox>
     </matlab>
     <platform>
