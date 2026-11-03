@@ -17,7 +17,7 @@ jobs:
         platform: [windows-latest]
 
         # List of MATLAB releases over which to run the tests.
-        matlab-version: [R2023b, R2024a, R2024b]
+        matlab-version: [R2023b, R2024a, R2024b, R2025b, R2026a, R2026b, latest]
 
         # We don't define any startup options until we reach R2023b (handled separately below).
         # matlab-startup-options: [ '' ]
