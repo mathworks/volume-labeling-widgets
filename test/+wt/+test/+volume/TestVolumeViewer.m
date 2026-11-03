@@ -57,26 +57,24 @@ classdef TestVolumeViewer < wt.test.volume.BaseViewerTest & ...
         
         function verifySlice(testCase, expectedValue)
             % Verify slice controls in the viewer
-            
-            % Ensure any updates complete
-            drawnow
 
-            % Wait a bit to give the slider time to update
-            numIter = 0;
-            while (testCase.Viewer.SliceSlider.Value ~= expectedValue) && ...
-                    numIter < 10
-                pause(2)
-                drawnow
-                numIter = numIter + 1;
-            end
+            import matlab.unittest.constraints.AbsoluteTolerance
+            import matlab.unittest.constraints.Eventually
+            import matlab.unittest.constraints.IsEqualTo
+            import matlab.unittest.constraints.RelativeTolerance
 
-            % Perform the verifications
-            testCase.verifyEqual(testCase.Viewer.SliceSpinner.Value, expectedValue,'RelTol',0.001,'AbsTol',0.001);
-            testCase.verifyEqual(testCase.Viewer.SliceSlider.Value, expectedValue,'RelTol',0.001,'AbsTol',0.001);
-            testCase.verifyEqual(testCase.Viewer.Slice, expectedValue,'RelTol',0.001,'AbsTol',0.001);
-            slice3DValue = testCase.Viewer.Slice3D(testCase.Viewer.SliceDimension);
-            testCase.verifyEqual(slice3DValue, expectedValue,'RelTol',0.001,'AbsTol',0.001);
-            
+            % Wait for the controls and model to agree on the slice
+            actualSlice = @()[testCase.Viewer.SliceSpinner.Value, ...
+                testCase.Viewer.SliceSlider.Value, ...
+                testCase.Viewer.Slice, ...
+                testCase.Viewer.Slice3D(testCase.Viewer.SliceDimension)];
+            expectedSlice = repmat(expectedValue, 1, 4);
+            tolerance = AbsoluteTolerance(0.001) | RelativeTolerance(0.001);
+            constraint = IsEqualTo(expectedSlice, 'Within', tolerance);
+            testCase.verifyThat(actualSlice, ...
+                Eventually(constraint, 'WithTimeoutOf', 20), ...
+                'Slice values are ordered as spinner, slider, Slice, and active Slice3D.');
+
         end %function
         
         
