@@ -143,8 +143,7 @@ classdef (Abstract) BaseAxesViewer < wt.abstract.BaseWidget
                 value = false;
             else
                 toolButtons = obj.Axes.Toolbar.Children;
-                isZoomButton = contains({toolButtons.Tag},'zoom');
-                value = any([toolButtons(isZoomButton).Value]);
+                value = wt.internal.isToolbarModeActive(toolButtons, 'zoom');
             end
         end %function
         
