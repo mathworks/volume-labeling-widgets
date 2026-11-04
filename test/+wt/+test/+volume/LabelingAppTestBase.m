@@ -96,14 +96,65 @@ classdef (Abstract) LabelingAppTestBase < matlab.uitest.TestCase
 
         function verifySuppression(testCase, tag)
             testCase.press(testCase.App.PointsButton);
-            button = testCase.modeButton(tag);
-            testCase.press(button);
+            ax = testCase.App.AnnotationViewer.Axes;
+            [viewProperties, viewValues] = testCase.captureView();
+            testCase.setInteractionMode(tag, 'on');
             testCase.verifyWarningFree(@()testCase.press( ...
-                testCase.App.AnnotationViewer.Axes, testCase.ClickPoints(1, :)));
+                ax, testCase.ClickPoints(1, :)));
             testCase.verifyEmpty(testCase.App.AnnotationModel(1).Points);
-            testCase.press(button);
-            testCase.press(testCase.App.AnnotationViewer.Axes, testCase.ClickPoints(1, :));
+            testCase.setInteractionMode(tag, 'off');
+            testCase.restoreView(viewProperties, viewValues);
+            testCase.press(ax, testCase.ClickPoints(1, :));
             testCase.verifyAnnotation(1);
+        end
+
+        function setInteractionMode(testCase, tag, state)
+            import matlab.unittest.constraints.Eventually
+            import matlab.unittest.constraints.IsEqualTo
+            button = testCase.modeButton(tag);
+            try
+                testCase.press(button);
+            catch exception
+                if ~strcmp(exception.identifier, ...
+                        'MATLAB:uiautomation:Driver:GestureNotSupportedForClass')
+                    rethrow(exception)
+                end
+                % Older drivers do not support the modern toolbar classes.
+                % Public axes mode APIs activate the same toolbar state.
+                ax = testCase.App.AnnotationViewer.Axes;
+                switch tag
+                    case 'zoomin'
+                        zoom(ax, state);
+                    case 'pan'
+                        pan(ax, state);
+                    case 'rotate'
+                        rotate3d(ax, state);
+                end
+            end
+            testCase.assertThat(@()wt.internal.isToolbarModeActive( ...
+                testCase.App.AnnotationViewer.Axes.Toolbar.Children, tag), ...
+                Eventually(IsEqualTo(strcmp(state, 'on')), 'WithTimeoutOf', 20));
+        end
+
+        function [properties, values] = captureView(testCase)
+            properties = {'XLim', 'YLim', 'ZLim', 'DataAspectRatio', ...
+                'PlotBoxAspectRatio', 'Projection', 'CameraPosition', ...
+                'CameraTarget', 'CameraUpVector', 'CameraViewAngle'};
+            values = get(testCase.App.AnnotationViewer.Axes, properties);
+        end
+
+        function restoreView(testCase, properties, values)
+            import matlab.unittest.constraints.Eventually
+            import matlab.unittest.constraints.IsEqualTo
+            import matlab.unittest.constraints.IsTrue
+            ax = testCase.App.AnnotationViewer.Axes;
+            % A zoom click changes the camera. Restore it before reusing
+            % the original world coordinate to test resumed editing.
+            set(ax, properties, values);
+            testCase.assertThat(@()get(ax, properties), ...
+                Eventually(IsEqualTo(values), 'WithTimeoutOf', 20));
+            testCase.assertThat(@()hasRenderedFrame(ax), ...
+                Eventually(IsTrue, 'WithTimeoutOf', 20));
         end
     end
 
@@ -180,15 +231,21 @@ classdef (Abstract) LabelingAppTestBase < matlab.uitest.TestCase
             testCase.press(testCase.App.AnnotationViewer.Axes, testCase.ClickPoints(1, :));
             delete(testCase.App.AnnotationViewer.Axes.Toolbar);
             axtoolbar(testCase.App.AnnotationViewer.Axes, {'zoomin', 'pan'});
-            button = testCase.modeButton('zoomin');
-            testCase.press(button);
+            [viewProperties, viewValues] = testCase.captureView();
+            testCase.setInteractionMode('zoomin', 'on');
             testCase.press(testCase.App.AnnotationViewer.Axes, testCase.ClickPoints(2, :));
             testCase.verifyEqual(size(testCase.App.AnnotationModel(1).Points, 1), 1);
-            testCase.press(button);
+            testCase.setInteractionMode('zoomin', 'off');
+            testCase.restoreView(viewProperties, viewValues);
             testCase.press(testCase.App.AnnotationViewer.Axes, testCase.ClickPoints(2, :));
             testCase.verifyAnnotation(2);
         end
     end
+end
+
+function rendered = hasRenderedFrame(ax)
+frame = getframe(ax);
+rendered = ~isempty(frame.cdata);
 end
 
 function cleanupApp(app)

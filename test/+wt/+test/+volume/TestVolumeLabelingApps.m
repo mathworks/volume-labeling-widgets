@@ -10,6 +10,7 @@ classdef TestVolumeLabelingApps < wt.test.volume.LabelingAppTestBase
 
     properties (TestParameter)
         ScrollView = struct('Main', 'main', 'Top', 'top', 'Side', 'side')
+        BrushView = struct('XY', 'XY', 'XZ', 'XZ', 'YZ', 'YZ')
     end
 
     methods (TestMethodSetup)
@@ -84,14 +85,16 @@ classdef TestVolumeLabelingApps < wt.test.volume.LabelingAppTestBase
 
         function testZoomSuppressesWheel(testCase)
             testCase.assumeFalse(isMATLABReleaseOlderThan('R2024a'));
-            button = testCase.modeButton('zoomin');
-            testCase.press(button);
+            testCase.setInteractionMode('zoomin', 'on');
             testCase.scroll(testCase.App.AnnotationViewer.Axes, 'up');
             testCase.verifyEqual(testCase.App.AnnotationViewer.Slice, 4);
-            testCase.press(button);
+            testCase.setInteractionMode('zoomin', 'off');
         end
 
         function testBrushAndErase(testCase)
+            import matlab.unittest.constraints.Eventually
+            import matlab.unittest.constraints.IsEqualTo
+            import matlab.unittest.constraints.IsTrue
             brush = findall(testCase.App.Figure, 'Type', 'uistatebutton', 'Text', 'Brush');
             erase = findall(testCase.App.Figure, 'Type', 'uistatebutton', 'Text', 'Erase');
             testCase.assertNumElements(brush, 1);
@@ -101,8 +104,38 @@ classdef TestVolumeLabelingApps < wt.test.volume.LabelingAppTestBase
             annotation = testCase.App.AnnotationModel(1);
             testCase.verifyGreaterThan(nnz(annotation.Mask), 0);
             testCase.press(erase);
+            testCase.assertThat(@()testCase.App.AnnotationViewer.CurrentTool.Erase, ...
+                Eventually(IsTrue, 'WithTimeoutOf', 20));
             testCase.press(testCase.App.AnnotationViewer.Axes, testCase.ClickPoints(1, :));
-            testCase.verifyEqual(nnz(annotation.Mask), 0);
+            testCase.verifyThat(@()nnz(annotation.Mask), ...
+                Eventually(IsEqualTo(0), 'WithTimeoutOf', 20));
+        end
+
+        function testBrushUsesDisplayedSlice(testCase, BrushView)
+            import matlab.unittest.constraints.Eventually
+            import matlab.unittest.constraints.IsEqualTo
+            import matlab.unittest.constraints.IsTrue
+            viewer = testCase.App.AnnotationViewer;
+            testCase.choose(viewer.ViewIndicator, BrushView);
+            viewer.Slice = 4;
+            drawnow
+            point = [mean(viewer.Axes.XLim), mean(viewer.Axes.YLim), ...
+                mean(viewer.Axes.ZLim)];
+            brush = findall(testCase.App.Figure, 'Type', 'uistatebutton', 'Text', 'Brush');
+            erase = findall(testCase.App.Figure, 'Type', 'uistatebutton', 'Text', 'Erase');
+            testCase.press(brush);
+            testCase.press(viewer.Axes, point);
+            annotation = testCase.App.AnnotationModel(1);
+            testCase.assertGreaterThan(nnz(annotation.Mask), 0);
+            coordinates = cell(1, 3);
+            [coordinates{:}] = ind2sub(size(annotation.Mask), find(annotation.Mask));
+            testCase.verifyEqual(unique(coordinates{viewer.SliceDimension}), viewer.Slice);
+            testCase.press(erase);
+            testCase.assertThat(@()viewer.CurrentTool.Erase, ...
+                Eventually(IsTrue, 'WithTimeoutOf', 20));
+            testCase.press(viewer.Axes, point);
+            testCase.verifyThat(@()nnz(annotation.Mask), ...
+                Eventually(IsEqualTo(0), 'WithTimeoutOf', 20));
         end
     end
 
