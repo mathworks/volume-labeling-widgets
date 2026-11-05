@@ -5,13 +5,13 @@
 
 % EXAMPLES
 % folder/                - Exclude folder and all of its content
-% folder/*               - Exclude contents of folder 
+% folder/*               - Exclude contents of folder
 % folder/**              - Exclude all contents of folder and subfolders
 % *.extension            - Exclude files with extension in folder
 % **/*.extension         - Exclude all files with extension in folder and all subfolders
 % file.extension         - Exclude specific file
 % folder/file.extension  - Exclude specific file in a subfolder
-% **/file.extension      - Exclude specific file in all subfolders  
+% **/file.extension      - Exclude specific file in all subfolders
 
 % Notes:
 % - If a path starts with '%', include '\' before '%', for example, "\%examplefile.svn".
