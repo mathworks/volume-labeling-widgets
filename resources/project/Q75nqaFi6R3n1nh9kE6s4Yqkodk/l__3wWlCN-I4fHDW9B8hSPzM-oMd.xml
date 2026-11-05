@@ -1,6 +1,9 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Info>
     <Category UUID="FileClassCategory">
-        <Label UUID="774eaa79-8c69-403d-9577-9b500f4e542b" />
+        <Label UUID="774eaa79-8c69-403d-9577-9b500f4e542b"/>
+    </Category>
+    <Category UUID="Deployment_Category_5489f856-83c0-4995-b38a-284c0a93f107">
+        <Label UUID="Deployment_GettingStartedGuideFile_5489f856-83c0-4995-b38a-284c0a93f107"/>
     </Category>
 </Info>
