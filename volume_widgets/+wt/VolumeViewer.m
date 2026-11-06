@@ -99,7 +99,7 @@ classdef VolumeViewer < wt.abstract.BaseVolumeViewer & wt.mixin.Enableable & ...
             obj.SliceSpinner.Layout.Row = 2;
             obj.SliceSpinner.FontSize = 14;
             obj.SliceSpinner.RoundFractionalValues = "on";
-            obj.SliceSpinner.ValueChangingFcn = @(h,e)onSliceSpinnerChanged(obj,e);
+            obj.SliceSpinner.ValueChangedFcn = @(h,e)onSliceSpinnerChanged(obj,e);
             
             obj.SliceSlider = uislider(obj.Grid);
             obj.SliceSlider.Layout.Column = 1;

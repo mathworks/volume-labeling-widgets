@@ -1,7 +1,7 @@
 classdef Brush < wt.tool.BaseAnnotationTool
     % Brush tool for editing a mask annotation
     
-    % Copyright 2020-2023 The MathWorks, Inc.
+    % Copyright 2020-2026 The MathWorks, Inc.
     
     
     %% Properties
@@ -275,6 +275,16 @@ classdef Brush < wt.tool.BaseAnnotationTool
             
             % Get the annotation
             aObj = obj.AnnotationModel;
+
+            % Axes and overlay hits can lie on a slice edge. Keep strokes
+            % in the displayed slice instead of selecting a neighbor from
+            % the hit object's depth.
+            slicePosition = mean(aObj.SliceRangeFilter, 2);
+            fixedDimension = all(isfinite(aObj.SliceRangeFilter), 2);
+            p1(fixedDimension) = slicePosition(fixedDimension);
+            if ~isempty(p2)
+                p2(fixedDimension) = slicePosition(fixedDimension);
+            end
             
             % Get the pixel coordinates
             px1 = cell2mat(obj.AnnotationModel.getSliceIndex(p1));

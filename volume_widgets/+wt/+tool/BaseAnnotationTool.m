@@ -258,26 +258,12 @@ classdef BaseAnnotationTool < handle & matlab.mixin.Heterogeneous
                     (point(3) >= zLim(1)) && (point(3) <= zLim(2));
             end
 
-            % --- Also ignore the mouse event if a zoom mode is on --- %
-
-            % Track the axes and toolbar content
-            persistent toolButtons toolAxes
-            if isempty(toolButtons) || isempty(toolAxes) || ~isequal(toolAxes, ax)
-                toolAxes = ax;
-                axTbar = ax.Toolbar;
-                toolButtons = axTbar.Children;
-            end
-            
-            % Filter any deleted buttons
-            try %#ok<TRYNC>
-                toolButtons = toolButtons(isvalid(toolButtons));
-            end
-
-            % Check for any active toolbar modes
-            if ~isempty(toolButtons)
-                isModeButton = contains({toolButtons.Tag},["zoom","pan","rotate"]);
-                modeIsActive = [toolButtons(isModeButton).Value];
-                tf = tf && ~any(modeIsActive);
+            % Ignore mouse events while an axes interaction mode is active
+            toolbar = ax.Toolbar;
+            if ~isempty(toolbar) && isvalid(toolbar)
+                modeIsActive = wt.internal.isToolbarModeActive( ...
+                    toolbar.Children, ["zoom", "pan", "rotate"]);
+                tf = tf && ~modeIsActive;
             end
 
         end %function

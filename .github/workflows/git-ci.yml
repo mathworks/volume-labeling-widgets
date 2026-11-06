@@ -17,7 +17,7 @@ jobs:
         platform: [windows-latest]
 
         # List of MATLAB releases over which to run the tests.
-        matlab-version: [R2023b, R2024a, R2024b]
+        matlab-version: [R2023b, R2024a, R2024b, R2025b, R2026a, R2026b, latest]
 
         # We don't define any startup options until we reach R2023b (handled separately below).
         # matlab-startup-options: [ '' ]
@@ -38,12 +38,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-
-      # Update references
-      - name: Git Submodule Update
-        run: |
-          git pull --recurse-submodules
-          git submodule update --remote --recursive
 
       # For Linux jobs, start a display server on the runner.
       - name: Start a display server for jobs running on Linux.

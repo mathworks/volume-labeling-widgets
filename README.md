@@ -22,5 +22,13 @@ Additionally included are sample apps for:
 Interactively labeling points, lines, polygons, and masks on an image stack volume
 Interactively labeling points, lines, polygons, and planes on a 3D isosurface
 
+For agent-assisted app development, use the
+[Volume Labeling Widgets skill](volume_widgets/skills/matlab-use-volume-labeling-widgets/SKILL.md).
+Copy its entire folder, including `references`, into your agent's skill directory,
+or ask your agent to read it at the toolbox location. Invoke it as
+`$matlab-use-volume-labeling-widgets` with existing app code or your choice of
+App Designer versus hand code. It works with `matlab-use-widgets-toolbox` and
+`matlab-build-app` when those skills are available.
+
 
 Planning a complex or business-critical app? MathWorks Consulting can advise you on design and architecture: https://www.mathworks.com/services/consulting/proven-solutions/software-development-with-matlab.html
